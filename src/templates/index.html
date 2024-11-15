@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Latex viite sovellus
+{% endblock %}
+
+{% block body %}
+
+<h2>Latex reference app</h2>
+
+<div>
+    <label for="viitteet">Valitse viite:</label>
+    
+    <select name="viitteet" id="viitteet">
+        <option value="article">Article</option>
+    </select>
+</div>
+
+<div>
+    <form method="post" style="margin-left: 10px;">
+        <label for="kirjoittajat"> kirjoittajat </label>
+        <input type="text" name="kirjoittajat"></input><br>
+
+        <label for="otsikko"> otsikko </label>
+        <input type="text" name="otsikko"></input><br>
+
+        <label for="julkaisu"> julkaisu </label>
+        <input type="text" name="julkaisu"></input><br>
+
+        <label for="vuosi"> vuosi </label>
+        <input type="text" name="vuosi"></input><br>
+
+        <input type="submit" value="Lisää viite">
+    </form>
+</div>
+
+{% endblock %}
