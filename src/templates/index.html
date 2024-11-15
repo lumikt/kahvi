@@ -9,9 +9,9 @@ Latex viite sovellus
 <h2>Latex reference app</h2>
 
 <div>
-    <label for="viitteet">Valitse viite:</label>
+    <label for="viite_valinta">Valitse viite:</label>
     
-    <select name="viitteet" id="viitteet">
+    <select name="viite_valinta" id="viite_valinta">
         <option value="article">Article</option>
     </select>
 </div>
@@ -19,19 +19,31 @@ Latex viite sovellus
 <div>
     <form method="post" style="margin-left: 10px;">
         <label for="kirjoittajat"> kirjoittajat </label>
-        <input type="text" name="kirjoittajat"></input><br>
+        <input type="text" name="kirjoittajat" required></input><br>
 
         <label for="otsikko"> otsikko </label>
-        <input type="text" name="otsikko"></input><br>
+        <input type="text" name="otsikko" required></input><br>
 
         <label for="julkaisu"> julkaisu </label>
-        <input type="text" name="julkaisu"></input><br>
+        <input type="text" name="julkaisu" required></input><br>
 
         <label for="vuosi"> vuosi </label>
-        <input type="text" name="vuosi"></input><br>
+        <input type="text" name="vuosi" required></input><br>
+
+        <!-- Vapaaehtoiset -->
+        <label for="julkaisunumero"> julkaisunumero </label>
+        <input type="text" name="julkaisunumero"></input><br>
+
+        <label for="sivut"> sivut </label>
+        <input type="text" name="sivut"></input><br>
+
+        <label for="DOI"> DOI </label>
+        <input type="text" name="DOI"></input><br>
+        <!-- Vapaaehtoiset end  -->
 
         <input type="submit" value="Lisää viite">
     </form>
 </div>
 
 {% endblock %}
+
