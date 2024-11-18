@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Latex viite sovellus
+{% endblock %}
+
+{% block body %}
+
+<h2>Viiteet</h2>
+<div>
+    <a href="/">Lisää uusi viite</a>
+</div>
+
+<div>
+    {% for reference in references %}
+        <h3>{{ reference }}</h3>
+    {% endfor %}
+</div>
+
+{% endblock %}
+

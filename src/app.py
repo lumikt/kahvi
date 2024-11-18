@@ -9,6 +9,12 @@ def load_index():
     # reference = get_reference()
     return render_template("index.html")
 
+@app.route("/get_reference", methods =["GET", "POST"])
+def reference_fetcher():
+    references = get_reference()
+    print(references)
+    return render_template("references.html", references=references)
+
 @app.route("/create_reference", methods = ["POST"])
 def reference_creation():
     ref_dict = {}
