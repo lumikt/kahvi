@@ -439,6 +439,7 @@ tomli = {version = ">=1", markers = "python_version < \"3.11\""}
 dev = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "pygments (>=2.7.2)", "requests", "setuptools", "xmlschema"]
 
 [[package]]
+<<<<<<< HEAD
 name = "python-dotenv"
 version = "1.0.1"
 description = "Read key-value pairs from a .env file and set them as environment variables"
@@ -549,6 +550,18 @@ postgresql-psycopgbinary = ["psycopg[binary] (>=3.0.7)"]
 pymysql = ["pymysql"]
 sqlcipher = ["sqlcipher3_binary"]
 
+=======
+name = "robotframework"
+version = "7.1.1"
+description = "Generic automation framework for acceptance testing and robotic process automation (RPA)"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "robotframework-7.1.1-py3-none-any.whl", hash = "sha256:0461360be00dfb8ce1ab3f42370fa6eea3779e41c0b8d79a1f8ddcd2ec8e3679"},
+    {file = "robotframework-7.1.1.zip", hash = "sha256:f85919c68c4d0837006e5f09dde1ef689f082eba2e7e64d5758753f9ee8bfea9"},
+]
+
+>>>>>>> a281e30 (Add test files)
 [[package]]
 name = "tomli"
 version = "2.1.0"
@@ -594,4 +607,8 @@ watchdog = ["watchdog (>=2.3)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
+<<<<<<< HEAD
 content-hash = "244c28b11fe0e679da699cf3d1fa2adcd11f2636462c65f5a30fb8ae9fff984f"
+=======
+content-hash = "046cc98870af7be8095585086a8e233db27aa9277f25185a2d25a4eb5e5ea46f"
+>>>>>>> a281e30 (Add test files)
