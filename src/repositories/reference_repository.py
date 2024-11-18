@@ -5,12 +5,35 @@ def get_reference():
     sql = text("SELECT * FROM reference")
     result = db.session.execute(sql)
     result = result.fetchall()
-    refs = []
-    for i in result:
-        non_none_values = [str(value) for value in i[1:] if value is not None]
-        formatted_string = ", ".join(non_none_values)
-        refs.append(f"{formatted_string}")
+    fields = [
+        'author',  # Required
+        'title',   # Required
+        'journal', # Required
+        'year',    # Required
+        'volume',  # Optional
+        'number',  # Optional
+        'pages',   # Optional
+        'month',   # Optional
+        'note',    # Optional
+        'doi',     # Non-standard
+        'issn',    # Non-standard
+        'zblnumber', # Non-standard
+        'eprint',  # Non-standard
+    ]
 
+    refs = []
+    for row in result:            
+        formatted_parts = []
+        for field in fields:
+            value = getattr(row, field, None)
+            print(value)
+            print(row, field)
+            if value:
+                formatted_parts.append(f"{value}")
+        
+        formatted_string = ", ".join(formatted_parts)
+        refs.append(formatted_string)
+    
     return refs
 
 def create_reference(ref_dict: dict):
