@@ -9,7 +9,7 @@ def get_reference():
     for i in result:
         non_none_values = [str(value) for value in i[1:] if value is not None]
         formatted_string = ", ".join(non_none_values)
-        refs.append(f"'{formatted_string}'")
+        refs.append(f"{formatted_string}")
 
     return refs
 
