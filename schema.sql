@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS ref_authors CASCADE;
 CREATE TABLE reference (id SERIAL PRIMARY KEY,
                          address TEXT,
                          annote TEXT,
-                         author TEXT[],
+                         author TEXT,
                          booktitle TEXT,
                          citation_key TEXT,
                          chapter INTEGER,
