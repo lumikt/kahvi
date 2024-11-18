@@ -13,10 +13,10 @@ CREATE TABLE reference (id SERIAL PRIMARY KEY,
                          institution TEXT,
                          journal TEXT,
                          month TEXT,
-                         note TEXT
+                         note TEXT,
                          number INTEGER,
                          organization TEXT,
-                         pages TEXT
+                         pages TEXT,
                          publisher TEXT,
                          ref_type TEXT,
                          school TEXT,
