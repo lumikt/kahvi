@@ -9,6 +9,9 @@ Latex viite sovellus
 <h2>Latex reference app</h2>
 
 <div>
+    {% if message %}
+        {{ message }}
+    {% endif %}
     <label for="viite_valinta">Valitse viite:</label>
     
     <select name="viite_valinta" id="viite_valinta">

@@ -12,10 +12,23 @@ def load_index():
 @app.route("/create_reference", methods = ["POST"])
 def reference_creation():
     ref_dict = {}
-    ref_dict["kirjoittajat"] = request.form.get("kirjoittajat")
-    ref_dict["otsikko"] = request.form.get("otsikko")
-    ref_dict["julkaisu"] = request.form.get("julkaisu")
-    ref_dict["vuosi"] = request.form.get("vuosi")
+    message="Vaaditut kentät: kirjoittajat, otsikko, julkaisu, vuosi"
+    if not request.form.get("kirjoittajat"):
+        return render_template("index.html", message=message)
+    else:
+        ref_dict["kirjoittajat"] = request.form.get("kirjoittajat")
+    if not request.form.get("otsikko"):
+        return render_template("index.html", message=message)
+    else:
+        ref_dict["otsikko"] = request.form.get("otsikko")
+    if not request.form.get("julkaisu"):
+        return render_template("index.html", message=message)
+    else:
+        ref_dict["julkaisu"] = request.form.get("julkaisu")
+    if not request.form.get("vuosi"):
+        return render_template("index.html", message=message)
+    else:
+        ref_dict["vuosi"] = request.form.get("vuosi")
     ref_dict["julkaisunumero"] = request.form.get("julkaisunumero")
     ref_dict["sivut"] = request.form.get("sivut")
     ref_dict["doi"] = request.form.get("DOI")
