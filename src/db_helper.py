@@ -34,6 +34,7 @@ def setup_db(schema):
 def load_schema(file_path):
     with open(file_path, "r") as file:
         sql = file.read()
+    print(sql)
     return sql
 
 

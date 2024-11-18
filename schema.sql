@@ -1,3 +1,7 @@
+DROP TABLE IF EXISTS reference CASCADE;
+DROP TABLE IF EXISTS authors CASCADE;
+DROP TABLE IF EXISTS ref_authors CASCADE;
+
 CREATE TABLE reference (id SERIAL PRIMARY KEY,
                          address TEXT,
                          annote TEXT,
