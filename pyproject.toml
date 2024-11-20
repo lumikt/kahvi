@@ -13,6 +13,7 @@ psycopg2-binary = "^2.9.10"
 flask-sqlalchemy = "^3.1.1"
 robotframework-seleniumlibrary = "^6.6.1"
 requests = "^2.32.3"
+pytest = "^8.3.3"
 
 
 
