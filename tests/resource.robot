@@ -27,3 +27,6 @@ Open And Configure Browser
 Add Reference Page Should Be Open
     Title Should Be  Latex viite sovellus
 
+Go To Add Reference Page
+    Go To  ${ADD_REFERENCE_URL}
+

@@ -6,6 +6,7 @@ Test Setup  Reset Application And Go To Add Reference Page
 
 *** Test Cases ***
 Set Correct Information
+    Set Reference Id  1
     Set Authors  Donald E. Knuth
     Set Title  Literate Programming
     Set Journal  The Computer Journal
@@ -29,6 +30,10 @@ Submit Information
     Click Button  Lisää viite
 
 *** Keywords ***
+Set Reference Id
+    [Arguments]  ${sitaatin_tunniste}
+    Input Text  sitaatin_tunniste  ${sitaatin_tunniste}
+    
 Set Authors
     [Arguments]  ${kirjoittajat}
     Input Text  kirjoittajat  ${kirjoittajat}
@@ -54,10 +59,10 @@ Set Pages
     Input Text  sivut  ${sivut}
 
 Set DOI
-    [Arguments]  ${doi}
-    Input Text  doi  ${doi}
+    [Arguments]  ${DOI}
+    Input Text  DOI  ${DOI}
 
 *** Keywords ***
 Reset Application And Go To Add Reference Page
     Reset Application
-    Go To  Add Reference Page
+    Go To Add Reference Page
