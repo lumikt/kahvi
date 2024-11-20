@@ -42,3 +42,7 @@ def create_reference(ref_dict: dict):
                """)
     db.session.execute(sql, {"sitaatin_tunniste":ref_dict["sitaatin_tunniste"], "kirjoittajat":ref_dict["kirjoittajat"], "otsikko":ref_dict["otsikko"], "julkaisu":ref_dict["julkaisu"], "vuosi":ref_dict["vuosi"], "julkaisunumero":ref_dict["julkaisunumero"], "sivut":ref_dict["sivut"], "doi":ref_dict["doi"]})
     db.session.commit()
+
+def delete_all():
+    refs = []
+    return refs

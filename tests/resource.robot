@@ -1,5 +1,6 @@
 *** Settings ***
 Library  SeleniumLibrary
+Library  ../src/AppLibrary.py
 
 *** Variables ***
 ${SERVER}       localhost:5001
@@ -24,5 +25,5 @@ Open And Configure Browser
     Open Browser  browser=${BROWSER}  options=${options}
 
 Add Reference Page Should Be Open
-    Title Sould Be  Latex viite sovellus
+    Title Should Be  Latex viite sovellus
 

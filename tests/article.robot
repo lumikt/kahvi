@@ -2,7 +2,7 @@
 Resource  resource.robot
 Suite Setup  Open And Configure Browser
 Suite Teardown  Close Browser
-# Test Setup  Reset Application And Go To Add Reference Page
+Test Setup  Reset Application And Go To Add Reference Page
 
 *** Test Cases ***
 Set Correct Information
@@ -57,7 +57,7 @@ Set DOI
     [Arguments]  ${doi}
     Input Text  doi  ${doi}
 
-# *** Keywords ***
-# Reset Application And Go To Add Reference Page
- #   Reset Application
-  #  Go To  Add Reference Page
+*** Keywords ***
+Reset Application And Go To Add Reference Page
+    Reset Application
+    Go To  Add Reference Page

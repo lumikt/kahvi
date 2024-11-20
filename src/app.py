@@ -2,7 +2,7 @@
 from config import app
 from flask import redirect, render_template, request, jsonify, flash
 
-from repositories.reference_repository import get_reference, create_reference
+from repositories.reference_repository import get_reference, create_reference, delete_all
 
 @app.route("/", methods =["GET", "POST"])
 def load_index():    
@@ -37,10 +37,15 @@ def reference_creation():
         ref_dict["doi"] = request.form.get("DOI")
     # return kirjoittajat, otsikko, julkaisu, DOI
     print(ref_dict)
-    
+
     # TODO
     # reference_repository.py funktio joka postaa tietokantaan. 
     create_reference(ref_dict)
     # luo logiikka, tällä hetkellä create_reference funktio pass
 
     return redirect("/")
+
+@app.route("/tests/reset", methods=["POST"])
+def reset_tests():
+    delete_all()
+    return "Reset"
