@@ -1,6 +1,5 @@
 *** Settings ***
 Library  SeleniumLibrary
-Library    ../.venv/lib/python3.10/site-packages/robot/libraries/String.py
 
 *** Variables ***
 ${SERVER}       localhost:5001

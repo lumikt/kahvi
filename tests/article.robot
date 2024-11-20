@@ -3,7 +3,6 @@ Resource  resource.robot
 Suite Setup  Open And Configure Browser
 Suite Teardown  Close Browser
 # Test Setup  Reset Application And Go To Add Reference Page
-Library    ../.venv/lib/python3.10/site-packages/robot/libraries/OperatingSystem.py
 
 *** Test Cases ***
 Set Correct Information
