@@ -10,50 +10,70 @@ Latex viite sovellus
 
 <div>
     {% if message %}
-        {{ message }}
+    {{ message }}
     {% endif %}
-    <label for="viite_valinta">Valitse viite:</label>
-    
-    <select name="viite_valinta" id="viite_valinta">
-        <option value="article">Article</option>
-    </select>
 </div>
 
 <div>
     <form method="post" action="/create_reference" style="margin-left: 10px;">
-        <label for="sitaatin_tunniste"> sitaatin tunniste </label>
-        <input type="text" name="sitaatin_tunniste" required></input><br>
+        <label for="chosen_ref">Choose a reference:</label>
+        <select name="chosen_ref" id="chosen_ref">
+            <option value="article">Article</option>
+            <option value="book">Book</option>
+            <option value="inproceedings">Inproceedings</option>
+            <!-- MUut referenssit tähän -->
+        </select><br>
+        <!-- TODO: automaattinen formin inputtien vaihto.
+            Nyt kenttiä täytyy muuttaa siten minkä referenssin valitsee jotta sen voi lisätä.
+         -->
+        <label for="citation_key"> Citation key </label>
+        <input type="text" name="citation_key" required></input><br>
 
-        <label for="kirjoittajat"> kirjoittajat </label>
-        <input type="text" name="kirjoittajat" required></input><br>
+        <label for="author"> author </label>
+        <input type="text" name="author" required></input><br>
 
-        <label for="otsikko"> otsikko </label>
-        <input type="text" name="otsikko" required></input><br>
+        <label for="title"> Title </label>
+        <input type="text" name="title" required></input><br>
 
-        <label for="julkaisu"> julkaisu </label>
-        <input type="text" name="julkaisu" required></input><br>
 
-        <label for="vuosi"> vuosi </label>
-        <input type="number" name="vuosi" required></input><br>
+        <label for="booktitle"> Book title </label>
+        <input type="text" name="booktitle" required></input><br>
+
+        <label for="publisher"> Publisher </label>
+        <input type="text" name="publisher" required></input><br>
+
+        <label for="journal"> Journal </label>
+        <input type="text" name="journal" required></input><br>
+
+        <label for="year"> Year </label>
+        <input type="number" name="year" required></input><br>
 
         <!-- Vapaaehtoiset -->
-        <label for="julkaisunumero"> julkaisunumero </label>
-        <input type="number" name="julkaisunumero"></input><br>
+        <label for="volume"> Volume </label>
+        <input type="number" name="volume"></input><br>
 
-        <label for="sivut"> sivut </label>
-        <input type="text" name="sivut"></input><br>
+        <label for="number"> Number </label>
+        <input type="number" name="number"></input><br>
+
+        <label for="pages"> Pages </label>
+        <input type="text" name="pages"></input><br>
+
+        <label for="month"> Month </label>
+        <input type="text" name="month"></input><br>
+
+        <label for="note"> Note </label>
+        <input type="text" name="note"></input><br>
 
         <label for="DOI"> DOI </label>
         <input type="text" name="DOI"></input><br>
-        <!-- Vapaaehtoiset end  -->
+        <!-- Vapaaehtoiset end -->
 
-        <input type="submit" value="Lisää viite">
+        <input type="submit" value="Add reference">
     </form>
 </div>
 
 <div>
-    <a href="/get_reference">Lisätyt viitteet</a>
+    <a href="/get_reference">Added references</a>
 </div>
 
 {% endblock %}
-

@@ -7,8 +7,9 @@ Test Setup  Reset Application And Go To Add Reference Page
 *** Test Cases ***
 Set Correct Information
     Set Reference Id  1
-    Set Authors  Donald E. Knuth
-    Set Title  Literate Programming
+    Set Author  Donald E. Knuth
+    Set Title  Pythn Programming
+    Set Booktitle  Literate Programming
     Set Journal  The Computer Journal
     Set Year  1984
     Set Number  2
@@ -27,36 +28,40 @@ Adding Reference Should Fail With Message
     Page Should Contain  ${message}
 
 Submit Information
-    Click Button  Lisää viite
+    Click Button  Add reference
 
 *** Keywords ***
 Set Reference Id
-    [Arguments]  ${sitaatin_tunniste}
-    Input Text  sitaatin_tunniste  ${sitaatin_tunniste}
+    [Arguments]  ${citation_key}
+    Input Text  citation_key  ${citation_key}
     
-Set Authors
-    [Arguments]  ${kirjoittajat}
-    Input Text  kirjoittajat  ${kirjoittajat}
+Set Author
+    [Arguments]  ${author}
+    Input Text  author  ${author}
 
 Set Title
-    [Arguments]  ${otsikko}
-    Input Text  otsikko  ${otsikko}
+    [Arguments]  ${title}
+    Input Text  title  ${title}
+
+Set Booktitle
+    [Arguments]  ${booktitle}
+    Input Text  booktitle  ${booktitle}
 
 Set Journal
-    [Arguments]  ${julkaisu}
-    Input Text  julkaisu  ${julkaisu}
+    [Arguments]  ${journal}
+    Input Text  journal  ${journal}
 
 Set Year
-    [Arguments]  ${vuosi}
-    Input Text  vuosi  ${vuosi}
+    [Arguments]  ${year}
+    Input Text  year  ${year}
 
 Set Number
-    [Arguments]  ${julkaisunumero}
-    Input Text  julkaisunumero  ${julkaisunumero}
+    [Arguments]  ${volume}
+    Input Text  volume  ${volume}
 
 Set Pages
-    [Arguments]  ${sivut}
-    Input Text  sivut  ${sivut}
+    [Arguments]  ${pages}
+    Input Text  pages  ${pages}
 
 Set DOI
     [Arguments]  ${DOI}

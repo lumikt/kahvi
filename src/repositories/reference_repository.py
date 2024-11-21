@@ -2,45 +2,62 @@ from config import db
 from sqlalchemy import text
 
 def get_reference():
-    sql = text("SELECT * FROM reference")
-    result = db.session.execute(sql)
-    result = result.fetchall()
-    fields = [
-        'author',  # Required
-        'title',   # Required
-        'journal', # Required
-        'year',    # Required
-        'volume',  # Optional
-        'number',  # Optional
-        'pages',   # Optional
-        'month',   # Optional
-        'note',    # Optional
-        'doi',     # Non-standard
-        'issn',    # Non-standard
-        'zblnumber', # Non-standard
-        'eprint',  # Non-standard
-    ]
+    """
+    First fetches citaions key and its reference type from reference table.
+    Then goes through the results one by one and making a data query from the reference table.
+    WIth this dataquery we fetch the reference with its citation key.
+    Then we fetch its column names so we can properly format the ref.
+    After formating adds it into the refs list and returns it after the loop
+    """
+    ref_query = text("SELECT citation_key, type FROM reference")
+    ref_result = db.session.execute(ref_query).fetchall()
 
     refs = []
-    for row in result:            
-        formatted_parts = []
-        for field in fields:
-            value = getattr(row, field, None)
-            print(value)
-            print(row, field)
-            if value:
-                formatted_parts.append(f"{value}")
-        
-        formatted_string = ", ".join(formatted_parts)
-        refs.append(formatted_string)
-    
+
+    for ref in ref_result:
+        citation_key, ref_type = ref.citation_key, ref.type
+
+        data_query = text(f"SELECT * FROM {ref_type} WHERE citation_key = :citation_key")
+        result = db.session.execute(data_query, {"citation_key": citation_key}).fetchone()
+
+        if result:
+            column_query = text("""
+                SELECT column_name
+                FROM information_schema.columns
+                WHERE table_name = :table_name
+                ORDER BY ordinal_position
+            """)
+            column_result = db.session.execute(column_query, {"table_name": ref_type})
+            fields = [row[0] for row in column_result.fetchall()]
+
+            formatted_parts = [f"{getattr(result, field, None)}" for field in fields if getattr(result, field, None)]
+
+            formatted_string = ", ".join(formatted_parts[2:])
+
+            refs.append(formatted_string)
+
     return refs
 
-def create_reference(ref_dict: dict):
-    sql = text("""INSERT INTO reference (citation_key, author, title, journal, year, volume, pages, doi)
-                    VALUES (:sitaatin_tunniste, :kirjoittajat, :otsikko, :julkaisu, :vuosi, :julkaisunumero, :sivut, :doi)
-               """)
-    db.session.execute(sql, {"sitaatin_tunniste":ref_dict["sitaatin_tunniste"], "kirjoittajat":ref_dict["kirjoittajat"], "otsikko":ref_dict["otsikko"], "julkaisu":ref_dict["julkaisu"], "vuosi":ref_dict["vuosi"], "julkaisunumero":ref_dict["julkaisunumero"], "sivut":ref_dict["sivut"], "doi":ref_dict["doi"]})
+
+
+def create_reference(ref_dict: dict, table_name: str):
+    """
+    Function to create a reference. 
+    First we get the citation key and the type of the reference and insert it into reference table.
+    Then we get the columns and placeholders from the ref_dict to get the correct style to instert into table_name called table for example Article table.
+    Then insert that reference into the table where it belongs.
+    """
+    citation_key = ref_dict.get("citation_key")
+    reference_type = table_name
+    
+    sql_reference = text("INSERT INTO reference (citation_key, type) VALUES (:citation_key, :type) ON CONFLICT DO NOTHING")
+    db.session.execute(sql_reference, {"citation_key": citation_key, "type": reference_type})
+    
+    columns = ", ".join(ref_dict.keys())
+    placeholders = ", ".join([f":{key}" for key in ref_dict.keys()])
+    sql = text(f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders})")
+    
+    db.session.execute(sql, ref_dict)
     db.session.commit()
 
 def delete_all():
