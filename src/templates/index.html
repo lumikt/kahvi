@@ -35,6 +35,14 @@ Latex viite sovellus
     <a href="/bib_references">Added references in bibtext form</a>
 </div>
 
+<!--
+    Scripti dynaamiselle formille. 
+    Fetchaa /get_columns/reftype osoitteesta kolumnin nimet
+    Käy for loopilla ne läpi ja luo labelin ja inputin ja lisää ne form containeriin.
+    Antaa myös parille tyypeille numero muodon ja muille textin.
+    Required kohdat on myös haettu tietokannasta ja se katsoo onko ne tyhjiä vai ei.
+    Aina kun vaihtaa viitteen niin formi vaihtuu sen kenttiin.
+-->
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const refSelect = document.getElementById("chosen_ref");
@@ -44,7 +52,7 @@ Latex viite sovellus
             try {
                 const response = await fetch(`/get_columns/${refType}`);
                 const columns = await response.json();
-                console.log(columns);
+                // console.log(columns);
 
                 formFieldsContainer.innerHTML = '';
 
