@@ -38,6 +38,41 @@ def get_reference():
 
     return refs
 
+def get_bib_reference():
+    ref_query = text("SELECT citation_key, type FROM reference")
+    ref_result = db.session.execute(ref_query).fetchall()
+
+    refs = []
+
+    for ref in ref_result:
+        citation_key, ref_type = ref.citation_key, ref.type
+
+        data_query = text(f"SELECT * FROM {ref_type} WHERE citation_key = :citation_key")
+        result = db.session.execute(data_query, {"citation_key": citation_key}).fetchone()
+
+        if result:
+            column_query = text("""
+                SELECT column_name
+                FROM information_schema.columns
+                WHERE table_name = :table_name
+                ORDER BY ordinal_position
+            """)
+            column_result = db.session.execute(column_query, {"table_name": ref_type})
+            fields = [row[0] for row in column_result.fetchall()]
+
+            formatted_parts = [f"{getattr(result, field, None)}" for field in fields if getattr(result, field, None)]
+
+            formatted_string = f"@{ref_type}"
+            formatted_string += "{"
+            formatted_string += f"{formatted_parts[1]}, \n"
+                                              
+            for i in formatted_parts[2:]:
+                formatted_string += f"{ i }," + "\n"
+        
+            refs.append(formatted_string)
+
+    return refs
+
 
 
 def create_reference(ref_dict: dict, table_name: str):
