@@ -2,7 +2,7 @@
 from flask import redirect, render_template, request
 from config import app
 
-from repositories.reference_repository import get_reference, create_reference, delete_all, get_bib_reference
+from repositories.reference_repository import get_reference, create_reference, delete_all, get_bib_reference, get_column_names
 
 @app.route("/", methods =["GET", "POST"])
 def load_index():
@@ -17,6 +17,15 @@ def reference_fetcher():
     references = get_reference()
     # print("here are the references from app.py",references)
     return render_template("references.html", references=references)
+
+@app.route("/get_columns/<ref_type>", methods =["GET"])
+def column_name_fetcher(ref_type):
+    """
+    Fetches the column names and sends them to index.html
+    """
+    column_names = get_column_names(ref_type)
+    print("here are the columns from app.py", column_names)
+    return column_names
 
 @app.route('/create_reference', methods=['POST'])
 def create_reference_route():

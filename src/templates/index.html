@@ -6,7 +6,7 @@ Latex viite sovellus
 
 {% block body %}
 
-<h2>Latex reference app</h2>
+<h2>Latex Reference App</h2>
 
 <div>
     {% if message %}
@@ -15,58 +15,15 @@ Latex viite sovellus
 </div>
 
 <div>
-    <form method="post" action="/create_reference" style="margin-left: 10px;">
+    <form id="dynamic-form" method="post" action="/create_reference" style="margin-left: 10px;">
         <label for="chosen_ref">Choose a reference:</label>
         <select name="chosen_ref" id="chosen_ref">
             <option value="article">Article</option>
             <option value="book">Book</option>
             <option value="inproceedings">Inproceedings</option>
-            <!-- MUut referenssit tähän -->
         </select><br>
-        <!-- TODO: automaattinen formin inputtien vaihto.
-            Nyt kenttiä täytyy muuttaa siten minkä referenssin valitsee jotta sen voi lisätä.
-         -->
-        <label for="citation_key"> Citation key </label>
-        <input type="text" name="citation_key" required></input><br>
 
-        <label for="author"> author </label>
-        <input type="text" name="author" required></input><br>
-
-        <label for="title"> Title </label>
-        <input type="text" name="title" required></input><br>
-
-
-        <label for="booktitle"> Book title </label>
-        <input type="text" name="booktitle" required></input><br>
-
-        <label for="publisher"> Publisher </label>
-        <input type="text" name="publisher" required></input><br>
-
-        <label for="journal"> Journal </label>
-        <input type="text" name="journal" required></input><br>
-
-        <label for="year"> Year </label>
-        <input type="number" name="year" required></input><br>
-
-        <!-- Vapaaehtoiset -->
-        <label for="volume"> Volume </label>
-        <input type="number" name="volume"></input><br>
-
-        <label for="number"> Number </label>
-        <input type="number" name="number"></input><br>
-
-        <label for="pages"> Pages </label>
-        <input type="text" name="pages"></input><br>
-
-        <label for="month"> Month </label>
-        <input type="text" name="month"></input><br>
-
-        <label for="note"> Note </label>
-        <input type="text" name="note"></input><br>
-
-        <label for="DOI"> DOI </label>
-        <input type="text" name="DOI"></input><br>
-        <!-- Vapaaehtoiset end -->
+        <div id="form-fields"></div>
 
         <input type="submit" value="Add reference">
     </form>
@@ -77,5 +34,51 @@ Latex viite sovellus
     <br>
     <a href="/bib_references">Added references in bibtext form</a>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const refSelect = document.getElementById("chosen_ref");
+        const formFieldsContainer = document.getElementById("form-fields");
+
+        async function updateFormFields(refType) {
+            try {
+                const response = await fetch(`/get_columns/${refType}`);
+                const columns = await response.json();
+                console.log(columns);
+
+                formFieldsContainer.innerHTML = '';
+
+                columns.forEach((columnObj) => {
+                    const columnName = columnObj.name;
+                    const isRequired = columnObj.required;
+
+                    if (columnName === 'id') return;
+
+                    const label = document.createElement("label");
+                    label.setAttribute("for", columnName);
+                    label.textContent = columnName.charAt(0).toUpperCase() + columnName.slice(1);
+
+                    const input = document.createElement("input");
+                    input.setAttribute("type", ["year", "volume", "number"].includes(columnName) ? "number" : "text");
+                    input.setAttribute("name", columnName);
+                    input.required = isRequired;
+
+                    formFieldsContainer.appendChild(label);
+                    formFieldsContainer.appendChild(input);
+                    formFieldsContainer.appendChild(document.createElement("br"));
+                });
+            } catch (error) {
+                console.error('Error updating form fields:', error);
+            }
+        }
+
+        updateFormFields(refSelect.value);
+
+        refSelect.addEventListener("change", (event) => {
+            updateFormFields(event.target.value);
+        });
+    });
+</script>
+
 
 {% endblock %}

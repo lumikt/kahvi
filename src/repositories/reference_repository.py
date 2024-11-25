@@ -38,6 +38,39 @@ def get_reference():
 
     return refs
 
+# def get_column_names(ref_type):
+#     """
+#     Get references column names for index.html form inputs
+#     returns a list consisting the columns names
+#     """
+#     fields = []
+#     column_query = text("""
+#         SELECT column_name
+#         FROM information_schema.columns
+#         WHERE table_name = :table_name
+#         ORDER BY ordinal_position
+#     """)
+#     column_result = db.session.execute(column_query, {"table_name": ref_type})
+#     fields = [row[0] for row in column_result.fetchall()]
+
+#     return fields
+def get_column_names(ref_type):
+    """
+    Get references column names for index.html form inputs
+    returns a list consisting the columns names
+    """
+    fields = []
+    column_query = text("""
+        SELECT column_name, is_nullable
+        FROM information_schema.columns
+        WHERE table_name = :table_name
+        ORDER BY ordinal_position
+    """)
+    column_result = db.session.execute(column_query, {"table_name": ref_type})
+    fields = [{"name": row[0], "required": row[1] == "NO"} for row in column_result.fetchall()]
+
+    return fields
+
 def get_bib_reference():
     ref_query = text("SELECT citation_key, type FROM reference")
     ref_result = db.session.execute(ref_query).fetchall()
