@@ -1,7 +1,11 @@
+from sys import modules
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
-from os import getenv
+from os import getenv, environ
+
+if "pytest" in modules or "robot" in modules:
+    environ["TEST_ENV"] = "true"
 
 load_dotenv()
 

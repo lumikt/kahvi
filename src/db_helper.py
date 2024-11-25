@@ -40,6 +40,6 @@ def load_schema(file_path):
 
 if __name__ == "__main__":
     with app.app_context():
-        schema_file = "./schema.sql"
+        schema_file = "../schema.sql"
         schema = load_schema(schema_file)
         setup_db(schema)
