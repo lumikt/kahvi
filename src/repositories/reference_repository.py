@@ -94,17 +94,30 @@ def get_bib_reference():
             fields = [row[0] for row in column_result.fetchall()]
 
             formatted_parts = [f"{getattr(result, field, None)}" for field in fields if getattr(result, field, None)]
-
+            #print(fields)
             formatted_string = f"@{ref_type}"
             formatted_string += "{"
             formatted_string += f"{formatted_parts[1]}, \n"
-                                              
-            for i in formatted_parts[2:]:
-                formatted_string += f"{ i }," + "\n"
-        
-            refs.append(formatted_string)
 
-    return refs
+            #for field in fields[2:]:
+                #refs.append(field)
+                                
+            for i in formatted_parts[2:]:
+                if i == formatted_parts[-1]:
+                    formatted_string += f"= { {i} } \n"
+                else:
+                    formatted_string += f"= { {i} }, \n"
+
+           
+
+            formatted_string += "}"
+        
+            #formatted_string = (formatted_parts[1:])
+            refs.append(formatted_string)
+            refs2 = refs
+            refs2 = [x.replace("'", "") for x in refs]
+
+    return refs2
 
 
 
@@ -115,6 +128,7 @@ def create_reference(ref_dict: dict, table_name: str):
     Then we get the columns and placeholders from the ref_dict to get the correct style to insert
     into table_name called table for example Article table. Then insert that reference into the 
     table where it belongs.
+
     """
     citation_key = ref_dict.get("citation_key")
     reference_type = table_name
