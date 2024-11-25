@@ -67,8 +67,8 @@ def get_bib_reference():
             formatted_string += f"{formatted_parts[1]}, \n"
                                               
             for i in formatted_parts[2:]:
-                formatted_string = "\n".join(f"{ i },")
-
+                formatted_string += f"{ i }," + "\n"
+        
             refs.append(formatted_string)
 
     return refs
