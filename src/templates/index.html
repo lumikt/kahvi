@@ -14,70 +14,27 @@ Latex viite sovellus
     {% endif %}
 </div>
 
-
-<form method="post" action="/create_reference" style="margin-left: 10px;">
-    <label for="chosen_ref">Choose a reference:</label>
-    <select name="chosen_ref" id="chosen_ref" onchange="updateForm()">
-        <option value="article">Article</option>
-        <option value="book">Book</option>
-        <option value="inproceedings">Inproceedings</option>
-        <!-- MUut referenssit tähän -->
-    </select><br>
-
-    <div id="article_fields" style="display:none;">
-        <label for="citation_key"> Citation key </label>
-        <input type="text" name="citation_key" required></input><br>
-
-        <label for="author"> Author </label>
-        <input type="text" name="author" required></input><br>
-
-        <label for="title"> Title </label>
-        <input type="text" name="title" required></input><br>
-
-        <label for="journal"> Journal </label>
-        <input type="text" name="journal" required></input><br>
-
-        <label for="year"> Year </label>
-        <input type="number" name="year" required></input><br>
-
-        <label for="volume"> Volume </label>
-        <input type="number" name="volume"></input><br>
-
-        <label for="number"> Number </label>
-        <input type="number" name="number"></input><br>
-
-        <label for="pages"> Pages </label>
-        <input type="text" name="pages"></input><br>
-
-        <label for="month"> Month </label>
-        <input type="text" name="month"></input><br>
-
-        <label for="note"> Note </label>
-        <input type="text" name="note"></input><br>
-
-        <label for="DOI"> DOI </label>
-        <input type="text" name="DOI"></input><br>
-
-        <label for="issn"> Issn </label>
-        <input type="text" name="issn"></input><br>
-
-        <label for="zblnumber"> Zblnumber </label>
-        <input type="text" name="zblnumber"></input><br>
-
-        <label for="eprint"> E-print </label>
-        <input type="text" name="eprint"></input><br>
-    </div>
-
-
-    <div id="book_fields" style="display:none;">
+<div>
+    <form method="post" action="/create_reference" style="margin-left: 10px;">
+        <label for="chosen_ref">Choose a reference:</label>
+        <select name="chosen_ref" id="chosen_ref">
+            <option value="article">Article</option>
+            <option value="book">Book</option>
+            <option value="inproceedings">Inproceedings</option>
+            <!-- MUut referenssit tähän -->
+        </select><br>
+        <!-- TODO: automaattinen formin inputtien vaihto.
+            Nyt kenttiä täytyy muuttaa siten minkä referenssin valitsee jotta sen voi lisätä.
+         -->
         <label for="citation_key"> Citation key </label>
         <input type="text" name="citation_key" required></input><br>
 
         <label for="author"> author </label>
         <input type="text" name="author" required></input><br>
 
-        <label for="editor"> editor</label>
-        <input type="text" name="editor" required></input><br>
+        <label for="title"> Title </label>
+        <input type="text" name="title" required></input><br>
+
 
         <label for="booktitle"> Book title </label>
         <input type="text" name="booktitle" required></input><br>
@@ -85,27 +42,13 @@ Latex viite sovellus
         <label for="publisher"> Publisher </label>
         <input type="text" name="publisher" required></input><br>
 
+        <label for="journal"> Journal </label>
+        <input type="text" name="journal" required></input><br>
+
         <label for="year"> Year </label>
         <input type="number" name="year" required></input><br>
 
-        <label for="volume"> Volume </label>
-        <input type="text" name="volume"></input><br>
-
-        <label for="number"> Number </label>
-        <input type="text" name="number"></input><br>
-
-    </div>
-
-    <div id="inproceedings_fields" style="display:none;">
-        <label for="citation_key"> Citation key </label>
-        <input type="text" name="citation_key" required></input><br>
-
-        <label for="author"> author </label>
-        <input type="text" name="author" required></input><br>
-
-        <label for="title"> Title </label>
-        <input type="text" name="title" required></input><br>
-
+        <!-- Vapaaehtoiset -->
         <label for="volume"> Volume </label>
         <input type="number" name="volume"></input><br>
 
@@ -123,36 +66,11 @@ Latex viite sovellus
 
         <label for="DOI"> DOI </label>
         <input type="text" name="DOI"></input><br>
-    </div>
-    
-    <!-- Vapaaehtoiset end -->
+        <!-- Vapaaehtoiset end -->
 
-    <input type="submit" value="Add reference">
-</form>
-
-<script>
-    function updateForm() {
-        // Piilota kaikki kenttäryhmät
-        document.getElementById('article_fields').style.display = 'none';
-        document.getElementById('book_fields').style.display = 'none';
-        document.getElementById('inproceedings_fields').style.display = 'none';
-
-        // Näytä valittu kenttäryhmä
-        const selectedRef = document.getElementById('chosen_ref').value;
-        if (selectedRef === 'article') {
-            document.getElementById('article_fields').style.display = 'block';
-        } else if (selectedRef === 'book') {
-            document.getElementById('book_fields').style.display = 'block';
-        } else if (selectedRef === 'inproceedings') {
-            document.getElementById('inproceedings_fields').style.display = 'block';
-        }
-    }
-    window.onload = updateForm;
-</script>
-
-
-
-
+        <input type="submit" value="Add reference">
+    </form>
+</div>
 
 <div>
     <a href="/get_reference">Added references</a>
