@@ -1,5 +1,6 @@
 from config import db, app
 from sqlalchemy import text
+from os import path
 
 
 def table_exists(name):
@@ -40,6 +41,7 @@ def load_schema(file_path):
 
 if __name__ == "__main__":
     with app.app_context():
-        schema_file = "../schema.sql"
+        project_root = path.dirname(path.abspath(__file__))
+        schema_file = path.join(project_root, "../schema.sql")
         schema = load_schema(schema_file)
         setup_db(schema)
