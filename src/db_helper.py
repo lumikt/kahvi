@@ -18,6 +18,7 @@ def table_exists(name):
     result = db.session.execute(sql_table_existence)
     return result.fetchall()[0][0]
 
+
 def reset_db():
     # muokataan myöhemmin
     print(f"Clearing contents from table {table_name}")
