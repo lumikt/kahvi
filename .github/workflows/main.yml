@@ -20,5 +20,7 @@ jobs:
         run: pip install poetry
       - name: Install dependencies
         run: poetry install
+      - name: Set environment variables for testing
+        run: echo "TEST_ENV=true" >> $GITHUB_ENV
       - name: Run tests
         run: poetry run coverage run --branch -m pytest
