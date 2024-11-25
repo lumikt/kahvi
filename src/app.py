@@ -37,7 +37,7 @@ def reset_tests():
     delete_all()
     return "Reset"
 
-@app.route("/bib_references", methods=["GET"])
-def bib_ref_fetcher():
-    bib_refs = 
-    return render_template("bib_ref.html")
+#@app.route("/bib_references", methods=["GET"])
+#def bib_ref_fetcher():
+    #bib_refs = 
+    #return render_template("bib_ref.html")
