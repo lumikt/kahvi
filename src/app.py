@@ -2,7 +2,7 @@
 from flask import redirect, render_template, request
 from config import app
 
-from repositories.reference_repository import get_reference, create_reference, delete_all
+from repositories.reference_repository import get_reference, create_reference, delete_all, get_bib_reference
 
 @app.route("/", methods =["GET", "POST"])
 def load_index():
@@ -37,7 +37,7 @@ def reset_tests():
     delete_all()
     return "Reset"
 
-#@app.route("/bib_references", methods=["GET"])
-#def bib_ref_fetcher():
-    #bib_refs = 
-    #return render_template("bib_ref.html")
+@app.route("/bib_references", methods=["GET"])
+def bib_ref_fetcher():
+    bib_refs = get_bib_reference()
+    return render_template("bib_ref.html", references = bib_refs)
