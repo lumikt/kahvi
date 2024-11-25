@@ -21,6 +21,10 @@ pytest = "^8.3.3"
 pytest = "^8.3.3"
 coverage = "^7.6.7"
 robotframework = "^7.1.1"
+pytest-env = "^1.1.5"
+
+[tool.pytest.ini_options]
+env = ["TEST_ENV=true"]
 
 [build-system]
 requires = ["poetry-core"]
