@@ -1,7 +1,6 @@
-from config import db, app
-from sqlalchemy import text
 from os import path
-
+from sqlalchemy import text
+from config import db, app
 
 def table_exists(name):
     sql_table_existence = text(
@@ -19,19 +18,12 @@ def table_exists(name):
     return result.fetchall()[0][0]
 
 
-def reset_db():
-    # muokataan myöhemmin
-    print(f"Clearing contents from table {table_name}")
-    sql = text(f"DELETE FROM {table_name}")
-    db.session.execute(sql)
-    db.session.commit()
-
 def setup_db(schema):
     print("Creating tables")
     sql = text(schema)
     db.session.execute(sql)
     db.session.commit()
-    
+
 
 def load_schema(file_path):
     with open(file_path, "r") as file:
@@ -44,5 +36,5 @@ if __name__ == "__main__":
     with app.app_context():
         project_root = path.dirname(path.abspath(__file__))
         schema_file = path.join(project_root, "../schema.sql")
-        schema = load_schema(schema_file)
-        setup_db(schema)
+        db_schema = load_schema(schema_file)
+        setup_db(db_schema)

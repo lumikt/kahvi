@@ -1,8 +1,8 @@
+from os import path
 import unittest
 from repositories.reference_repository import create_reference, get_reference
 from config import app
 from db_helper import load_schema, setup_db
-from os import path
 
 class TestArticle(unittest.TestCase):
     def setUp(self):
@@ -16,6 +16,7 @@ class TestArticle(unittest.TestCase):
     def test_mandatory_info_set(self):
         with app.app_context():
             print(app.config["SQLALCHEMY_DATABASE_URI"])
-            self.dict = {"citation_key": "koe1001", "author": "Mikki Hiiri", "title": "Kerhotalo", "journal": "Disney.fi" , "year": 2012}
+            self.dict = {"citation_key": "koe1001", "author": "Mikki Hiiri", "title": "Kerhotalo",
+                         "journal": "Disney.fi" , "year": 2012}
             create_reference(self.dict, "article")
             self.assertEqual(get_reference(), ["Mikki Hiiri, Kerhotalo, Disney.fi, 2012"])

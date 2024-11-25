@@ -1,5 +1,5 @@
-from config import db
 from sqlalchemy import text
+from config import db
 
 def get_reference():
     """
@@ -30,7 +30,7 @@ def get_reference():
             column_result = db.session.execute(column_query, {"table_name": ref_type})
             fields = [row[0] for row in column_result.fetchall()]
 
-            formatted_parts = [f"{getattr(result, field, None)}" for field in fields if getattr(result, field, None)]
+            formatted_parts = [f"{getattr(result, field, None)}" for field in fields if getattr(result, field, None)] # pylint: disable=line-too-long
 
             formatted_string = ", ".join(formatted_parts[2:])
 
@@ -44,19 +44,23 @@ def create_reference(ref_dict: dict, table_name: str):
     """
     Function to create a reference. 
     First we get the citation key and the type of the reference and insert it into reference table.
-    Then we get the columns and placeholders from the ref_dict to get the correct style to instert into table_name called table for example Article table.
-    Then insert that reference into the table where it belongs.
+    Then we get the columns and placeholders from the ref_dict to get the correct style to insert
+    into table_name called table for example Article table. Then insert that reference into the 
+    table where it belongs.
     """
     citation_key = ref_dict.get("citation_key")
     reference_type = table_name
-    
-    sql_reference = text("INSERT INTO reference (citation_key, type) VALUES (:citation_key, :type) ON CONFLICT DO NOTHING")
+
+    sql_reference = text("""INSERT INTO reference (citation_key, type)
+                            VALUES (:citation_key, :type)
+                            ON CONFLICT DO NOTHING
+                         """)
     db.session.execute(sql_reference, {"citation_key": citation_key, "type": reference_type})
-    
+
     columns = ", ".join(ref_dict.keys())
     placeholders = ", ".join([f":{key}" for key in ref_dict.keys()])
     sql = text(f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders})")
-    
+
     db.session.execute(sql, ref_dict)
     db.session.commit()
 

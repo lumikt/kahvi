@@ -1,11 +1,11 @@
 
+from flask import redirect, render_template, request
 from config import app
-from flask import redirect, render_template, request, jsonify, flash
 
 from repositories.reference_repository import get_reference, create_reference, delete_all
 
 @app.route("/", methods =["GET", "POST"])
-def load_index():    
+def load_index():
     # reference = get_reference()
     return render_template("index.html")
 
