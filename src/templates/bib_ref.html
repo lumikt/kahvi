@@ -14,7 +14,7 @@ Latex viite sovellus
 
 <div>
 {% for reference in references %}
-    <h3>{{ reference|replace('\n', '<br>')|safe }}</h3>
+    <h3>{{ references|replace('\n', '<br>')|safe }}</h3>
 {% endfor %}
 </div>
 

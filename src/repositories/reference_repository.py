@@ -60,7 +60,8 @@ def get_bib_reference():
     ref_query = text("SELECT citation_key, type FROM reference")
     ref_result = db.session.execute(ref_query).fetchall()
 
-    refs = []
+    #refs = []
+    sanis = {}
 
     for ref in ref_result:
         citation_key, ref_type = ref.citation_key, ref.type
@@ -68,7 +69,6 @@ def get_bib_reference():
         data_query = text(f"SELECT * FROM {ref_type} WHERE citation_key = :citation_key")
         result = db.session.execute(data_query, {"citation_key": citation_key}).fetchone()
 
-        refs2 = []
         if result:
             column_query = text("""
                 SELECT column_name
@@ -79,31 +79,23 @@ def get_bib_reference():
             column_result = db.session.execute(column_query, {"table_name": ref_type})
             fields = [row[0] for row in column_result.fetchall()]
 
-            formatted_parts = [f"{getattr(result, field, None)}" for field in fields if getattr(result, field, None)]
-            #print(fields)
-            formatted_string = f"@{ref_type}"
-            formatted_string += "{"
-            formatted_string += f"{formatted_parts[1]}, \n"
+            for field in fields:
+                sanis[field] = None
 
-            #for field in fields[2:]:
-                #refs.append(field)
+            #formatted_parts = []
 
-            for i in formatted_parts[2:]:
-                if i == formatted_parts[-1]:
-                    formatted_string += f"= { {i} } \n"
+            for field in fields:
+                value = getattr(result, field, None)
+                if value:
+                    sanis[field] = value
                 else:
-                    formatted_string += f"= { {i} }, \n"
+                    sanis[field] = None
+        print(sanis)
+        
+    #nyt sanakirja antaa avaimelle arvon None jos vapaaehtoista kenttää ei ole täytetty
+    #sanakirjan käsittely html:ssä ei vielä onnistu kunnolla (tällä hetkellä html toistaa vain yhtä elementtiä)
 
-
-
-            formatted_string += "}"
-
-            #formatted_string = (formatted_parts[1:])
-            refs.append(formatted_string)
-            refs2 = refs
-            refs2 = [x.replace("'", "") for x in refs]
-
-    return refs2
+    return sanis
 
 
 
