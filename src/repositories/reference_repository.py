@@ -30,7 +30,7 @@ def get_reference():
             column_result = db.session.execute(column_query, {"table_name": ref_type})
             fields = [row[0] for row in column_result.fetchall()]
 
-            formatted_parts = [f"{getattr(result, field, None)}" 
+            formatted_parts = [f"{getattr(result, field, None)}"
                                for field in fields if getattr(result, field, None)]
 
             formatted_string = ", ".join(formatted_parts[2:])
@@ -87,17 +87,17 @@ def get_bib_reference():
 
             #for field in fields[2:]:
                 #refs.append(field)
-                                
+
             for i in formatted_parts[2:]:
                 if i == formatted_parts[-1]:
                     formatted_string += f"= { {i} } \n"
                 else:
                     formatted_string += f"= { {i} }, \n"
 
-           
+
 
             formatted_string += "}"
-        
+
             #formatted_string = (formatted_parts[1:])
             refs.append(formatted_string)
             refs2 = refs
