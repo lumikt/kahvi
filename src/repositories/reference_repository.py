@@ -71,10 +71,11 @@ def get_bib_reference():
     ref_query = text("SELECT citation_key, type FROM reference")
     ref_result = db.session.execute(ref_query).fetchall()
 
-    #refs = []
-    sanis = {}
+    refs = []
+    
 
     for ref in ref_result:
+        sanis = {}
         citation_key, ref_type = ref.citation_key, ref.type
 
         data_query = text(f"SELECT * FROM {ref_type} WHERE citation_key = :citation_key")
@@ -93,7 +94,7 @@ def get_bib_reference():
             for field in fields:
                 sanis[field] = None
 
-            #formatted_parts = []
+
 
             for field in fields:
                 value = getattr(result, field, None)
@@ -101,12 +102,13 @@ def get_bib_reference():
                     sanis[field] = value
                 else:
                     sanis[field] = None
-        print(sanis)
+
+        refs.append(sanis)
 
     #nyt sanakirja antaa avaimelle arvon None jos vapaaehtoista kenttää ei ole täytetty
     #sanakirjan käsittely html:ssä ei vielä onnistu kunnolla (tällä hetkellä html toistaa vain yhtä elementtiä)
 
-    return sanis
+    return refs
 
 
 

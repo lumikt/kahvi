@@ -14,7 +14,7 @@ Latex Reference App - Bibtex form references
 
 <div>
 {% for reference in references %}
-    <h3>{{ references|replace('\n', '<br>')|safe }}</h3>
+    <p> {{ reference }}</p>
 {% endfor %}
 </div>
 
