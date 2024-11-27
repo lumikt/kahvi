@@ -62,8 +62,8 @@ def delete_reference(citation_key):
     Args:
         citation_key (string): referenssin uniikki tunniste
     """
-    ref_query = text("DELETE FROM reference WHERE citation_key = :key")    
-    db.session.execute(ref_query, {"key": citation_key})    
+    ref_query = text("DELETE FROM reference WHERE citation_key = :key")
+    db.session.execute(ref_query, {"key": citation_key})
     db.session.commit()
 
 
@@ -72,7 +72,6 @@ def get_bib_reference():
     ref_result = db.session.execute(ref_query).fetchall()
 
     refs = []
-    
 
     for ref in ref_result:
         sanis = {}
@@ -101,8 +100,7 @@ def get_bib_reference():
                 else:
                     del sanis[field]
 
-            converted_sanis = reference_to_string(sanis,ref.type)
-        refs.append(converted_sanis)
+        refs.append(reference_to_string(sanis,ref.type))
 
     #nyt sanakirja antaa avaimelle arvon None jos vapaaehtoista kenttää ei ole täytetty
     #sanakirjan käsittely html:ssä ei vielä onnistu kunnolla (tällä hetkellä html toistaa vain yhtä elementtiä)
@@ -117,7 +115,7 @@ def reference_to_string(ref_dict: dict,ref_type: str = None):
         ref_type (string): type of reference being converted
     """
     i = 0
-    ref_id = ref_dict.pop("id")
+    ref_dict.pop("id")
     citation_key = ref_dict.pop("citation_key")
 
     string_conversion = f'@{ref_type.upper()}' + "{" +  f'{citation_key}, <br>'
@@ -127,7 +125,7 @@ def reference_to_string(ref_dict: dict,ref_type: str = None):
             break
         string_conversion  +=  f'&nbsp;&nbsp;&nbsp;{key} = "{value}",<br>'
         i+= 1
-            
+
     string_conversion += "&nbsp;}"
     return string_conversion
 
