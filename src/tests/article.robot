@@ -7,7 +7,7 @@ Test Setup  Reset Application And Go To Add Reference Page
 *** Test Cases ***
 Set Correct Information For Article Reference
     Select Dropdown By Value    article
-    Wait For Initial Setup
+    Check Form Is Loaded
     Set Reference Id  1
     Set Author  Donald E. Knuth
     Set Title  Pythn Programming
@@ -21,7 +21,7 @@ Set Correct Information For Article Reference
 
 Try Adding Reference With Missing Information
     Select Dropdown By Value    article
-    Wait For Form To Load
+    Check Form Is Loaded
     Set Reference Id  2
     Set Title  Booktitle
     Set Journal  Science journal
@@ -34,3 +34,6 @@ Try Adding Reference With Missing Information
 Reset Application And Go To Add Reference Page
     Reset Application
     Go To Add Reference Page
+
+Check Form Is Loaded
+    Wait Until Keyword Succeeds    30s    2s    Page Should Contain Element    journal

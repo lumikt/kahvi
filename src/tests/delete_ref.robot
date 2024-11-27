@@ -8,7 +8,7 @@ Test Setup  Reset Application And Go To Add Reference Page
 
 Set Correct Information For Inproceedings Reference
     Select Dropdown By Value  book
-    Wait For Form To Load
+    Check Form Is Loaded
     Set Reference Id  foh225
     Set Author  Robert Jordan
     Set Title  Fires of Heaven
@@ -28,3 +28,6 @@ Delete Reference Just Added
 Reset Application And Go To Add Reference Page
     Reset Application
     Go To Add Reference Page
+
+Check Form Is Loaded
+    Wait Until Keyword Succeeds    30s    2s    Page Should Contain Element    publisher

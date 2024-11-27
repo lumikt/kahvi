@@ -102,8 +102,3 @@ Set Volume
     [Arguments]  ${volume}
     Input Text  volume  ${volume}
 
-Wait For Form To Load
-    Sleep    1s
-
-Wait For Initial Setup
-    Wait Until Keyword Succeeds    30s    2s    Page Should Contain Element    citation_key
