@@ -6,6 +6,7 @@ Test Setup  Reset Application And Go To Add Reference Page
 
 *** Test Cases ***
 Set Correct Information For Article Reference
+    Wait For Form To Load
     Set Reference Id  1
     Set Author  Donald E. Knuth
     Set Title  Pythn Programming
@@ -18,6 +19,7 @@ Set Correct Information For Article Reference
     Adding Reference Should Succeed
 
 Try Adding Reference With Missing Information
+    Wait For Form To Load
     Set Reference Id  2
     Set Title  Booktitle
     Set Journal  Science journal

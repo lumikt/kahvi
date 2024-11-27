@@ -8,6 +8,7 @@ Test Setup  Reset Application And Go To Add Reference Page
 
 Set Correct Information For Inproceedings Reference
     Select Dropdown By Value  inproceedings
+    Wait For Form To Load
     Set Reference Id  dk80085
     Set Author  Dalinar Kholin
     Set Title  Oathbringer
@@ -19,6 +20,7 @@ Set Correct Information For Inproceedings Reference
 
 Try Adding Inproceedings Reference With Missing Information
     Select Dropdown By Value  inproceedings
+    Wait For Form To Load
     Set Reference Id  dk80085
     Set Author  Dalinar Kholin
     Set Title  Oathbringer

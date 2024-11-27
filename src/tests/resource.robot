@@ -100,3 +100,6 @@ Set DOI
 Set Volume
     [Arguments]  ${volume}
     Input Text  volume  ${volume}
+
+Wait For Form To Load
+    Sleep    0.5s

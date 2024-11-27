@@ -8,6 +8,7 @@ Test Setup  Reset Application And Go To Add Reference Page
 
 Set Correct Information For Inproceedings Reference
     Select Dropdown By Value  book
+    Wait For Form To Load
     Set Reference Id  foh225
     Set Author  Robert Jordan
     Set Title  Fires of Heaven
