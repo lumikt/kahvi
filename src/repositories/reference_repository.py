@@ -91,7 +91,7 @@ def get_bib_reference():
                 else:
                     sanis[field] = None
         print(sanis)
-        
+
     #nyt sanakirja antaa avaimelle arvon None jos vapaaehtoista kenttää ei ole täytetty
     #sanakirjan käsittely html:ssä ei vielä onnistu kunnolla (tällä hetkellä html toistaa vain yhtä elementtiä)
 
