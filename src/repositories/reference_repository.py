@@ -33,7 +33,7 @@ def get_reference():
             formatted_parts = [f"{getattr(result, field, None)}"
                                for field in fields if getattr(result, field, None)]
 
-            formatted_string = ", ".join(formatted_parts[2:])
+            formatted_string = ", ".join(formatted_parts[1:])
 
             refs.append(formatted_string)
 
@@ -55,6 +55,17 @@ def get_column_names(ref_type):
     fields = [{"name": row[0], "required": row[1] == "NO"} for row in column_result.fetchall()]
 
     return fields
+
+def delete_reference(citation_key):
+    """Poistaa referenssin
+
+    Args:
+        citation_key (string): referenssin uniikki tunniste
+    """
+    ref_query = text("DELETE FROM reference WHERE citation_key = :key")    
+    db.session.execute(ref_query, {"key": citation_key})    
+    db.session.commit()
+
 
 def get_bib_reference():
     ref_query = text("SELECT citation_key, type FROM reference")

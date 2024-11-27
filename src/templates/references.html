@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-Latex viite sovellus
+Latex Viite Sovellus
 {% endblock %}
 
 {% block body %}
@@ -13,9 +13,18 @@ Latex viite sovellus
 
 <div>
     {% for reference in references %}
-        <h3>{{ reference }}</h3>
+        <div>
+            <!-- hakee citation key ensimmäisestä indeksistä-->
+            {% set citation_key = reference.split(',')[0] %}
+            <!-- poistaa citation key näkymästä poistamalla sen reference details muuttujaan. -->
+            {% set reference_details = reference.split(',', 1)[1] %}
+            <h3>{{ reference_details }}</h3>
+            <form action="/delete/{{ citation_key }}" method="post">
+                <button type="submit">Delete</button>
+            </form>
+        </div>
     {% endfor %}
 </div>
 
-{% endblock %}
 
+{% endblock %}

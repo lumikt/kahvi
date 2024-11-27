@@ -2,7 +2,7 @@
 from flask import redirect, render_template, request
 from config import app
 
-from repositories.reference_repository import get_reference, create_reference, delete_all, get_bib_reference, get_column_names
+from repositories.reference_repository import get_reference, create_reference, delete_all, get_bib_reference, get_column_names, delete_reference
 
 @app.route("/", methods =["GET", "POST"])
 def load_index():
@@ -39,6 +39,19 @@ def create_reference_route():
     ref_dict.pop("chosen_ref", None)
     # print("here is the ref type",reference_type)
     create_reference(ref_dict, reference_type)
+    return redirect('/get_reference')
+
+@app.route("/delete/<citation_key>", methods=["POST"])
+def reference_deleter(citation_key):
+    """Callaa repositorin 
+
+    Args:
+        citation_key (string): uniikki sitaatin avain
+
+    Returns:
+        _type_: redirectaa refrence listan
+    """
+    delete_reference(citation_key)
     return redirect('/get_reference')
 
 @app.route("/tests/reset", methods=["POST"])
