@@ -5,11 +5,10 @@ Suite Teardown  Close Browser
 Test Setup  Reset Application And Go To Add Reference Page
 
 *** Test Cases ***
-Set Correct Information
+Set Correct Information For Article Reference
     Set Reference Id  1
     Set Author  Donald E. Knuth
     Set Title  Pythn Programming
-    Set Booktitle  Literate Programming
     Set Journal  The Computer Journal
     Set Year  1984
     Set Number  2
@@ -65,7 +64,7 @@ Set Pages
 
 Set DOI
     [Arguments]  ${DOI}
-    Input Text  DOI  ${DOI}
+    Input Text  doi  ${DOI}
 
 *** Keywords ***
 Reset Application And Go To Add Reference Page
