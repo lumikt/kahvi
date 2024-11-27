@@ -28,6 +28,8 @@ jobs:
         run: poetry run coverage run --branch -m pytest
       - name: Lint
         run: poetry run pylint src
+      - name: Setup Chrome
+        run: sudo apt update && sudo apt install -y google-chrome-stable
       - name: Setup chromedriver
         uses: nanasess/setup-chromedriver@master
       - run: |
