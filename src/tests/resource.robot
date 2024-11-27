@@ -30,3 +30,38 @@ Add Reference Page Should Be Open
 Go To Add Reference Page
     Go To  ${ADD_REFERENCE_URL}
 
+Set Reference Id
+    [Arguments]  ${citation_key}
+    Input Text  citation_key  ${citation_key}
+    
+Set Author
+    [Arguments]  ${author}
+    Input Text  author  ${author}
+
+Set Title
+    [Arguments]  ${title}
+    Input Text  title  ${title}
+
+Set Booktitle
+    [Arguments]  ${booktitle}
+    Input Text  booktitle  ${booktitle}
+
+Set Journal
+    [Arguments]  ${journal}
+    Input Text  journal  ${journal}
+
+Set Year
+    [Arguments]  ${year}
+    Input Text  year  ${year}
+
+Set Number
+    [Arguments]  ${volume}
+    Input Text  volume  ${volume}
+
+Set Pages
+    [Arguments]  ${pages}
+    Input Text  pages  ${pages}
+
+Set DOI
+    [Arguments]  ${DOI}
+    Input Text  doi  ${DOI}
