@@ -105,4 +105,4 @@ Wait For Form To Load
     Sleep    1s
 
 Wait For Initial Setup
-    Sleep    2s
+    Wait Until Keyword Succeeds    30s    2s    Set Reference Id    1
