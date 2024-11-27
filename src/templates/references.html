@@ -20,7 +20,7 @@ Latex Reference App - References
             {% set reference_details = reference.split(',', 1)[1] %}
             <h3>{{ reference_details }}</h3>
             <form action="/delete/{{ citation_key }}" method="post">
-                <button type="submit">Delete</button>
+                <button type="submit" id="{{ citation_key }}">Delete</button>
             </form>
         </div>
     {% endfor %}

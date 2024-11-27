@@ -33,6 +33,9 @@ References Page Should Be Open
 Go To Add Reference Page
     Go To  ${ADD_REFERENCE_URL}
 
+Go To References Page
+    Click Link  Added references
+
 Adding Reference Should Succeed
     References Page Should Be Open
 
