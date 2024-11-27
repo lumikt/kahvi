@@ -45,6 +45,10 @@ Adding Reference Should Fail With Message
 
 Submit Information
     Click Button  Add reference
+    
+Select Dropdown By Value
+    [Arguments]  ${value}
+    Select From List By Value  id=chosen_ref  ${value}
 
 Set Reference Id
     [Arguments]  ${citation_key}
@@ -57,6 +61,14 @@ Set Author
 Set Title
     [Arguments]  ${title}
     Input Text  title  ${title}
+
+Set Editor
+    [Arguments]  ${editor}
+    Input Text  editor  ${editor}
+
+Set Publisher
+    [Arguments]  ${publisher}
+    Input Text  publisher  ${publisher}
 
 Set Booktitle
     [Arguments]  ${booktitle}
@@ -81,3 +93,7 @@ Set Pages
 Set DOI
     [Arguments]  ${DOI}
     Input Text  doi  ${DOI}
+
+Set Volume
+    [Arguments]  ${volume}
+    Input Text  volume  ${volume}
