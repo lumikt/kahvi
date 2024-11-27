@@ -102,4 +102,4 @@ Set Volume
     Input Text  volume  ${volume}
 
 Wait For Form To Load
-    Sleep    0.5s
+    Sleep    1s
