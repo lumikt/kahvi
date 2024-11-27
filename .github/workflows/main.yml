@@ -24,14 +24,12 @@ jobs:
         run: echo "TEST_ENV=true" >> $GITHUB_ENV
       - name: Run tests
         env:
-          TEST_ENV: "true"
           TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
         run: poetry run coverage run --branch -m pytest
       - name: Lint
         run: poetry run pylint src
       - name: Run Robot Framework tests
         env:
-          TEST_ENV: "true"
           TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
-        run: robot src/tests/
+        run: poetry run robot src/tests/
         
