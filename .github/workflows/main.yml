@@ -37,5 +37,5 @@ jobs:
       - name: Run robot tests
         env:
           TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
-        run: bash run robot src/tests/
+        run: bash run_robot_tests.sh
         
