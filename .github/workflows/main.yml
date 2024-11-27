@@ -29,12 +29,12 @@ jobs:
       - name: Lint
         run: poetry run pylint src
       - name: Setup Chrome
-        run: sudo apt update && sudo apt install -y google-chrome-stable
-      - name: Setup chromedriver
+        uses: browser-actions/setup-chrome@v1
+      - name: Setup ChromeDriver
         uses: nanasess/setup-chromedriver@master
       - run: |
           export DISPLAY=:99
-          chromedriver --url-base=/wd/hub &
+          chromedriver --url-base=/wd/hub --headless &
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
       - name: Run Robot Framework tests
         env:
