@@ -103,3 +103,6 @@ Set Volume
 
 Wait For Form To Load
     Sleep    1s
+
+Wait For Initial Setup
+    Sleep    2s
