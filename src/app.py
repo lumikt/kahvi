@@ -24,7 +24,7 @@ def column_name_fetcher(ref_type):
     Fetches the column names and sends them to index.html
     """
     column_names = get_column_names(ref_type)
-    print("here are the columns from app.py", column_names)
+    # print("here are the columns from app.py", column_names)
     return column_names
 
 @app.route('/create_reference', methods=['POST'])

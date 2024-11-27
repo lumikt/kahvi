@@ -17,19 +17,16 @@ Set Correct Information For Article Reference
     Submit Information
     Adding Reference Should Succeed
 
-*** Keywords ***
-Adding Reference Should Succeed
-    Add Reference Page Should Be Open
+Try Adding Reference With Missing Information
+    Set Reference Id  2
+    Set Title  Booktitle
+    Set Journal  Science journal
+    Set Year  1999
+    Submit Information
+    Adding Reference Should Fail
 
-Adding Reference Should Fail With Message
-    [Arguments]  ${message}
-    Add Reference Page Should Be Open
-    Page Should Contain  ${message}
-
-Submit Information
-    Click Button  Add reference
-    
 *** Keywords ***
+
 Reset Application And Go To Add Reference Page
     Reset Application
     Go To Add Reference Page

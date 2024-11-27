@@ -25,10 +25,26 @@ Open And Configure Browser
     Open Browser  browser=${BROWSER}  options=${options}
 
 Add Reference Page Should Be Open
-    Title Should Be  Latex viite sovellus
+    Title Should Be  Latex Reference App - Add reference
+
+References Page Should Be Open
+    Title Should Be  Latex Reference App - References
 
 Go To Add Reference Page
     Go To  ${ADD_REFERENCE_URL}
+
+Adding Reference Should Succeed
+    References Page Should Be Open
+
+Adding Reference Should Fail
+    Add Reference Page Should Be Open
+
+Adding Reference Should Fail With Message
+    [Arguments]  ${message}
+    Page Should Contain  ${message}
+
+Submit Information
+    Click Button  Add reference
 
 Set Reference Id
     [Arguments]  ${citation_key}
