@@ -28,16 +28,14 @@ jobs:
         run: poetry run coverage run --branch -m pytest
       - name: Lint
         run: poetry run pylint src
-      - name: Setup Chrome
-        uses: browser-actions/setup-chrome@v1
-      - name: Setup ChromeDriver
+      - name: Setup chromedriver
         uses: nanasess/setup-chromedriver@master
       - run: |
           export DISPLAY=:99
-          chromedriver --url-base=/wd/hub --headless &
+          chromedriver --url-base=/wd/hub &
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
-      - name: Run Robot Framework tests
+      - name: Run robot tests
         env:
           TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
-        run: poetry run robot src/tests/
+        run: bash run robot src/tests/
         
