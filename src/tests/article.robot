@@ -7,7 +7,7 @@ Test Setup  Reset Application And Go To Add Reference Page
 *** Test Cases ***
 Set Correct Information For Article Reference
     Select Dropdown By Value    article
-    Wait For Form To Load
+    Wait For Initial Setup
     Set Reference Id  1
     Set Author  Donald E. Knuth
     Set Title  Pythn Programming

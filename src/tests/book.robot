@@ -8,6 +8,7 @@ Test Setup  Reset Application And Go To Add Reference Page
 
 Set Correct Information For Book Reference
     Select Dropdown By Value  book
+    Wait For Form To Load
     Wait For Initial Setup
     Set Reference Id  dd313
     Set Author  Donald D. Duck
