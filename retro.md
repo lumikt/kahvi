@@ -23,3 +23,5 @@ More of
 
 Less of
     - Työajan ylittämistä / sovitun ajan ulkopuolella tekemistä. (Ettei tehdä asioita, mitä toiset ovat tekemässä)
+
+![Retro_sprint2](https://github.com/user-attachments/assets/1fbc0597-bd3b-4834-943e-07f7f65f8c47)
