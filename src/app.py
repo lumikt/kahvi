@@ -18,6 +18,13 @@ def reference_fetcher():
     # print("here are the references from app.py",references)
     return render_template("references.html", references=references)
 
+@app.route("/add_reference", methods=["GET"])
+def reference_creator():
+    """
+    Goes to creating new reference page
+    """
+    return render_template("add_reference.html")
+
 @app.route("/get_columns/<ref_type>", methods =["GET"])
 def column_name_fetcher(ref_type):
     """
