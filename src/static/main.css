@@ -1,0 +1,5 @@
+.required::after {
+    content: '* ';
+    margin-left: 5px;
+    color: firebrick;
+}

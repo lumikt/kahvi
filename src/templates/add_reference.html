@@ -67,6 +67,9 @@ Latex Reference App - Add reference
                     const label = document.createElement("label");
                     label.setAttribute("for", columnName);
                     label.textContent = columnName.charAt(0).toUpperCase() + columnName.slice(1);
+                    if (isRequired) {
+                        label.setAttribute("class", "required")
+                    }
 
                     const input = document.createElement("input");
                     input.setAttribute("type", ["year", "volume", "number"].includes(columnName) ? "number" : "text");
