@@ -174,6 +174,16 @@ def create_tag(tag_name, ref_id=None):
                    """)
         db.session.execute(sql, {"ref_id": ref_id, "tag_id": tag_id})
 
+def add_tag(ref_id, tag_id):
+    """
+    Function to link an existing tag to a reference via the ref_tags table.
+    """
+    sql = text("""INSERT INTO ref_tags (ref_id, tag_id)
+                      VALUES (:ref_id, :tag_id)
+                   """)
+    db.session.execute(sql, {"ref_id": ref_id, "tag_id": tag_id})
+
+
 def delete_all():
     refs = []
     return refs
