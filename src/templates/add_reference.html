@@ -1,0 +1,94 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Latex Reference App - Add reference
+{% endblock %}
+
+{% block body %}
+
+<h2>Add New Reference</h2>
+
+<div>
+    {% if message %}
+    {{ message }}
+    {% endif %}
+</div>
+
+<div>
+    <form id="dynamic-form" method="post" action="/create_reference" style="margin-left: 10px;">
+        <label for="chosen_ref">Choose a reference:</label>
+        <select name="chosen_ref" id="chosen_ref">
+            <option value="article">Article</option>
+            <option value="book">Book</option>
+            <option value="inproceedings">Inproceedings</option>
+        </select><br>
+
+        <div id="form-fields"></div>
+
+        <input type="submit" value="Add reference">
+    </form>
+</div>
+
+<div>
+    <a href="/get_reference">Added references</a>
+    <br>
+    <a href="/bib_references">Added references in bibtext form</a>
+    <br>
+    <a href="/">Homepage</a>
+</div>
+
+<!--
+    Scripti dynaamiselle formille. 
+    Fetchaa /get_columns/reftype osoitteesta kolumnin nimet
+    Käy for loopilla ne läpi ja luo labelin ja inputin ja lisää ne form containeriin.
+    Antaa myös parille tyypeille numero muodon ja muille textin.
+    Required kohdat on myös haettu tietokannasta ja se katsoo onko ne tyhjiä vai ei.
+    Aina kun vaihtaa viitteen niin formi vaihtuu sen kenttiin.
+-->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const refSelect = document.getElementById("chosen_ref");
+        const formFieldsContainer = document.getElementById("form-fields");
+
+        async function updateFormFields(refType) {
+            try {
+                const response = await fetch(`/get_columns/${refType}`);
+                const columns = await response.json();
+                // console.log(columns);
+
+                formFieldsContainer.innerHTML = '';
+
+                columns.forEach((columnObj) => {
+                    const columnName = columnObj.name;
+                    const isRequired = columnObj.required;
+
+                    if (columnName === 'id') return;
+
+                    const label = document.createElement("label");
+                    label.setAttribute("for", columnName);
+                    label.textContent = columnName.charAt(0).toUpperCase() + columnName.slice(1);
+
+                    const input = document.createElement("input");
+                    input.setAttribute("type", ["year", "volume", "number"].includes(columnName) ? "number" : "text");
+                    input.setAttribute("name", columnName);
+                    input.required = isRequired;
+
+                    formFieldsContainer.appendChild(label);
+                    formFieldsContainer.appendChild(input);
+                    formFieldsContainer.appendChild(document.createElement("br"));
+                });
+            } catch (error) {
+                console.error('Error updating form fields:', error);
+            }
+        }
+
+        updateFormFields(refSelect.value);
+
+        refSelect.addEventListener("change", (event) => {
+            updateFormFields(event.target.value);
+        });
+    });
+</script>
+
+
+{% endblock %}
