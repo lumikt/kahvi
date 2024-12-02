@@ -154,6 +154,26 @@ def create_reference(ref_dict: dict, table_name: str):
     db.session.execute(sql, ref_dict)
     db.session.commit()
 
+def create_tag(tag_name, ref_id=None):
+    """
+    Function to create a tag. Create the tag in the tags table in sql.
+    If there is a reference id, create an entry in the ref_tags table to link the
+    tag to a reference.
+    """
+
+    sql_tag = text("""INSERT INTO tags (name)
+                      VALUES (:name)
+                      RETURNING id
+                   """)
+    result = db.session.execute(sql_tag, {"name": tag_name })
+    tag_id = result.scalar()
+
+    if ref_id:
+        sql = text("""INSERT INTO ref_tags (ref_id, tag_id)
+                      VALUES (:ref_id, :tag_id)
+                   """)
+        db.session.execute(sql, {"ref_id": ref_id, "tag_id": tag_id})
+
 def delete_all():
     refs = []
     return refs
