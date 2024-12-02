@@ -3,6 +3,8 @@ DROP TABLE IF EXISTS article CASCADE;
 DROP TABLE IF EXISTS book CASCADE;
 DROP TABLE IF EXISTS inproceedings CASCADE;
 DROP TABLE IF EXISTS reference CASCADE;
+DROP TABLE IF EXISTS tags CASCADE;
+DROP TABLE IF EXISTS ref_tags CASCADE;
 
 -- Create the reference table
 CREATE TABLE reference (
@@ -77,4 +79,16 @@ CREATE TABLE inproceedings (
         FOREIGN KEY (citation_key)
         REFERENCES reference (citation_key)
         ON DELETE CASCADE
+);
+
+-- Create the tags table
+CREATE TABLE tags (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL
+);
+
+-- Create the ref_tags table, which links tags to references
+CREATE TABLE ref_tags (
+    ref_id INTEGER REFERENCES reference,
+    tag_id INTEGER REFERENCES tags
 );
