@@ -2,7 +2,17 @@
 from flask import redirect, render_template, request
 from config import app
 
-from repositories.reference_repository import get_reference, create_reference, delete_all, get_bib_reference, get_column_names, delete_reference
+from repositories.reference_repository import (
+                                               get_reference,
+                                               create_reference,
+                                               delete_all,
+                                               get_bib_reference,
+                                               get_column_names,
+                                               delete_reference,
+                                               get_reference_by_id,
+                                               get_reference_type_id,
+                                               edit_reference
+                                            )
 
 @app.route("/", methods =["GET", "POST"])
 def load_index():
@@ -23,6 +33,8 @@ def column_name_fetcher(ref_type):
     """
     Fetches the column names and sends them to index.html
     """
+    #lowering the ref type so its the correct type for column queries
+    ref_type.lower()
     column_names = get_column_names(ref_type)
     # print("here are the columns from app.py", column_names)
     return column_names
@@ -40,6 +52,35 @@ def create_reference_route():
     # print("here is the ref type",reference_type)
     create_reference(ref_dict, reference_type)
     return redirect('/get_reference')
+
+@app.route("/edit/<citation_key>", methods=["GET", "POST"])
+def reference_editer(citation_key):
+    """Reitti referenssien editointiin
+
+    Args:
+        citation_key (string): refen avain
+
+    Returns:
+        jos get niin edit ref htmlän missä voi muokata viitettä. 
+        Ja jos post niin redirectaa referenssien listaan
+    """
+    if request.method == "GET":
+        reference = get_reference_by_id(citation_key)
+        ref_type = get_reference_type_id(citation_key)
+        columns  = column_name_fetcher(ref_type)
+        # print(reference)
+        return render_template("edit_ref.html", reference=reference, ref_type=ref_type, columns=columns)
+    if request.method == "POST":
+        ref_dict = request.form.to_dict()
+        ref_type = request.form.get("chosen_ref")
+        ref_dict.pop("chosen_ref", None)
+        # print("here is re dict",ref_dict)
+        edit_reference(citation_key, ref_dict, ref_type)
+        return redirect('/get_reference')
+
+    #if not get or post return this
+    return "Method Not Allowed", 405
+
 
 @app.route("/delete/<citation_key>", methods=["POST"])
 def reference_deleter(citation_key):

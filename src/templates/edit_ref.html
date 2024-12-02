@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Latex Reference App - References
+{% endblock %}
+
+{% block body %}
+<h2>Edit Reference</h2>
+
+<div>
+    {% if message %}
+    {{ message }}
+    {% endif %}
+</div>
+
+<div>
+    <form method="post" action="/edit/{{ reference['citation_key'] }}" style="margin-left: 10px;">
+        <label for="chosen_ref">Reference Type:</label>
+        <input 
+            type="text" 
+            name="chosen_ref" 
+            id="chosen_ref" 
+            value="{{ ref_type | capitalize }}" 
+            readonly>
+        <br>
+
+        <div id="form-fields">
+            {% for column in columns %}
+                {% if column['name'] != 'id' %}
+                    <label for="{{ column['name'] }}">{{ column['name'] | capitalize }}</label>
+                    <input 
+                        type="{{ 'number' if column['name'] in ['year', 'volume', 'number'] else 'text' }}" 
+                        name="{{ column['name'] }}" 
+                        id="{{ column['name'] }}" 
+                        value="{{ reference[column['name']] or '' }}" 
+                        {% if column['required'] %}required{% endif %}>
+                    <br>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <input type="submit" value="Save Changes">
+    </form>
+</div>
+
+<div>
+    <a href="/get_reference">Added references</a>
+    <br>
+    <a href="/bib_references">Added references in bibtext form</a>
+</div>
+
+{% endblock %}
