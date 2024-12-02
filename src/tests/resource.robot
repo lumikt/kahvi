@@ -6,7 +6,7 @@ Library    XML
 *** Variables ***
 ${SERVER}       localhost:5001
 ${DELAY}        0.5 seconds
-${ADD_REFERENCE_URL}  http://${SERVER}
+${ADD_REFERENCE_URL}  http://${SERVER}/add_reference
 ${BROWSER}      chrome
 ${HEADLESS}     false
 
