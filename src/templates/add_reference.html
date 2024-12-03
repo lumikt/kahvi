@@ -1,3 +1,7 @@
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+
 {% extends "layout.html" %}
 
 {% block title %}
@@ -17,13 +21,13 @@ Latex Reference App - Add reference
 <div>
     <form id="dynamic-form" method="post" action="/create_reference" style="margin-left: 10px;">
         <label for="chosen_ref">Choose a reference:</label>
-        <select name="chosen_ref" id="chosen_ref">
+        <select name="chosen_ref" id="chosen_ref" style="margin-bottom: 10px;">
             <option value="article">Article</option>
             <option value="book">Book</option>
             <option value="inproceedings">Inproceedings</option>
         </select><br>
 
-        <div id="form-fields"></div>
+        <div id="form-fields" style="margin-bottom: 15px;" ></div>
 
         <input type="submit" value="Add reference">
     </form>

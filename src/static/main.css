@@ -26,3 +26,34 @@ body {
     background-color: #04AA6D;
     color: white;
   }
+
+#dynamic-form label {
+    display: block;
+    font-weight: bold;
+}
+
+#dynamic-form input {
+    display: block;
+    padding: 5px;
+    width: 100%;
+    max-width: 800px;
+    box-sizing: border-box;
+}
+
+#dynamic-form select {
+    margin-bottom: 15px;
+    padding: 5px;
+}
+
+#dynamic-form input[type="submit"] {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #04AA6D;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#dynamic-form input[type="submit"]:hover {
+    background-color: #037a50;
+}
