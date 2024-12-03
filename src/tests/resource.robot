@@ -71,6 +71,9 @@ Adding Reference Should Fail With Message
 
 Submit Information
     Click Button  Add reference
+
+Submit Changes
+    Click Button  Save Changes
     
 Select Dropdown By Value
     [Arguments]  ${value}
