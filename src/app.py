@@ -51,8 +51,11 @@ def create_reference_route():
     Calls create_reference with the dicitonary of the form vlaues and the reference type ex. Book
     """
     ref_dict = request.form.to_dict()
-    reference_type = request.form.get("chosen_ref")
-    ref_dict.pop("chosen_ref", None)
+    reference_type = ref_dict.pop("chosen_ref", None)
+
+    tags = ref_dict.pop("tags", None)
+    print("here are tags:", tags)
+    
     create_reference(ref_dict, reference_type)
     return redirect('/get_reference')
 

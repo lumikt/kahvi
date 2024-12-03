@@ -29,6 +29,14 @@ Latex Reference App - Add reference
 
         <div id="form-fields" style="margin-bottom: 15px;" ></div>
 
+        <div id="tag-container" style="margin-bottom: 15px;">
+            <label for="tag-input">Tags:</label>
+            <!-- hidden input for tags for fetching from server -->
+            <input type="hidden" id="tags-hidden" name="tags" value="[]">
+            <input type="text" id="tag-input" name="tags" placeholder="Add a tag press enter to add more">
+            <div id="tags-wrapper"></div>
+        </div>
+
         <input type="submit" class="button" value="Add reference">
     </form>
 </div>
@@ -45,6 +53,10 @@ Latex Reference App - Add reference
     document.addEventListener("DOMContentLoaded", () => {
         const refSelect = document.getElementById("chosen_ref");
         const formFieldsContainer = document.getElementById("form-fields");
+        const tagInput = document.getElementById("tag-input");
+        const tagsWrapper = document.getElementById("tags-wrapper");
+        const tagsHiddenInput = document.getElementById("tags-hidden");
+        const tagsList = [];
 
         async function updateFormFields(refType) {
             try {
@@ -83,6 +95,47 @@ Latex Reference App - Add reference
         refSelect.addEventListener("change", (event) => {
             updateFormFields(event.target.value);
         });
+
+        function updateTagsHiddenInput() {
+            tagsHiddenInput.value = JSON.stringify(tagsList);
+        }
+        
+        tagInput.addEventListener("keypress", (event) => {
+        // console.log(tagsList);
+        if (event.key === "Enter") {
+            event.preventDefault();
+            const tagText = tagInput.value.trim();
+
+            if (tagText && !tagsList.includes(tagText)) {
+                tagsList.push(tagText);
+
+                const tagElement = document.createElement("span");
+                tagElement.style = "margin-right: 5px; display: inline-block;";
+                const tagTextNode = document.createTextNode(tagText);
+
+                const removeButton = document.createElement("button");
+                removeButton.textContent = "x";
+                removeButton.style = "margin-left: 5px; border: none; background: none; cursor: pointer; color: red;";
+                removeButton.addEventListener("click", () => {
+                    tagsWrapper.removeChild(tagElement);
+                    tagsList.splice(tagsList.indexOf(tagText), 1);
+                    updateTagsHiddenInput();
+                });
+
+                tagElement.appendChild(tagTextNode);
+                tagElement.appendChild(removeButton);
+                tagsWrapper.appendChild(tagElement);
+                updateTagsHiddenInput();
+            }
+
+            tagInput.value = '';
+        }
+    });
+    // added for safety may not be necessary
+    document.getElementById("dynamic-form").addEventListener("submit", (event) => {
+        updateTagsHiddenInput();
+    });
+        
     });
 </script>
 
