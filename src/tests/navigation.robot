@@ -6,10 +6,6 @@ Test Setup  Reset Application And Go To Homepage
 
 *** Test Cases ***
 
-Navigate To Add Reference Page
-    Go To  Add Reference Page  
-    Add Reference Page Should Be Open
-
 *** Keywords ***
 
 Reset Application And Go To Homepage
