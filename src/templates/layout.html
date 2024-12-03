@@ -10,6 +10,7 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="/static/main.css" />
   </head>
+    <link rel="stylesheet" href="/static/main.css">
 
   <div class="topnav">
     <a href="/">Homepage</a>
@@ -17,7 +18,8 @@
     <a href="/bib_references">Added references in bibtext form</a>
     <a href="/add_reference">Add new reference</a>
   </div>
-  
+  </head>
+
   <body>
     {% block body %}{% endblock %}
   </body>

@@ -1,6 +1,10 @@
 body {
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    margin-top: 3%;
+    margin-left: 5%;
+    font-family: Monospace;
+    background-color: rgb(200, 230, 241);
+    font-size: 18px;
   }
   
   .topnav {
@@ -56,4 +60,43 @@ body {
 
 #dynamic-form input[type="submit"]:hover {
     background-color: #037a50;
+}
+.topnav {
+overflow: hidden;
+background-color: #497ae6;
+position: fixed;
+top: 0;
+width: 100%;
+}
+
+.topnav a {
+float: left;
+color: #f3aee4;
+text-align: center;
+padding: 14px 16px;
+text-decoration: none;
+font-size: 25px;
+}
+
+.topnav a:hover {
+background-color: rgb(252, 183, 152);
+color:  #497ae6;
+}
+
+.button {
+background-color: #497ae6;
+border: none;
+color:  #f3aee4;
+text-decoration: none;
+display: inline-block;
+padding: 8px;
+font-size: 14px;
+margin: 4px 2px;
+cursor: pointer;
+border-radius: 15px;
+}
+
+.button:hover {
+background-color: rgb(252, 183, 152);
+color:  #497ae6;
 }
