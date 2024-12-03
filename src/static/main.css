@@ -7,36 +7,6 @@ body {
     font-size: 18px;
   }
 
-#dynamic-form label {
-    display: block;
-    font-weight: bold;
-}
-
-#dynamic-form input {
-    display: block;<link rel="stylesheet" href="/static/main.css">
-    padding: 5px;
-    width: 100%;
-    max-width: 800px;
-    box-sizing: border-box;
-}
-
-#dynamic-form select {
-    margin-bottom: 15px;
-    padding: 5px;
-}
-
-#dynamic-form input[type="submit"] {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #04AA6D;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-#dynamic-form input[type="submit"]:hover {
-    background-color: #037a50;
-}
 .topnav {
 overflow: hidden;
 background-color: #497ae6;
@@ -86,7 +56,7 @@ color:  #497ae6;
 }
 
 #dynamic-form input {
-  display: block;<link rel="stylesheet" href="/static/main.css">
+  display: block;
   padding: 5px;
   width: 100%;
   max-width: 800px;
@@ -96,17 +66,4 @@ color:  #497ae6;
 #dynamic-form select {
   margin-bottom: 15px;
   padding: 5px;
-}
-
-#dynamic-form input[type="submit"] {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #04AA6D;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-#dynamic-form input[type="submit"]:hover {
-  background-color: #037a50;
 }
