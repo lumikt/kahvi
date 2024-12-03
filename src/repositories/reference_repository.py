@@ -1,5 +1,6 @@
 from sqlalchemy import text
 from config import db
+import tempfile
 
 def get_reference():
     """
@@ -200,6 +201,18 @@ def reference_to_string(ref_dict: dict,ref_type: str = None):
     string_conversion += "&nbsp;}"
     return string_conversion
 
+def get_bibtex_export_file():
+
+    tmp = tempfile.TemporaryFile()
+    for reference in get_bib_reference():
+        reference_as_bytes = str.encode(reference)
+        tmp.write(reference_as_bytes)
+
+    tmp.seek(0)
+    return tmp
+
+
+#%%
 def create_reference(ref_dict: dict, table_name: str):
     """
     Function to create a reference. 

@@ -1,5 +1,5 @@
 
-from flask import redirect, render_template, request
+from flask import redirect, render_template, request, send_file
 from config import app
 
 from repositories.reference_repository import (
@@ -11,7 +11,8 @@ from repositories.reference_repository import (
                                                delete_reference,
                                                get_reference_by_id,
                                                get_reference_type_id,
-                                               edit_reference
+                                               edit_reference,
+                                               get_bibtex_export_file
                                             )
 
 @app.route("/", methods =["GET", "POST"])
@@ -111,3 +112,15 @@ def reset_tests():
 def bib_ref_fetcher():
     bib_refs = get_bib_reference()
     return render_template("bib_ref.html", references = bib_refs)
+
+
+@app.route("/exportBibtex", methods=["GET"])
+def bib_ref_exporter():
+
+
+
+    bib_refs = get_bibtex_export_file()
+    test = 'bibtex.txt'
+    return send_file(bib_refs,mimetype='text',as_attachment=True,download_name = "what.txt")
+
+    
