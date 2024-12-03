@@ -1,0 +1,19 @@
+*** Settings ***
+Resource  resource.robot
+Suite Setup  Open And Configure Browser
+Suite Teardown  Close Browser
+Test Setup  Reset Application And Go To Homepage
+
+*** Test Cases ***
+
+Navigate To Add Reference Page
+    Go To  Add Reference Page  
+    Add Reference Page Should Be Open
+
+*** Keywords ***
+
+Reset Application And Go To Homepage
+    Reset Application
+    Go To Homepage
+Check Form Is Loaded
+    Wait Until Keyword Succeeds    30s    2s    Page Should Contain Element    booktitle
