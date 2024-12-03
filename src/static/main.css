@@ -6,61 +6,7 @@ body {
     background-color: rgb(200, 230, 241);
     font-size: 18px;
   }
-  
-  .topnav {
-    overflow: hidden;
-    background-color: #333;
-  }
-  
-  .topnav a {
-    float: left;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 17px;
-  }
-  
-  .topnav a:hover {
-    background-color: #ddd;
-    color: black;
-  }
-  
-  .topnav a.active {
-    background-color: #04AA6D;
-    color: white;
-  }
 
-#dynamic-form label {
-    display: block;
-    font-weight: bold;
-}
-
-#dynamic-form input {
-    display: block;
-    padding: 5px;
-    width: 100%;
-    max-width: 800px;
-    box-sizing: border-box;
-}
-
-#dynamic-form select {
-    margin-bottom: 15px;
-    padding: 5px;
-}
-
-#dynamic-form input[type="submit"] {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #04AA6D;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-#dynamic-form input[type="submit"]:hover {
-    background-color: #037a50;
-}
 .topnav {
 overflow: hidden;
 background-color: #497ae6;
@@ -99,4 +45,35 @@ border-radius: 15px;
 .button:hover {
 background-color: rgb(252, 183, 152);
 color:  #497ae6;
+}
+
+#dynamic-form label {
+  display: block;
+  font-weight: bold;
+}
+
+#dynamic-form input {
+  display: block;<link rel="stylesheet" href="/static/main.css">
+  padding: 5px;
+  width: 100%;
+  max-width: 800px;
+  box-sizing: border-box;
+}
+
+#dynamic-form select {
+  margin-bottom: 15px;
+  padding: 5px;
+}
+
+#dynamic-form input[type="submit"] {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #04AA6D;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+#dynamic-form input[type="submit"]:hover {
+  background-color: #037a50;
 }
