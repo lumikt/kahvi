@@ -6,10 +6,39 @@ Test Setup  Reset Application And Go To Homepage
 
 *** Test Cases ***
 
+Navigate To Homepage
+    Click Link  Homepage
+    Homepage Should Succeed
+
+Navigate To Added References
+    Click Link  Added references
+    Added References Page Should Succeed
+
+Navigate To Added References In Bibtext Form
+    Click Link  Added references in bibtext form
+    Added References In Bibtext Form Page Should Succeed
+
+Navigate To New Reference
+    Click Link  Add new reference
+    Add New Reference Page Should Succeed
+
 *** Keywords ***
 
 Reset Application And Go To Homepage
     Reset Application
     Go To Homepage
+
 Check Form Is Loaded
     Wait Until Keyword Succeeds    30s    2s    Page Should Contain Element    booktitle
+
+Homepage Should Succeed
+    Home Page Should Be Open
+
+Added References Page Should Succeed
+    References Page Should Be Open
+
+Added References In Bibtext Form Page Should Succeed
+    Bib References Page Should Be Open
+
+Add New Reference Page Should Succeed
+    Add Reference Page Should Be Open
