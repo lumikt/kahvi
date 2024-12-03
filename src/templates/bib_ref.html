@@ -9,6 +9,12 @@ Latex Reference App - Bibtex form references
 <h2>References in bibtext form</h2>
 
 <div>
+    <h3>Export bibtex references</h3>
+    <p>Download your references as a .txt file.</p>
+    <button type="submit" href="/exportBibtex">Download</button>
+    <a href="/exportBibtex">Download</a>
+</div>
+<div>
 {% for reference in references %}
     <p>{{ reference|safe }}</p>
 {% endfor %}

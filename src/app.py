@@ -1,5 +1,5 @@
 
-from flask import redirect, render_template, request
+from flask import redirect, render_template, request, send_file
 from config import app
 
 from repositories.reference_repository import (
@@ -11,12 +11,12 @@ from repositories.reference_repository import (
                                                delete_reference,
                                                get_reference_by_id,
                                                get_reference_type_id,
-                                               edit_reference
+                                               edit_reference,
+                                               get_bibtex_export_file
                                             )
 
 @app.route("/", methods =["GET", "POST"])
 def load_index():
-    # reference = get_reference()
     return render_template("index.html")
 
 @app.route("/get_reference", methods =["GET"])
@@ -25,7 +25,6 @@ def reference_fetcher():
     Fetches the references and sends them to references.html
     """
     references = get_reference()
-    # print("here are the references from app.py",references)
     return render_template("references.html", references=references)
 
 @app.route("/add_reference", methods=["GET"])
@@ -40,10 +39,8 @@ def column_name_fetcher(ref_type):
     """
     Fetches the column names and sends them to index.html
     """
-    #lowering the ref type so its the correct type for column queries
     ref_type.lower()
     column_names = get_column_names(ref_type)
-    # print("here are the columns from app.py", column_names)
     return column_names
 
 @app.route('/create_reference', methods=['POST'])
@@ -56,7 +53,6 @@ def create_reference_route():
     ref_dict = request.form.to_dict()
     reference_type = request.form.get("chosen_ref")
     ref_dict.pop("chosen_ref", None)
-    # print("here is the ref type",reference_type)
     create_reference(ref_dict, reference_type)
     return redirect('/get_reference')
 
@@ -75,13 +71,11 @@ def reference_editer(citation_key):
         reference = get_reference_by_id(citation_key)
         ref_type = get_reference_type_id(citation_key)
         columns  = column_name_fetcher(ref_type)
-        # print(reference)
         return render_template("edit_ref.html", reference=reference, ref_type=ref_type, columns=columns)
     if request.method == "POST":
         ref_dict = request.form.to_dict()
         ref_type = request.form.get("chosen_ref")
         ref_dict.pop("chosen_ref", None)
-        # print("here is re dict",ref_dict)
         edit_reference(citation_key, ref_dict, ref_type)
         return redirect('/get_reference')
 
@@ -111,3 +105,12 @@ def reset_tests():
 def bib_ref_fetcher():
     bib_refs = get_bib_reference()
     return render_template("bib_ref.html", references = bib_refs)
+
+
+@app.route("/exportBibtex", methods=["GET"])
+def bib_ref_exporter():
+    bib_refs = get_bibtex_export_file()
+    
+    return send_file(bib_refs,mimetype='text',as_attachment=True,download_name = "bibtex_strings.bib")
+
+    
