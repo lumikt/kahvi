@@ -1,6 +1,6 @@
 from sqlalchemy import text
 from config import db
-import tempfile
+from tempfile import TemporaryFile
 
 def get_reference():
     """
@@ -192,7 +192,6 @@ def reference_to_html_string(ref_dict: dict):
     Takes a reference dictionary and returns it in bibtex format using html formatting.
     Args:
         ref_dict (dict): dictionary containing reference info
-        ref_type (string): type of reference being converted
     """
     i = 0
     ref_dict.pop("id")
@@ -209,14 +208,42 @@ def reference_to_html_string(ref_dict: dict):
     string_conversion += "&nbsp;}"
     return string_conversion
 
-def get_bibtex_export_file():
+def reference_to_text_string(ref_dict: dict):
+    """
+    Takes a reference dictionary and returns it in bibtex format text string.
+    Args:
+        ref_dict (dict): dictionary containing reference info
+    """
+    i = 0
+    ref_dict.pop("id")
+    citation_key = ref_dict.pop("citation_key")
+    ref_type = ref_dict.pop("ref_type")
+    string_conversion = f'@{ref_type.upper()}' + "{" +  f'{citation_key},\n'
+    for key,value in ref_dict.items():
+        if i == len(ref_dict)-1:
+            string_conversion  +=  f'   {key} = "{value}"\n'
+            break
+        string_conversion  +=  f'   {key} = "{value}",\n'
+        i+= 1
 
-    tmp = tempfile.TemporaryFile()
-    for reference in get_bib_reference():
-        reference_as_bytes = str.encode(reference)
+    string_conversion += " }\n\n"
+    return string_conversion
+
+
+def get_bibtex_export_file():
+    #Käytetään tempfileä jotta ei tiedostoa ei tarvitse tallentaa erikseen minnekään
+    tmp = TemporaryFile()
+    for reference in get_bib_reference_from_db():
+        formatted_reference = reference_to_text_string(reference)
+
+        #Flask.send_file haluaa tiedoston byte muodossa ja kirjoittaa sen sitten oikeaan tiedostomuotoon itse.
+        #Ilman tätä tiedoston joutuisi kirjoittamaan johon kansioon ja lähettämään sieltä.
+        reference_as_bytes = str.encode(formatted_reference)
         tmp.write(reference_as_bytes)
 
+    #palauttaa kursorin tiedoston alkuun, ilman tätä tmp file näyttää tyhjältä downloadin jälkeen.
     tmp.seek(0)
+
     return tmp
 
 

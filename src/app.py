@@ -111,6 +111,6 @@ def bib_ref_fetcher():
 def bib_ref_exporter():
     bib_refs = get_bibtex_export_file()
     
-    return send_file(bib_refs,mimetype='text',as_attachment=True,download_name = "bibtex_strings.txt")
+    return send_file(bib_refs,mimetype='text',as_attachment=True,download_name = "bibtex_strings.bib")
 
     
