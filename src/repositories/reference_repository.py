@@ -1,6 +1,6 @@
+from tempfile import TemporaryFile
 from sqlalchemy import text
 from config import db
-from tempfile import TemporaryFile
 
 def get_reference():
     """

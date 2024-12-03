@@ -110,7 +110,5 @@ def bib_ref_fetcher():
 @app.route("/exportBibtex", methods=["GET"])
 def bib_ref_exporter():
     bib_refs = get_bibtex_export_file()
-    
-    return send_file(bib_refs,mimetype='text',as_attachment=True,download_name = "bibtex_strings.bib")
 
-    
+    return send_file(bib_refs,mimetype='text',as_attachment=True,download_name = "bibtex_strings.bib")
