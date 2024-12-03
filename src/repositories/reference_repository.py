@@ -137,7 +137,7 @@ def edit_reference(old_citation_key, ref_dict, ref_type):
     db.session.commit()
 
 
-def get_bib_reference():
+def get_bib_reference_from_db():
     ref_query = text("SELECT citation_key, type FROM reference")
     ref_result = db.session.execute(ref_query).fetchall()
 
@@ -146,7 +146,7 @@ def get_bib_reference():
     for ref in ref_result:
         sanis = {}
         citation_key, ref_type = ref.citation_key, ref.type
-
+        sanis["ref_type"] = ref.type
         data_query = text(f"SELECT * FROM {ref_type} WHERE citation_key = :citation_key")
         result = db.session.execute(data_query, {"citation_key": citation_key}).fetchone()
 
@@ -172,14 +172,22 @@ def get_bib_reference():
                 else:
                     del sanis[field]
 
-        refs.append(reference_to_string(sanis,ref.type))
+        refs.append(sanis)
 
     #nyt sanakirja antaa avaimelle arvon None jos vapaaehtoista kenttää ei ole täytetty
     #sanakirjan käsittely html:ssä ei vielä onnistu kunnolla (tällä hetkellä html toistaa vain yhtä elementtiä)
 
     return refs
 
-def reference_to_string(ref_dict: dict,ref_type: str = None):
+def get_bib_reference():
+    formatted_references = []
+    refs = get_bib_reference_from_db()
+    for reference in refs:
+        formatted_references.append(reference_to_html_string(reference))
+
+    return formatted_references
+
+def reference_to_html_string(ref_dict: dict):
     """
     Takes a reference dictionary and returns it in bibtex format using html formatting.
     Args:
@@ -189,7 +197,7 @@ def reference_to_string(ref_dict: dict,ref_type: str = None):
     i = 0
     ref_dict.pop("id")
     citation_key = ref_dict.pop("citation_key")
-
+    ref_type = ref_dict.pop("ref_type")
     string_conversion = f'@{ref_type.upper()}' + "{" +  f'{citation_key}, <br>'
     for key,value in ref_dict.items():
         if i == len(ref_dict)-1:
