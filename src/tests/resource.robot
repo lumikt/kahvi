@@ -131,3 +131,4 @@ Set Volume
 Set Tag
     [Arguments]  ${tag}
     Input Text  tag-input  ${tag}
+    Press Keys  tag-input  ENTER

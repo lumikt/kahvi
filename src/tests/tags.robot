@@ -5,6 +5,22 @@ Suite Teardown  Close Browser
 Test Setup  Go To Add Reference Page
 
 *** Test Cases ***
+Add Reference With Several Tags
+    Select Dropdown By Value  book
+    Check Form Is Loaded
+    Set Reference Id  mb04
+    Set Author  Brandon Sanderson
+    Set Title  Mistborn
+    Set Editor  Peter
+    Set Year  2004
+    Set Publisher  Tor publishing
+    Set Tag  cosmere
+    Set Tag  Mistborn Era 1
+    Check Form Is Loaded
+    Submit Information
+    Adding Reference Should Succeed
+    Page Should Contain    cosmere
+    Page Should Contain    Mistborn Era 1
 
 Add Book Reference With Tag
     Select Dropdown By Value  book
@@ -16,10 +32,14 @@ Add Book Reference With Tag
     Set Year  2022
     Set Publisher  Tor publishing
     Set Tag  cosmere
-    Press Keys    tag-input    ENTER
     Submit Information
     Adding Reference Should Succeed
     Page Should Contain    cosmere
+
+View Added Tag
+    Go To References Page
+    Page Should Contain  cosmere
+    Page Should Contain  Mistborn Era 1
 
 *** Keywords ***
 Check Form Is Loaded
