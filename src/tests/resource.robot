@@ -27,6 +27,7 @@ Open And Configure Browser
     ELSE
         Set Selenium Speed  ${DELAY}
     END
+    Reset Application
     Open Browser  browser=${BROWSER}  options=${options}
 
 Add Reference Page Should Be Open
