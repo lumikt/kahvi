@@ -66,3 +66,5 @@ $ python3 src/index.py
 ```
 Definiton of done:  
 User story toimii hyväksymiskriteerien mukaisesti ja virheettömästi. Toimintoa on testattu ja se läpäisee testit.
+
+This project is licensed under the terms of the MIT license.
