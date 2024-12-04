@@ -19,4 +19,4 @@ class TestArticle(unittest.TestCase):
             self.dict = {"citation_key": "koe1001", "author": "Mikki Hiiri", "title": "Kerhotalo",
                          "journal": "Disney.fi" , "year": 2012}
             create_reference(self.dict, "article")
-            self.assertEqual(get_reference(), ["koe1001, Mikki Hiiri, Kerhotalo, Disney.fi, 2012"])
+            self.assertEqual(get_reference(), ["koe1001, Mikki Hiiri, Kerhotalo, Disney.fi, 2012<br>Tags: "])
