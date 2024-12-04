@@ -61,7 +61,7 @@ def create_reference_route():
     print("Type of tags:", type(tags))
 
     tag_ids, tag_names = get_all_tags()
-    
+
     ref_id = create_reference(ref_dict, reference_type)
 
     for tag in tags:

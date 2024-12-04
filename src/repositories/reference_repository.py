@@ -4,7 +4,7 @@ from config import db
 
 def get_reference():
     """
-    First fetches citaions key and its reference type from reference table.
+    First fetches citations key and its reference type from reference table.
     Then goes through the results one by one and making a data query from the reference table.
     WIth this dataquery we fetch the reference with its citation key.
     Then we fetch its column names so we can properly format the ref.
@@ -349,7 +349,7 @@ def get_tags(ref_id):
                     JOIN tags T
                         ON T.id=RT.tag_id
                """)
-    
+
     result = db.session.execute(sql, {"ref_id":ref_id}).fetchall()
     return [row[0] for row in result]
 
