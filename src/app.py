@@ -55,7 +55,7 @@ def create_reference_route():
 
     tags = ref_dict.pop("tags", None)
     print("here are tags:", tags)
-    
+
     create_reference(ref_dict, reference_type)
     return redirect('/get_reference')
 
