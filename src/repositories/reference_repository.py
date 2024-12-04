@@ -311,16 +311,17 @@ def add_tag(ref_id, tag_id):
                    """)
     db.session.execute(sql, {"ref_id": ref_id, "tag_id": tag_id})
 
-def get_all_tag_names():
+def get_all_tags():
     """
     Return a list of all tag names in the database
     """
-    sql = text("""SELECT DISTINCT name
+    sql = text("""SELECT DISTINCT id, name
                   FROM tags
                """)
     tags = db.session.execute(sql).fetchall()
-    tag_names = [row[0] for row in tags]
-    return tag_names
+    tag_ids = [row[0] for row in tags]
+    tag_names = [row[1] for row in tags]
+    return tag_ids, tag_names
 
 
 def delete_all():
