@@ -273,7 +273,8 @@ def create_reference(ref_dict: dict, table_name: str):
                             VALUES (:citation_key, :type)
                             ON CONFLICT DO NOTHING
                          """)
-    db.session.execute(sql_reference, {"citation_key": citation_key, "type": reference_type})
+    result = db.session.execute(sql_reference, {"citation_key": citation_key, "type": reference_type})
+    ref_id = result.fetchone()[0]
 
     columns = ", ".join(ref_dict.keys())
     placeholders = ", ".join([f":{key}" for key in ref_dict.keys()])
@@ -281,6 +282,8 @@ def create_reference(ref_dict: dict, table_name: str):
 
     db.session.execute(sql, ref_dict)
     db.session.commit()
+
+    return ref_id
 
 def create_tag(tag_name, ref_id=None):
     """
@@ -297,10 +300,7 @@ def create_tag(tag_name, ref_id=None):
     tag_id = result.scalar()
 
     if ref_id:
-        sql = text("""INSERT INTO ref_tags (ref_id, tag_id)
-                      VALUES (:ref_id, :tag_id)
-                   """)
-        db.session.execute(sql, {"ref_id": ref_id, "tag_id": tag_id})
+        add_tag(ref_id, tag_id)
 
 def add_tag(ref_id, tag_id):
     """
@@ -310,6 +310,17 @@ def add_tag(ref_id, tag_id):
                       VALUES (:ref_id, :tag_id)
                    """)
     db.session.execute(sql, {"ref_id": ref_id, "tag_id": tag_id})
+
+def get_all_tag_names():
+    """
+    Return a list of all tag names in the database
+    """
+    sql = text("""SELECT DISTINCT name
+                  FROM tags
+               """)
+    tags = db.session.execute(sql).fetchall()
+    tag_names = [row[0] for row in tags]
+    return tag_names
 
 
 def delete_all():
