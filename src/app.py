@@ -1,7 +1,6 @@
-
+import json
 from flask import redirect, render_template, request, send_file
 from config import app
-
 from repositories.reference_repository import (
                                                get_reference,
                                                create_reference,
@@ -54,7 +53,9 @@ def create_reference_route():
     reference_type = ref_dict.pop("chosen_ref", None)
 
     tags = ref_dict.pop("tags", None)
-    print("here are tags:", tags)
+    tags = json.loads(tags)
+    print("Tagi lista hopefully:", tags)
+    print("Type of tags:", type(tags))
 
     create_reference(ref_dict, reference_type)
     return redirect('/get_reference')
