@@ -59,23 +59,20 @@ def create_reference_route():
     tags = ref_dict.pop("tags", None)
     print("here are tags:", tags)
 
-<<<<<<< HEAD
     tag_ids, tag_names = get_all_tags()
     
     ref_id = create_reference(ref_dict, reference_type)
 
     for tag in tags:
+        print(tag)
         added_existing = False
         for i, tag_name in enumerate(tag_names):
             if tag == tag_name:
                 add_tag(ref_id, tag_ids[i])
                 added_existing = True
         if not added_existing:
-            create_tag(tag)
+            create_tag(tag, ref_id)
 
-=======
-    create_reference(ref_dict, reference_type)
->>>>>>> main
     return redirect('/get_reference')
 
 @app.route("/edit/<citation_key>", methods=["GET", "POST"])

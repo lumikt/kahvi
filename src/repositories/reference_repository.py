@@ -272,6 +272,7 @@ def create_reference(ref_dict: dict, table_name: str):
     sql_reference = text("""INSERT INTO reference (citation_key, type)
                             VALUES (:citation_key, :type)
                             ON CONFLICT DO NOTHING
+                            RETURNING id
                          """)
     result = db.session.execute(sql_reference, {"citation_key": citation_key, "type": reference_type})
     ref_id = result.fetchone()[0]
@@ -291,13 +292,14 @@ def create_tag(tag_name, ref_id=None):
     If there is a reference id, create an entry in the ref_tags table to link the
     tag to a reference.
     """
-
+    print("täällä")
     sql_tag = text("""INSERT INTO tags (name)
                       VALUES (:name)
                       RETURNING id
                    """)
     result = db.session.execute(sql_tag, {"name": tag_name })
-    tag_id = result.scalar()
+    tag_id = result.fetchone()[0]
+    db.session.commit()
 
     if ref_id:
         add_tag(ref_id, tag_id)
@@ -310,6 +312,7 @@ def add_tag(ref_id, tag_id):
                       VALUES (:ref_id, :tag_id)
                    """)
     db.session.execute(sql, {"ref_id": ref_id, "tag_id": tag_id})
+    db.session.commit()
 
 def get_all_tags():
     """
@@ -323,6 +326,21 @@ def get_all_tags():
     tag_names = [row[1] for row in tags]
     return tag_ids, tag_names
 
+def get_tags(ref_id):
+    """
+    Return all tags associated with a reference
+    """
+    sql = text("""SELECT T.name
+                    FROM reference R
+                    JOIN ref_tags RT
+                        ON R.id=RT.ref_id
+                        AND R.id=:ref_id
+                    JOIN tags T
+                        ON T.id=RT.tag_id
+               """)
+    
+    result = db.session.execute(sql, {"ref_id":ref_id}).fetchall()
+    return result
 
 def delete_all():
     refs = []
