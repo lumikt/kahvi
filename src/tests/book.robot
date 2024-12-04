@@ -2,7 +2,7 @@
 Resource  resource.robot
 Suite Setup  Open And Configure Browser
 Suite Teardown  Close Browser
-Test Setup  Reset Application And Go To Add Reference Page
+Test Setup  Go To Add Reference Page
 
 *** Test Cases ***
 
@@ -30,10 +30,5 @@ Try Adding Book Reference With Missing Information
     Adding Reference Should Fail
 
 *** Keywords ***
-
-Reset Application And Go To Add Reference Page
-    Reset Application
-    Go To Add Reference Page
-
 Check Form Is Loaded
     Wait Until Keyword Succeeds    30s    2s    Page Should Contain Element    editor
