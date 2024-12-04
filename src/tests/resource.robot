@@ -128,3 +128,6 @@ Set Volume
     [Arguments]  ${volume}
     Input Text  volume  ${volume}
 
+Set Tag
+    [Arguments]  ${tag}
+    Input Text  tag-input  ${tag}
