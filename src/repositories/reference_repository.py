@@ -27,6 +27,17 @@ def get_reference():
                             for field in fields if getattr(result, field, None)]
 
         formatted_string = ", ".join(formatted_parts[1:])
+        formatted_string += "<br>Tags: "
+
+        id_query = text("""SELECT id
+                            FROM reference
+                            WHERE citation_key = :citation_key
+                        """)
+        ref_id = db.session.execute(id_query, {"citation_key": citation_key}).fetchone()[0]
+        tags = get_tags(ref_id)
+        tags_string = ", ".join(tags)
+
+        formatted_string += tags_string
 
         refs.append(formatted_string)
 
@@ -340,7 +351,7 @@ def get_tags(ref_id):
                """)
     
     result = db.session.execute(sql, {"ref_id":ref_id}).fetchall()
-    return result
+    return [row[0] for row in result]
 
 def delete_all():
     refs = []

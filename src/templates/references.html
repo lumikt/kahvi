@@ -15,7 +15,7 @@ Latex Reference App - References
             {% set citation_key = reference.split(',')[0] %}
             <!-- poistaa citation key näkymästä poistamalla sen reference details muuttujaan. -->
             {% set reference_details = reference.split(',', 1)[1] %}
-            <h3>{{ reference_details }}</h3>
+            <h3>{{ reference_details | safe }}</h3>
             <form action="/edit/{{ citation_key }}" method="get">
                 <button type="submit" class="button" id="edit/{{ citation_key }}">Edit ref</button>
             </form>
