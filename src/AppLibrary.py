@@ -1,7 +1,5 @@
 # pylint: disable=invalid-name
 # pylint: disable=too-few-public-methods
-import requests
-from robot.api.deco import keyword
 import subprocess
 from os import path
 
