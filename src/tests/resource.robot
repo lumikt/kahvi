@@ -6,7 +6,11 @@ Library    XML
 *** Variables ***
 ${SERVER}       localhost:5001
 ${DELAY}        0.5 seconds
-${ADD_REFERENCE_URL}  http://${SERVER}
+${HOME_PAGE_URL}  http://${SERVER}/
+${ADD_REFERENCE_URL}  http://${SERVER}/add_reference
+${SHOW_REFERENCES_URL}  http://${SERVER}/get_reference
+${SHOW_BIB_REFERENCES_URL}  http://${SERVER}/bib_references
+${EDIT_REFERENCE_URL}  http://${SERVER}/edit/<citation_key>
 ${BROWSER}      chrome
 ${HEADLESS}     false
 
@@ -31,11 +35,29 @@ Add Reference Page Should Be Open
 References Page Should Be Open
     Title Should Be  Latex Reference App - References
 
+Home Page Should Be Open
+    Title Should Be  Latex Reference App - Homepage 
+
+Bib References Page Should Be Open
+    Title Should Be  Latex Reference App - Bibtex form references
+
+Edit Reference Page Should Be Open
+    Title Should Be  Latex Reference App - References
+
 Go To Add Reference Page
     Go To  ${ADD_REFERENCE_URL}
 
 Go To References Page
-    Click Link  Added references
+    Go To  ${SHOW_REFERENCES_URL}
+
+Go To Home Page
+    Go To  ${HOME_PAGE_URL}
+
+Go To Bib References Page
+    Go To  ${SHOW_BIB_REFERENCES_URL}
+
+Go To Edit Reference Page
+  Go To  ${EDIT_REFERENCE_URL}
 
 Adding Reference Should Succeed
     References Page Should Be Open
@@ -49,6 +71,9 @@ Adding Reference Should Fail With Message
 
 Submit Information
     Click Button  Add reference
+
+Submit Changes
+    Click Button  Save Changes
     
 Select Dropdown By Value
     [Arguments]  ${value}

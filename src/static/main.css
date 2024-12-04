@@ -1,0 +1,72 @@
+body {
+    margin: 0;
+    margin-top: 70px;
+    margin-left: 5%;
+    font-family: Monospace;
+    background-color: rgb(200, 230, 241);
+    font-size: 18px;
+    color:rgb(0, 17, 71)
+  }
+
+.topnav {
+overflow: hidden;
+background-color: #497ae6;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+margin: 0; /* Poistaa marginaalit */
+padding: 0;
+}
+
+.topnav a {
+float: left;
+color: #f3aee4;
+text-align: center;
+padding: 14px 16px;
+text-decoration: none;
+font-size: 25px;
+}
+
+.topnav a:hover {
+background-color: rgb(252, 183, 152);
+color:  #497ae6;
+}
+
+.button {
+background-color: #497ae6;
+border: none;
+color:  #f3aee4;
+text-decoration: none;
+display: inline-block;
+padding: 8px;
+font-size: 14px;
+margin: 4px 2px;
+cursor: pointer;
+border-radius: 15px;
+}
+
+.button:hover {
+background-color: rgb(252, 183, 152);
+color:  #497ae6;
+}
+
+#dynamic-form label {
+  display: block;
+  font-weight: bold;
+}
+
+#dynamic-form input {
+  display: block;
+  padding: 5px;
+  width: 100%;
+  max-width: 800px;
+  box-sizing: border-box;
+  border-radius: 15px;
+}
+
+#dynamic-form select {
+  margin-bottom: 15px;
+  padding: 5px;
+  border-radius: 15px;
+}

@@ -7,9 +7,6 @@ Latex Reference App - References
 {% block body %}
 
 <h2>References</h2>
-<div>
-    <a href="/">Add new reference</a>
-</div>
 
 <div>
     {% for reference in references %}
@@ -19,12 +16,14 @@ Latex Reference App - References
             <!-- poistaa citation key näkymästä poistamalla sen reference details muuttujaan. -->
             {% set reference_details = reference.split(',', 1)[1] %}
             <h3>{{ reference_details }}</h3>
+            <form action="/edit/{{ citation_key }}" method="get">
+                <button type="submit" class="button" id="edit/{{ citation_key }}">Edit ref</button>
+            </form>
             <form action="/delete/{{ citation_key }}" method="post">
-                <button type="submit" id="{{ citation_key }}">Delete</button>
+                <button type="submit" class="button" id="{{ citation_key }}">Delete</button>
             </form>
         </div>
     {% endfor %}
 </div>
-
 
 {% endblock %}

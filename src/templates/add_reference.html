@@ -1,0 +1,143 @@
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+
+{% extends "layout.html" %}
+
+{% block title %}
+Latex Reference App - Add reference
+{% endblock %}
+
+{% block body %}
+
+<h2>Add New Reference</h2>
+
+<div>
+    {% if message %}
+    {{ message }}
+    {% endif %}
+</div>
+
+<div>
+    <form id="dynamic-form" method="post" action="/create_reference" style="margin-left: 10px;">
+        <label for="chosen_ref">Choose a reference:</label>
+        <select name="chosen_ref" id="chosen_ref" style="margin-bottom: 10px;">
+            <option value="article">Article</option>
+            <option value="book">Book</option>
+            <option value="inproceedings">Inproceedings</option>
+        </select><br>
+
+        <div id="form-fields" style="margin-bottom: 15px;" ></div>
+
+        <div id="tag-container" style="margin-bottom: 15px;">
+            <label for="tag-input">Tags:</label>
+            <!-- hidden input for tags for fetching from server -->
+            <input type="hidden" id="tags-hidden" name="tags" value="[]">
+            <input type="text" id="tag-input" name="tags" placeholder="Add a tag press enter to add more">
+            <div id="tags-wrapper"></div>
+        </div>
+
+        <input type="submit" class="button" value="Add reference">
+    </form>
+</div>
+
+<!--
+    Scripti dynaamiselle formille. 
+    Fetchaa /get_columns/reftype osoitteesta kolumnin nimet
+    Käy for loopilla ne läpi ja luo labelin ja inputin ja lisää ne form containeriin.
+    Antaa myös parille tyypeille numero muodon ja muille textin.
+    Required kohdat on myös haettu tietokannasta ja se katsoo onko ne tyhjiä vai ei.
+    Aina kun vaihtaa viitteen niin formi vaihtuu sen kenttiin.
+-->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const refSelect = document.getElementById("chosen_ref");
+        const formFieldsContainer = document.getElementById("form-fields");
+        const tagInput = document.getElementById("tag-input");
+        const tagsWrapper = document.getElementById("tags-wrapper");
+        const tagsHiddenInput = document.getElementById("tags-hidden");
+        const tagsList = [];
+
+        async function updateFormFields(refType) {
+            try {
+                const response = await fetch(`/get_columns/${refType}`);
+                const columns = await response.json();
+                // console.log(columns);
+
+                formFieldsContainer.innerHTML = '';
+
+                columns.forEach((columnObj) => {
+                    const columnName = columnObj.name;
+                    const isRequired = columnObj.required;
+
+                    if (columnName === 'id') return;
+
+                    const label = document.createElement("label");
+                    label.setAttribute("for", columnName);
+                    label.textContent = columnName.charAt(0).toUpperCase() + columnName.slice(1);
+
+                    const input = document.createElement("input");
+                    input.setAttribute("type", ["year", "volume", "number"].includes(columnName) ? "number" : "text");
+                    input.setAttribute("name", columnName);
+                    input.required = isRequired;
+
+                    formFieldsContainer.appendChild(label);
+                    formFieldsContainer.appendChild(input);
+                    formFieldsContainer.appendChild(document.createElement("br"));
+                });
+            } catch (error) {
+                console.error('Error updating form fields:', error);
+            }
+        }
+
+        updateFormFields(refSelect.value);
+
+        refSelect.addEventListener("change", (event) => {
+            updateFormFields(event.target.value);
+        });
+
+        function updateTagsHiddenInput() {
+            tagsHiddenInput.value = JSON.stringify(tagsList);
+        }
+        
+        tagInput.addEventListener("keypress", (event) => {
+        // console.log(tagsList);
+        if (event.key === "Enter") {
+            event.preventDefault();
+            const tagText = tagInput.value.trim();
+
+            if (tagText && !tagsList.includes(tagText)) {
+                tagsList.push(tagText);
+
+                const tagElement = document.createElement("span");
+                tagElement.style = "margin-right: 5px; display: inline-block;";
+                const tagTextNode = document.createTextNode(tagText);
+
+                const removeButton = document.createElement("button");
+                removeButton.textContent = "x";
+                removeButton.style = "margin-left: 5px; border: none; background: none; cursor: pointer; color: red;";
+                removeButton.addEventListener("click", () => {
+                    tagsWrapper.removeChild(tagElement);
+                    tagsList.splice(tagsList.indexOf(tagText), 1);
+                    updateTagsHiddenInput();
+                });
+
+                tagElement.appendChild(tagTextNode);
+                tagElement.appendChild(removeButton);
+                tagsWrapper.appendChild(tagElement);
+                updateTagsHiddenInput();
+            }
+
+            tagInput.value = '';
+        }
+    });
+    // added for safety may not be necessary
+    document.getElementById("dynamic-form").addEventListener("submit", (event) => {
+        updateTagsHiddenInput();
+    });
+        
+    });
+</script>
+
+
+{% endblock %}
