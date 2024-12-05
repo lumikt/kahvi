@@ -16,14 +16,7 @@ Latex Reference App - References
 <div>
     <form method="post" action="/edit/{{ reference['citation_key'] }}" style="margin-left: 10px;">
         <label for="chosen_ref">Reference Type:</label>
-        <input 
-            type="text" 
-            name="chosen_ref" 
-            id="chosen_ref" 
-            value="{{ ref_type | capitalize }}" 
-            readonly>
-        <br>
-
+        {{ ref_type | capitalize }}
         <div id="form-fields">
             {% for column in columns %}
                 {% if column['name'] != 'id' %}
