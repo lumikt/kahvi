@@ -96,7 +96,7 @@ def reference_editer(citation_key):
         # print(tags)
         ref_type = get_reference_type_id(citation_key)
         columns  = column_name_fetcher(ref_type)
-        return render_template("edit_ref.html", tags=tags, ref_id=ref_id, reference=reference, ref_type=ref_type, columns=columns)    
+        return render_template("edit_ref.html", tags=tags, ref_id=ref_id, reference=reference, ref_type=ref_type, columns=columns)
     if request.method == "POST":
         ref_dict = request.form.to_dict()
         ref_type = request.form.get("chosen_ref")

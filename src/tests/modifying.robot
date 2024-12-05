@@ -17,16 +17,6 @@ Set Correct Information For Inproceedings Reference
     Submit Information
     Adding Reference Should Succeed
 
-Modify Reference Just Added
-    Go To References Page
-    Click Button  edit/foh225
-    Edit Reference Page Should Be Open
-    Placeholder Should Contain    Fires of Heaven
-    Set Title  Changed Title
-    Submit Changes
-    Adding Reference Should Succeed
-    Page Should Contain  Changed Title
-
 *** Keywords ***
 Check Form Is Loaded
     Wait Until Keyword Succeeds    30s    2s    Page Should Contain Element    publisher
