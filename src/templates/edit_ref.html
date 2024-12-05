@@ -34,7 +34,7 @@ Latex Reference App - References
         </div>
         <div id="tag-container" style="margin-bottom: 15px;">
             <label for="tag-input">Tags:</label>
-            <input type="hidden" id="tags-hidden" name="tags" value="{{ tags | tojson }}">
+            <input type="hidden" id="tags-hidden" name="tags" value="{{ tags }}">
             <input type="text" id="tag-input" placeholder="Add a tag and press enter">
             <div id="tags-wrapper">
                 {% for tag in tags %}
@@ -54,5 +54,67 @@ Latex Reference App - References
         <input type="submit" class="button" value="Save Changes">
     </form>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const tagInput = document.getElementById("tag-input");
+        const tagsWrapper = document.getElementById("tags-wrapper");
+        const tagsHiddenInput = document.getElementById("tags-hidden");
+        console.log(tagsHiddenInput)
+        let tagsList = JSON.parse(tagsHiddenInput.value);
+        // console.log(tagsHiddenInput)
+
+        function updateTagsHiddenInput() {
+            tagsHiddenInput.value = JSON.stringify(tagsList);
+        }
+
+        function renderTags() {
+            console.log(tagsHiddenInput)
+
+            tagsWrapper.innerHTML = "";
+            tagsList.forEach((tag) => {
+                const tagElement = document.createElement("span");
+                tagElement.style = "margin-right: 5px; display: inline-block;";
+                const tagTextNode = document.createTextNode(tag);
+
+                const removeButton = document.createElement("button");
+                removeButton.textContent = "x";
+                removeButton.style = "margin-left: 5px; border: none; background: none; cursor: pointer; color: red;";
+                removeButton.addEventListener("click", () => {
+                    tagsWrapper.removeChild(tagElement);
+                    tagsList = tagsList.filter((t) => t !== tag);
+                    updateTagsHiddenInput();
+                });
+
+                tagElement.appendChild(tagTextNode);
+                tagElement.appendChild(removeButton);
+                tagsWrapper.appendChild(tagElement);
+            });
+        }
+
+        renderTags();
+        
+
+        tagInput.addEventListener("keypress", (event) => {
+            if (event.key === "Enter") {
+                console.log(tagsHiddenInput)
+
+                event.preventDefault();
+                const tagText = tagInput.value.trim();
+
+                if (tagText && !tagsList.includes(tagText)) {
+                    tagsList.push(tagText);
+                    renderTags();
+                    updateTagsHiddenInput();
+                }
+
+                tagInput.value = "";
+            }
+        });
+
+        document.querySelector("form").addEventListener("submit", (event) => {
+            updateTagsHiddenInput();
+        });
+    });
+</script>
 
 {% endblock %}
