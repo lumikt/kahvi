@@ -14,7 +14,8 @@ from repositories.reference_repository import (
                                                get_bibtex_export_file,
                                                create_tag,
                                                add_tag,
-                                               get_all_tags
+                                               get_all_tags,
+                                               get_tags
                                             )
 
 @app.route("/", methods =["GET", "POST"])
@@ -89,9 +90,13 @@ def reference_editer(citation_key):
     """
     if request.method == "GET":
         reference = get_reference_by_id(citation_key)
+        ref_id = reference[0]
+        # print(ref_id)
+        tags = get_tags(ref_id)
+        # print(tags)
         ref_type = get_reference_type_id(citation_key)
         columns  = column_name_fetcher(ref_type)
-        return render_template("edit_ref.html", reference=reference, ref_type=ref_type, columns=columns)
+        return render_template("edit_ref.html", tags=tags, ref_id=ref_id, reference=reference, ref_type=ref_type, columns=columns)    
     if request.method == "POST":
         ref_dict = request.form.to_dict()
         ref_type = request.form.get("chosen_ref")

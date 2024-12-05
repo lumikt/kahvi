@@ -17,6 +17,7 @@ Latex Reference App - References
     <form method="post" action="/edit/{{ reference['citation_key'] }}" style="margin-left: 10px;">
         <label for="chosen_ref">Reference Type:</label>
         {{ ref_type | capitalize }}
+        <!-- {{ ref_id }} -->
         <div id="form-fields">
             {% for column in columns %}
                 {% if column['name'] != 'id' %}
@@ -31,7 +32,25 @@ Latex Reference App - References
                 {% endif %}
             {% endfor %}
         </div>
-
+        <div id="tag-container" style="margin-bottom: 15px;">
+            <label for="tag-input">Tags:</label>
+            <input type="hidden" id="tags-hidden" name="tags" value="{{ tags | tojson }}">
+            <input type="text" id="tag-input" placeholder="Add a tag and press enter">
+            <div id="tags-wrapper">
+                {% for tag in tags %}
+                    <span style="margin-right: 5px; display: inline-block;">
+                        {{ tag }}
+                        <button 
+                            style="margin-left: 5px; border: none; background: none; cursor: pointer; color: red;" 
+                            type="button" 
+                            onclick="removeTag('{{ tag }}')"
+                        >
+                            x
+                        </button>
+                    </span>
+                {% endfor %}
+            </div>
+        </div>        
         <input type="submit" class="button" value="Save Changes">
     </form>
 </div>
