@@ -1,5 +1,5 @@
 import json
-from flask import redirect, render_template, request, send_file, jsonify
+from flask import redirect, render_template, request, send_file
 from config import app
 from repositories.reference_repository import (
                                                get_reference,
