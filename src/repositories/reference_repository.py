@@ -72,6 +72,22 @@ def delete_reference(citation_key):
     db.session.execute(ref_query, {"key": citation_key})
     db.session.commit()
 
+def get_reference_id(citation_key):
+    """
+    Fetch reference details by citation_key.
+    Starts with the reference table to get the ref_id and type.
+    """
+    # Fetch from reference table
+    ref_query = text("SELECT id, type FROM reference WHERE citation_key = :citation_key")
+    ref_result = db.session.execute(ref_query, {"citation_key": citation_key}).fetchone()
+
+    if not ref_result:
+        raise ValueError(f"No reference found for citation_key: {citation_key}")
+
+    ref_id, ref_type = ref_result
+    print(f"Fetched from reference table: ref_id={ref_id}, type={ref_type}")
+    return ref_id
+
 def get_reference_by_id(citation_key):
     """get ref by 
 
@@ -303,34 +319,24 @@ def edit_reference(old_citation_key, ref_dict, ref_type, ref_id, tags):
 def sync_tags(ref_id, tags):
     """
     Sync the tags for a given reference ID.
-    - Adds new tags if they are not in the current ref_tags_ids.
-    - Removes tags from the database if they are no longer in the provided tags.
-    
-    Args:
-        ref_id (int): The ID of the reference.
-        tags (list): A list of tag names to sync with the reference.
+    Ensures database consistency with provided tags.
     """
-    # Get existing tag IDs from the database for the reference
+    # Get existing tag IDs for the reference
     refs_tags_ids = get_tags_ids_by_ref_id(ref_id)
     print("Current tag IDs in database for ref_id:", refs_tags_ids)
 
     # Convert tag names to tag IDs
     tag_ids = []
     for tag in tags:
-        tag_id = get_tag_id_by_name(tag)  # Get the tag ID by name
+        tag_id = get_tag_id_by_name(tag)
         if not tag_id:
-            # If the tag doesn't exist, create it
             tag_id = create_tag(tag)
         tag_ids.append(tag_id)
     print("Tag IDs from frontend:", tag_ids)
 
-    # Identify tags to add
+    # Identify tags to add and delete
     tags_to_add = [tag_id for tag_id in tag_ids if tag_id not in refs_tags_ids]
-    print("Tags to add:", tags_to_add)
-
-    # Identify tags to delete
     tags_to_delete = [tag_id for tag_id in refs_tags_ids if tag_id not in tag_ids]
-    print("Tags to delete:", tags_to_delete)
 
     # Add new tags
     for tag_id in tags_to_add:
@@ -344,7 +350,7 @@ def sync_tags(ref_id, tags):
                               WHERE ref_id = :ref_id AND tag_id = :tag_id""")
         db.session.execute(sql_delete, {"ref_id": ref_id, "tag_id": tag_id})
 
-    # Commit the changes
+    # Commit changes
     db.session.commit()
     print("Tags successfully synced.")
 
@@ -376,6 +382,7 @@ def create_tag(tag_name, ref_id=None):
         add_tag(ref_id, tag_id)
 
     return tag_id
+
 def add_tag(ref_id, tag_id):
     """
     Function to link an existing tag to a reference via the ref_tags table.
@@ -420,19 +427,21 @@ def get_all_tags():
 
 def get_tags(ref_id):
     """
-    Return all tags associated with a reference
+    Return all tags associated with a reference.
     """
-    sql = text("""SELECT T.name
-                    FROM reference R
-                    JOIN ref_tags RT
-                        ON R.id=RT.ref_id
-                        AND R.id=:ref_id
-                    JOIN tags T
-                        ON T.id=RT.tag_id
-               """)
+    sql = text("""
+        SELECT T.name
+        FROM reference R
+        JOIN ref_tags RT ON R.id = RT.ref_id
+        JOIN tags T ON T.id = RT.tag_id
+        WHERE R.id = :ref_id
+    """)
+    result = db.session.execute(sql, {"ref_id": ref_id}).fetchall()
+    tags = [row[0] for row in result]
+    print(f"get_tags for ref_id {ref_id}: {tags}")
+    return tags
 
-    result = db.session.execute(sql, {"ref_id":ref_id}).fetchall()
-    return [row[0] for row in result]
+
 
 def delete_all():
     refs = []

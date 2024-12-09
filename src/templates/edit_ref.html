@@ -17,7 +17,6 @@ Latex Reference App - References
     <form method="post" action="/edit/{{ reference['citation_key'] }}" style="margin-left: 10px;">
         <label for="chosen_ref">Reference Type:</label>
         {{ ref_type | capitalize }}
-        <!-- {{ ref_id }} -->
         <div id="form-fields">
             {% for column in columns %}
                 {% if column['name'] != 'id' %}
@@ -59,17 +58,13 @@ Latex Reference App - References
         const tagInput = document.getElementById("tag-input");
         const tagsWrapper = document.getElementById("tags-wrapper");
         const tagsHiddenInput = document.getElementById("tags-hidden");
-        console.log(tagsHiddenInput)
         let tagsList = JSON.parse(tagsHiddenInput.value);
-        // console.log(tagsHiddenInput)
 
         function updateTagsHiddenInput() {
             tagsHiddenInput.value = JSON.stringify(tagsList);
         }
 
         function renderTags() {
-            console.log(tagsHiddenInput)
-
             tagsWrapper.innerHTML = "";
             tagsList.forEach((tag) => {
                 const tagElement = document.createElement("span");
@@ -113,7 +108,6 @@ Latex Reference App - References
 
         document.querySelector("form").addEventListener("submit", (event) => {
             updateTagsHiddenInput();
-            console.log("Hidden input value:", tagsHiddenInput.value); // Debug log
         });
     });
 </script>
