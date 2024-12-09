@@ -365,4 +365,3 @@ def get_search_results(query):
             results.append(reference)
 
     return results
-
