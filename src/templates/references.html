@@ -10,11 +10,13 @@ Latex Reference App - References
 
 <div>
     {% for reference in references %}
+    {% if reference["visibility"]== True %}
         <div>
             <!-- hakee citation key ensimmäisestä indeksistä-->
-            {% set citation_key = reference.split(',')[0] %}
+            {% set citation_key = reference["content"].split(',')[0] %}
             <!-- poistaa citation key näkymästä poistamalla sen reference details muuttujaan. -->
-            {% set reference_details = reference.split(',', 1)[1] %}
+            {% set reference_details = reference["content"].split(',', 1)[1] %}
+            <p>Debug statement: {{ reference["visibility"]  }}</p>
             <h3>{{ reference_details | safe }}</h3>
             <form action="/edit/{{ citation_key }}" method="get">
                 <button type="submit" class="button" id="edit/{{ citation_key }}">Edit ref</button>
@@ -23,7 +25,8 @@ Latex Reference App - References
                 <button type="submit" class="button" id="{{ citation_key }}">Delete</button>
             </form>
         </div>
-    {% endfor %}
+    {% endif %}
+        {% endfor %}
 </div>
 
 {% endblock %}

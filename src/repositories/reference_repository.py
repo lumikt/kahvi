@@ -39,7 +39,7 @@ def get_reference():
 
         formatted_string += tags_string
 
-        refs.append(formatted_string)
+        refs.append({"visibility":True,"content":formatted_string})
 
     return refs
 
