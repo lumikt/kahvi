@@ -7,6 +7,10 @@ Latex Reference App - References
 {% block body %}
 <h2>Edit Reference</h2>
 
+<p>Here you can edit saved references. All mandatory fields are marked with an asterisk (<span class="highlight">*</span>).</p>
+
+<p>Note that you cannot change the reference type.</p>
+
 <div>
     {% if message %}
     {{ message }}
@@ -27,7 +31,7 @@ Latex Reference App - References
                         name="{{ column['name'] }}" 
                         id="{{ column['name'] }}" 
                         value="{{ reference[column['name']] or '' }}" 
-                        {% if column['required'] %}required{% endif %}>
+                        {% if column['required'] %}required{% endif %}> {% if column['required'] %}<span class="highlight">*</span>{% endif %}
                     <br>
                 {% endif %}
             {% endfor %}
