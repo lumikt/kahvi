@@ -356,3 +356,13 @@ def get_tags(ref_id):
 def delete_all():
     refs = []
     return refs
+
+def get_search_results(to_search, query):
+    print(to_search)
+    print(query)
+    for reference in to_search:
+        for i in reference:
+            if i == query:
+                reference["visibility"] = True
+
+    return to_search

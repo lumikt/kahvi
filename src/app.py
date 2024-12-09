@@ -15,7 +15,8 @@ from repositories.reference_repository import (
                                                create_tag,
                                                add_tag,
                                                get_all_tags,
-                                               get_tags
+                                               get_tags,
+                                               get_search_results
                                             )
 
 @app.route("/", methods =["GET", "POST"])
@@ -130,11 +131,18 @@ def reset_tests():
 @app.route("/bib_references", methods=["GET"])
 def bib_ref_fetcher():
     bib_refs = get_bib_reference()
-    return render_template("bib_ref.html", references = bib_refs)
+    return render_template("bib_ref.html", references=bib_refs)
 
 
 @app.route("/exportBibtex", methods=["GET"])
 def bib_ref_exporter():
     bib_refs = get_bibtex_export_file()
 
-    return send_file(bib_refs,mimetype='text',as_attachment=True,download_name = "bibtex_strings.bib")
+    return send_file(bib_refs,mimetype='text',as_attachment=True,download_name="bibtex_strings.bib")
+
+@app.route("/search/<references>", methods=["POST"])
+def search(references):
+    query = request.form["query"]
+    search_results = get_search_results(references, query)
+
+    return render_template("references.html", references=search_results)

@@ -8,7 +8,9 @@ Latex Reference App - References
 
 <h2>References</h2>
 
-<input type="text" name="query"><input type="submit" class="button" value="Hae">
+<form action="/search/{{ references }}" method="POST">
+    <input type="text" name="query"><input type="submit" class="button" value="Hae">
+</form>
 
 <div>
     {% for reference in references %}
