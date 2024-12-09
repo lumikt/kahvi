@@ -15,6 +15,7 @@ Set Correct Information For Book Reference
     Set Editor  Scrooge McDuck
     Set Year  1984
     Set Publisher  Duckburg publishing
+    Set Tag  Hupsuja juttuja
     Submit Information
     Adding Reference Should Succeed
 

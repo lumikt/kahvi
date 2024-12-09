@@ -12,6 +12,8 @@ Latex Reference App - Add reference
 
 <h2>Add New Reference</h2>
 
+<p>Here you can add a new reference to the reference list. All mandatory fields are marked with an asterisk (<span style="color: red;">*</span>).</p> 
+
 <div>
     {% if message %}
     {{ message }}
@@ -20,7 +22,7 @@ Latex Reference App - Add reference
 
 <div>
     <form id="dynamic-form" method="post" action="/create_reference" style="margin-left: 10px;">
-        <label for="chosen_ref">Choose a reference:</label>
+        <label for="chosen_ref">Choose a reference type: <span style="color: red;">*</span> </label>
         <select name="chosen_ref" id="chosen_ref" style="margin-bottom: 10px;">
             <option value="article">Article</option>
             <option value="book">Book</option>
@@ -75,6 +77,13 @@ Latex Reference App - Add reference
                     const label = document.createElement("label");
                     label.setAttribute("for", columnName);
                     label.textContent = columnName.charAt(0).toUpperCase() + columnName.slice(1);
+
+                    if (isRequired) {
+                        const requiredMarker = document.createElement("span");
+                        requiredMarker.textContent = " *";
+                        requiredMarker.style.color = "red";
+                        label.appendChild(requiredMarker);
+                    }
 
                     const input = document.createElement("input");
                     input.setAttribute("type", ["year", "volume", "number"].includes(columnName) ? "number" : "text");

@@ -26,6 +26,7 @@ Try Adding Reference With Missing Information
     Set Title  Booktitle
     Set Journal  Science journal
     Set Year  1999
+    Set Tag  Kandi
     Submit Information
     Adding Reference Should Fail
 
