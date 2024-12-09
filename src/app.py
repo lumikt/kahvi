@@ -91,18 +91,19 @@ def reference_editer(citation_key):
     if request.method == "GET":
         reference = get_reference_by_id(citation_key)
         ref_id = reference[0]
-        # print(ref_id)
-        # tags = get_tags(ref_id)
         tags = json.dumps(get_tags(ref_id))
         ref_type = get_reference_type_id(citation_key)
         columns  = column_name_fetcher(ref_type)
         return render_template("edit_ref.html", tags=tags, ref_id=ref_id, reference=reference, ref_type=ref_type, columns=columns)
     if request.method == "POST":
+        reference = get_reference_by_id(citation_key)
+        ref_id = reference[0]
         ref_dict = request.form.to_dict()
         ref_type = get_reference_type_id(citation_key)
         ref_dict.pop("chosen_ref", None)
         tags = ref_dict.pop("tags", None)
-        edit_reference(citation_key, ref_dict, ref_type)
+        tags = json.loads(tags)
+        edit_reference(citation_key, ref_dict, ref_type, ref_id, tags)
         return redirect('/get_reference')
 
     #if not get or post return this

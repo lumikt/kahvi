@@ -100,54 +100,6 @@ def get_reference_type_id(citation_key):
     ref_type = db.session.execute(ref_type_query, {"citation_key": citation_key}).fetchone()[0]
     return ref_type
 
-def edit_reference(old_citation_key, ref_dict, ref_type):
-    """Function for editing references
-    
-    Args:
-        vanha viitteen avain, formin sanakirja ja viitteen tyyppi"""
-    new_citation_key = ref_dict["citation_key"]
-
-    #katsoo onko citation key päivittynyt. Jos on päivittää reference taulukkoon ja omaan taulukkoon sen
-    if new_citation_key != old_citation_key:
-        insert_new_key_query = text("""
-            INSERT INTO reference (citation_key, type)
-            VALUES (:new_citation_key, :type)
-        """)
-        db.session.execute(insert_new_key_query, {
-            "new_citation_key": new_citation_key,
-            "type": ref_type
-        })
-
-        specific_table_update_query = text(f"""
-            UPDATE {ref_type}
-            SET citation_key = :new_citation_key
-            WHERE citation_key = :old_citation_key
-        """)
-        db.session.execute(specific_table_update_query, {
-            "new_citation_key": new_citation_key,
-            "old_citation_key": old_citation_key
-        })
-
-        delete_old_key_query = text("""
-            DELETE FROM reference
-            WHERE citation_key = :old_citation_key
-        """)
-        db.session.execute(delete_old_key_query, {
-            "old_citation_key": old_citation_key
-        })
-
-    #hakee kolumnien nimet ref_dictista ja päivittää kentät
-    columns = ", ".join([f"{key} = :{key}" for key in ref_dict.keys() if key != "citation_key"])
-    specific_table_field_update_query = text(f"""
-        UPDATE {ref_type}
-        SET {columns}
-        WHERE citation_key = :citation_key
-    """)
-    db.session.execute(specific_table_field_update_query, ref_dict)
-
-    db.session.commit()
-
-
 def get_bib_reference_from_db():
     ref_query = text("SELECT citation_key, type FROM reference")
     ref_result = db.session.execute(ref_query).fetchall()
@@ -297,33 +249,162 @@ def create_reference(ref_dict: dict, table_name: str):
 
     return ref_id
 
+def edit_reference(old_citation_key, ref_dict, ref_type, ref_id, tags):
+    """Function for editing references
+    
+    Args:
+        vanha viitteen avain, formin sanakirja ja viitteen tyyppi"""
+    new_citation_key = ref_dict["citation_key"]
+
+    #katsoo onko citation key päivittynyt. Jos on päivittää reference taulukkoon ja omaan taulukkoon sen
+    if new_citation_key != old_citation_key:
+        insert_new_key_query = text("""
+            INSERT INTO reference (citation_key, type)
+            VALUES (:new_citation_key, :type)
+        """)
+        db.session.execute(insert_new_key_query, {
+            "new_citation_key": new_citation_key,
+            "type": ref_type
+        })
+
+        specific_table_update_query = text(f"""
+            UPDATE {ref_type}
+            SET citation_key = :new_citation_key
+            WHERE citation_key = :old_citation_key
+        """)
+        db.session.execute(specific_table_update_query, {
+            "new_citation_key": new_citation_key,
+            "old_citation_key": old_citation_key
+        })
+
+        delete_old_key_query = text("""
+            DELETE FROM reference
+            WHERE citation_key = :old_citation_key
+        """)
+        db.session.execute(delete_old_key_query, {
+            "old_citation_key": old_citation_key
+        })
+
+    #hakee kolumnien nimet ref_dictista ja päivittää kentät
+    columns = ", ".join([f"{key} = :{key}" for key in ref_dict.keys() if key != "citation_key"])
+    specific_table_field_update_query = text(f"""
+        UPDATE {ref_type}
+        SET {columns}
+        WHERE citation_key = :citation_key
+    """)
+    db.session.execute(specific_table_field_update_query, ref_dict)
+
+    db.session.commit()
+
+    print("tags from ref repo",tags)
+    print("Tags type in ref repo:", type(tags))
+    sync_tags(ref_id, tags)
+
+def sync_tags(ref_id, tags):
+    """
+    Sync the tags for a given reference ID.
+    - Adds new tags if they are not in the current ref_tags_ids.
+    - Removes tags from the database if they are no longer in the provided tags.
+    
+    Args:
+        ref_id (int): The ID of the reference.
+        tags (list): A list of tag names to sync with the reference.
+    """
+    # Get existing tag IDs from the database for the reference
+    refs_tags_ids = get_tags_ids_by_ref_id(ref_id)
+    print("Current tag IDs in database for ref_id:", refs_tags_ids)
+
+    # Convert tag names to tag IDs
+    tag_ids = []
+    for tag in tags:
+        tag_id = get_tag_id_by_name(tag)  # Get the tag ID by name
+        if not tag_id:
+            # If the tag doesn't exist, create it
+            tag_id = create_tag(tag)
+        tag_ids.append(tag_id)
+    print("Tag IDs from frontend:", tag_ids)
+
+    # Identify tags to add
+    tags_to_add = [tag_id for tag_id in tag_ids if tag_id not in refs_tags_ids]
+    print("Tags to add:", tags_to_add)
+
+    # Identify tags to delete
+    tags_to_delete = [tag_id for tag_id in refs_tags_ids if tag_id not in tag_ids]
+    print("Tags to delete:", tags_to_delete)
+
+    # Add new tags
+    for tag_id in tags_to_add:
+        sql_insert = text("""INSERT INTO ref_tags (ref_id, tag_id)
+                              VALUES (:ref_id, :tag_id)""")
+        db.session.execute(sql_insert, {"ref_id": ref_id, "tag_id": tag_id})
+
+    # Remove deleted tags
+    for tag_id in tags_to_delete:
+        sql_delete = text("""DELETE FROM ref_tags
+                              WHERE ref_id = :ref_id AND tag_id = :tag_id""")
+        db.session.execute(sql_delete, {"ref_id": ref_id, "tag_id": tag_id})
+
+    # Commit the changes
+    db.session.commit()
+    print("Tags successfully synced.")
+
+def get_tag_id_by_name(tag_name):
+    sql = text("SELECT id FROM tags WHERE name = :name")
+    result = db.session.execute(sql, {"name": tag_name})
+    tag = result.fetchone()
+    return tag[0] if tag else None
+
 def create_tag(tag_name, ref_id=None):
     """
     Function to create a tag. Create the tag in the tags table in sql.
     If there is a reference id, create an entry in the ref_tags table to link the
     tag to a reference.
     """
-    print("täällä")
-    sql_tag = text("""INSERT INTO tags (name)
-                      VALUES (:name)
-                      RETURNING id
-                   """)
-    result = db.session.execute(sql_tag, {"name": tag_name })
-    tag_id = result.fetchone()[0]
-    db.session.commit()
+    # print("täällä")
+    # print("create tags get all tags",get_all_tags()[1])
+    tag_id = get_tag_id_by_name(tag_name)
+    if not tag_id:
+        # Create the tag if it doesn't exist
+        sql_tag = text("""INSERT INTO tags (name)
+                          VALUES (:name)
+                          RETURNING id""")
+        result = db.session.execute(sql_tag, {"name": tag_name})
+        tag_id = result.fetchone()[0]
+        db.session.commit()
 
     if ref_id:
         add_tag(ref_id, tag_id)
 
+    return tag_id
 def add_tag(ref_id, tag_id):
     """
     Function to link an existing tag to a reference via the ref_tags table.
     """
-    sql = text("""INSERT INTO ref_tags (ref_id, tag_id)
-                      VALUES (:ref_id, :tag_id)
-                   """)
-    db.session.execute(sql, {"ref_id": ref_id, "tag_id": tag_id})
+    refs_tags_ids = get_tags_ids_by_ref_id(ref_id)
+    print("hhere is refs tags ids:", refs_tags_ids)
+    # print("hhere is type refs tags ids:", type(refs_tags_ids))
+    print("hhere is ref tag id:", tag_id)
+    if tag_id not in refs_tags_ids:
+        sql = text("""INSERT INTO ref_tags (ref_id, tag_id)
+                          VALUES (:ref_id, :tag_id)
+                       """)
+        db.session.execute(sql, {"ref_id": ref_id, "tag_id": tag_id})
+
     db.session.commit()
+
+def get_tags_ids_by_ref_id(ref_id):
+    """
+    Return a list of tag IDs associated with a given reference ID (ref_id).
+    """
+    sql = text("""
+        SELECT DISTINCT tags.id
+        FROM tags
+        JOIN ref_tags ON tags.id = ref_tags.tag_id
+        WHERE ref_tags.ref_id = :ref_id
+    """)
+    result = db.session.execute(sql, {"ref_id": ref_id}).fetchall()
+    tag_ids = [row[0] for row in result]
+    return tag_ids
 
 def get_all_tags():
     """
