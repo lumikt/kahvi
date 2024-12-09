@@ -12,9 +12,6 @@ from repositories.reference_repository import (
                                                get_reference_type_id,
                                                edit_reference,
                                                get_bibtex_export_file,
-                                               create_tag,
-                                               add_tag,
-                                               get_all_tags,
                                                get_tags,
                                                sync_tags,
                                                get_reference_id
@@ -50,32 +47,20 @@ def column_name_fetcher(ref_type):
 
 @app.route('/create_reference', methods=['POST'])
 def create_reference_route():
+    """
+    creates a reference and then adds tags if there are any and also links them to the ref.
+    """
     ref_dict = request.form.to_dict()
     reference_type = ref_dict.pop("chosen_ref", None)
 
-    # Parse tags from form
     tags = ref_dict.pop("tags", None)
     tags = json.loads(tags) if tags else []
-    print("Tags list during creation:", tags)
 
-    # Create the reference
     ref_id = create_reference(ref_dict, reference_type)
 
-    # Ensure any pre-existing tags for this ref_id are cleared
     sync_tags(ref_id, tags)
-    
-    return redirect('/get_reference')
-    # for tag in tags:
-        # print(tag)
-        # added_existing = False
-        # for i, tag_name in enumerate(tag_names):
-            # if tag == tag_name:
-                # add_tag(ref_id, tag_ids[i])
-                # added_existing = True
-        # if not added_existing:
-            # create_tag(tag, ref_id)
 
-    # return redirect('/get_reference')
+    return redirect('/get_reference')
 
 @app.route("/edit/<citation_key>", methods=["GET", "POST"])
 def reference_editer(citation_key):
@@ -91,24 +76,24 @@ def reference_editer(citation_key):
     if request.method == "GET":
         reference = get_reference_by_id(citation_key)
         ref_id = get_reference_id(citation_key)
-        print("here is ref id from ref edier route", ref_id)
-        print("here is referefence from ref edier route", reference)
+
         tags = json.dumps(get_tags(ref_id))
-        # tags = get_tags(ref_id)
         ref_type = get_reference_type_id(citation_key)
         columns  = column_name_fetcher(ref_type)
-        print("tags from ref editer route",tags)
+
         return render_template("edit_ref.html", tags=tags, ref_id=ref_id, reference=reference, ref_type=ref_type, columns=columns)
+
     if request.method == "POST":
         reference = get_reference_by_id(citation_key)
         ref_id = get_reference_id(citation_key)
         ref_dict = request.form.to_dict()
         ref_type = get_reference_type_id(citation_key)
         ref_dict.pop("chosen_ref", None)
-        tags = ref_dict.pop("tags", None)
-        tags = json.loads(tags)
-        # print("tags from ref editer post",tags)
+
+        tags = json.loads(ref_dict.pop("tags", None))
+
         edit_reference(citation_key, ref_dict, ref_type, ref_id, tags)
+
         return redirect('/get_reference')
 
     #if not get or post return this

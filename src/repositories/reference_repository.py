@@ -312,8 +312,6 @@ def edit_reference(old_citation_key, ref_dict, ref_type, ref_id, tags):
 
     db.session.commit()
 
-    print("tags from ref repo",tags)
-    print("Tags type in ref repo:", type(tags))
     sync_tags(ref_id, tags)
 
 def sync_tags(ref_id, tags):
@@ -321,44 +319,30 @@ def sync_tags(ref_id, tags):
     Sync the tags for a given reference ID.
     Ensures database consistency with provided tags.
     """
-    # Get existing tag IDs for the reference
     refs_tags_ids = get_tags_ids_by_ref_id(ref_id)
-    print("Current tag IDs in database for ref_id:", refs_tags_ids)
 
-    # Convert tag names to tag IDs
     tag_ids = []
-    for tag in tags:
-        tag_id = get_tag_id_by_name(tag)
+    for tag_name in tags:
+        tag_id = get_tag_id_by_name(tag_name)
         if not tag_id:
-            tag_id = create_tag(tag)
+            tag_id = create_tag(tag_name)
         tag_ids.append(tag_id)
-    print("Tag IDs from frontend:", tag_ids)
 
-    # Identify tags to add and delete
     tags_to_add = [tag_id for tag_id in tag_ids if tag_id not in refs_tags_ids]
+
     tags_to_delete = [tag_id for tag_id in refs_tags_ids if tag_id not in tag_ids]
 
-    # Add new tags
     for tag_id in tags_to_add:
         sql_insert = text("""INSERT INTO ref_tags (ref_id, tag_id)
                               VALUES (:ref_id, :tag_id)""")
         db.session.execute(sql_insert, {"ref_id": ref_id, "tag_id": tag_id})
 
-    # Remove deleted tags
     for tag_id in tags_to_delete:
         sql_delete = text("""DELETE FROM ref_tags
                               WHERE ref_id = :ref_id AND tag_id = :tag_id""")
         db.session.execute(sql_delete, {"ref_id": ref_id, "tag_id": tag_id})
 
-    # Commit changes
     db.session.commit()
-    print("Tags successfully synced.")
-
-def get_tag_id_by_name(tag_name):
-    sql = text("SELECT id FROM tags WHERE name = :name")
-    result = db.session.execute(sql, {"name": tag_name})
-    tag = result.fetchone()
-    return tag[0] if tag else None
 
 def create_tag(tag_name, ref_id=None):
     """
@@ -366,8 +350,6 @@ def create_tag(tag_name, ref_id=None):
     If there is a reference id, create an entry in the ref_tags table to link the
     tag to a reference.
     """
-    # print("täällä")
-    # print("create tags get all tags",get_all_tags()[1])
     tag_id = get_tag_id_by_name(tag_name)
     if not tag_id:
         # Create the tag if it doesn't exist
@@ -383,14 +365,20 @@ def create_tag(tag_name, ref_id=None):
 
     return tag_id
 
+def get_tag_id_by_name(tag_name):
+    """
+    apufuntkio tagin id hakemiselle sen nimen perusteella.
+    """
+    sql = text("SELECT id FROM tags WHERE name = :name")
+    result = db.session.execute(sql, {"name": tag_name})
+    tag = result.fetchone()
+    return tag[0] if tag else None
+
 def add_tag(ref_id, tag_id):
     """
     Function to link an existing tag to a reference via the ref_tags table.
     """
     refs_tags_ids = get_tags_ids_by_ref_id(ref_id)
-    print("hhere is refs tags ids:", refs_tags_ids)
-    # print("hhere is type refs tags ids:", type(refs_tags_ids))
-    print("hhere is ref tag id:", tag_id)
     if tag_id not in refs_tags_ids:
         sql = text("""INSERT INTO ref_tags (ref_id, tag_id)
                           VALUES (:ref_id, :tag_id)
@@ -438,7 +426,6 @@ def get_tags(ref_id):
     """)
     result = db.session.execute(sql, {"ref_id": ref_id}).fetchall()
     tags = [row[0] for row in result]
-    print(f"get_tags for ref_id {ref_id}: {tags}")
     return tags
 
 
