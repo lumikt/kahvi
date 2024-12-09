@@ -14,7 +14,7 @@ Latex Reference App - References
 </div>
 
 <div>
-    <form method="post" action="/edit/{{ reference['citation_key'] }}" style="margin-left: 10px;">
+    <form method="post" action="/edit/{{ ref_id }}" style="margin-left: 10px;">
         <label for="chosen_ref">Reference Type:</label>
         {{ ref_type | capitalize }}
         <!-- {{ ref_id }} -->

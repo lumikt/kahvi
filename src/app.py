@@ -56,11 +56,10 @@ def create_reference_route():
     """
     ref_dict = request.form.to_dict()
     reference_type = ref_dict.pop("chosen_ref", None)
+    ref_dict["type"] = reference_type
 
     tags = ref_dict.pop("tags", None)
     tags = json.loads(tags)
-    print("Tagi lista hopefully:", tags)
-    print("Type of tags:", type(tags))
 
     tag_ids, tag_names = get_all_tags()
 
@@ -78,49 +77,47 @@ def create_reference_route():
 
     return redirect('/get_reference')
 
-@app.route("/edit/<citation_key>", methods=["GET", "POST"])
-def reference_editer(citation_key):
+@app.route("/edit/<ref_id>", methods=["GET", "POST"])
+def reference_editer(ref_id):
     """Reitti referenssien editointiin
 
     Args:
-        citation_key (string): refen avain
+        ref_id: reference id
 
     Returns:
         jos get niin edit ref htmlän missä voi muokata viitettä. 
         Ja jos post niin redirectaa referenssien listaan
     """
     if request.method == "GET":
-        reference = get_reference_by_id(citation_key)
+        reference = get_reference_by_id(ref_id)
         ref_id = reference[0]
-        # print(ref_id)
-        # tags = get_tags(ref_id)
         tags = json.dumps(get_tags(ref_id))
-        ref_type = get_reference_type_id(citation_key)
+        ref_type = get_reference_type_id(ref_id)
         columns  = column_name_fetcher(ref_type)
         return render_template("edit_ref.html", tags=tags, ref_id=ref_id, reference=reference, ref_type=ref_type, columns=columns)
     if request.method == "POST":
         ref_dict = request.form.to_dict()
-        ref_type = get_reference_type_id(citation_key)
+        ref_type = get_reference_type_id(ref_id)
         ref_dict.pop("chosen_ref", None)
         tags = ref_dict.pop("tags", None)
-        edit_reference(citation_key, ref_dict, ref_type)
+        edit_reference(ref_id, ref_dict, ref_type)
         return redirect('/get_reference')
 
     #if not get or post return this
     return "Method Not Allowed", 405
 
 
-@app.route("/delete/<citation_key>", methods=["POST"])
-def reference_deleter(citation_key):
+@app.route("/delete/<ref_id>", methods=["POST"])
+def reference_deleter(ref_id):
     """Callaa repositorin 
 
     Args:
-        citation_key (string): uniikki sitaatin avain
+        ref_id: reference id
 
     Returns:
         _type_: redirectaa refrence listan
     """
-    delete_reference(citation_key)
+    delete_reference(ref_id)
     return redirect('/get_reference')
 
 @app.route("/tests/reset", methods=["POST"])

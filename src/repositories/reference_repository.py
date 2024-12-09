@@ -10,30 +10,25 @@ def get_reference():
     Then we fetch its column names so we can properly format the ref.
     After formating adds it into the refs list and returns it after the loop
     """
-    ref_query = text("SELECT citation_key, type FROM reference")
+    ref_query = text("SELECT id, type FROM reference")
     ref_result = db.session.execute(ref_query).fetchall()
 
     refs = []
 
     for ref in ref_result:
-        citation_key, ref_type = ref.citation_key, ref.type
+        ref_id, ref_type = ref.id, ref.type
 
-        data_query = text(f"SELECT * FROM {ref_type} WHERE citation_key = :citation_key")
-        result = db.session.execute(data_query, {"citation_key": citation_key}).fetchone()
+        data_query = text(f"SELECT * FROM {ref_type} WHERE id = :ref_id")
+        result = db.session.execute(data_query, {"ref_id": ref_id}).fetchone()
 
         fields = [column["name"] for column in get_column_names(ref_type.lower())]
 
         formatted_parts = [f"{getattr(result, field, None)}"
                             for field in fields if getattr(result, field, None)]
 
-        formatted_string = ", ".join(formatted_parts[1:])
+        formatted_string = ", ".join(formatted_parts)
         formatted_string += "<br>Tags: "
 
-        id_query = text("""SELECT id
-                            FROM reference
-                            WHERE citation_key = :citation_key
-                        """)
-        ref_id = db.session.execute(id_query, {"citation_key": citation_key}).fetchone()[0]
         tags = get_tags(ref_id)
         tags_string = ", ".join(tags)
 
@@ -58,83 +53,60 @@ def get_column_names(ref_type):
         ORDER BY ordinal_position
     """)
     column_result = db.session.execute(column_query, {"table_name": table_name})
-    fields = [{"name": row[0], "required": row[1] == "NO"} for row in column_result.fetchall()]
+    fields = [{"name": row[0], "required": row[1] == "NO"} for row in column_result.fetchall() if row[0] != "type"]
 
     return fields
 
-def delete_reference(citation_key):
+def delete_reference(ref_id):
     """Poistaa referenssin
 
     Args:
-        citation_key (string): referenssin uniikki tunniste
+        ref_id: referenssin uniikki tunniste
     """
-    ref_query = text("DELETE FROM reference WHERE citation_key = :key")
-    db.session.execute(ref_query, {"key": citation_key})
+    ref_query = text("DELETE FROM reference WHERE id = :ref_id")
+    db.session.execute(ref_query, {"ref_id": ref_id})
     db.session.commit()
 
-def get_reference_by_id(citation_key):
+def get_reference_by_id(ref_id):
     """get ref by 
 
     Args:
-        citation_key (string): ref key
+        ref_id: reference id
 
     Returns:
         database query for ref by id
     """
-    type_result = get_reference_type_id(citation_key)
+    type_result = get_reference_type_id(ref_id)
 
-    data_query = text(f"SELECT * FROM {type_result} WHERE citation_key = :citation_key")
-    result = db.session.execute(data_query, {"citation_key": citation_key}).fetchone()
+    data_query = text(f"SELECT * FROM {type_result} WHERE id = :ref_id")
+    result = db.session.execute(data_query, {"ref_id": ref_id}).fetchone()
     return result
 
-def get_reference_type_id(citation_key):
+def get_reference_type_id(ref_id):
     """gets reference type by id
 
     Args:
-        citation_key (string): ref key
+        ref_id: reference id
 
     Returns:
         the ref type
     """
-    ref_type_query = text("SELECT type FROM reference WHERE citation_key = :citation_key")
-    ref_type = db.session.execute(ref_type_query, {"citation_key": citation_key}).fetchone()[0]
+    ref_type_query = text("SELECT type FROM reference WHERE id = :ref_id")
+    ref_type = db.session.execute(ref_type_query, {"ref_id": ref_id}).fetchone()[0]
     return ref_type
 
-def edit_reference(old_citation_key, ref_dict, ref_type):
+def edit_reference(ref_id, ref_dict, ref_type):
     """Function for editing references
     
     Args:
         vanha viitteen avain, formin sanakirja ja viitteen tyyppi"""
     new_citation_key = ref_dict["citation_key"]
 
-    #katsoo onko citation key päivittynyt. Jos on päivittää reference taulukkoon ja omaan taulukkoon sen
-    if new_citation_key != old_citation_key:
-        insert_new_key_query = text("""
-            INSERT INTO reference (citation_key, type)
-            VALUES (:new_citation_key, :type)
-        """)
-        db.session.execute(insert_new_key_query, {
-            "new_citation_key": new_citation_key,
-            "type": ref_type
-        })
-
-        specific_table_update_query = text(f"""
-            UPDATE {ref_type}
-            SET citation_key = :new_citation_key
-            WHERE citation_key = :old_citation_key
-        """)
-        db.session.execute(specific_table_update_query, {
-            "new_citation_key": new_citation_key,
-            "old_citation_key": old_citation_key
-        })
-
-        delete_old_key_query = text("""
-            DELETE FROM reference
-            WHERE citation_key = :old_citation_key
-        """)
-        db.session.execute(delete_old_key_query, {
-            "old_citation_key": old_citation_key
-        })
+    update_ref_sql = text("""UPDATE reference
+                                SET citation_key = :new_citation_key
+                                WHERE id = :ref_id
+                          """)
+    db.session.execute(update_ref_sql, {"new_citation_key" :new_citation_key, "ref_id": ref_id})
 
     #hakee kolumnien nimet ref_dictista ja päivittää kentät
     columns = ", ".join([f"{key} = :{key}" for key in ref_dict.keys() if key != "citation_key"])
@@ -149,17 +121,17 @@ def edit_reference(old_citation_key, ref_dict, ref_type):
 
 
 def get_bib_reference_from_db():
-    ref_query = text("SELECT citation_key, type FROM reference")
+    ref_query = text("SELECT id, citation_key, type FROM reference")
     ref_result = db.session.execute(ref_query).fetchall()
 
     refs = []
 
     for ref in ref_result:
         sanis = {}
-        citation_key, ref_type = ref.citation_key, ref.type
+        ref_id, ref_type = ref.id, ref.type
         sanis["ref_type"] = ref.type
-        data_query = text(f"SELECT * FROM {ref_type} WHERE citation_key = :citation_key")
-        result = db.session.execute(data_query, {"citation_key": citation_key}).fetchone()
+        data_query = text(f"SELECT * FROM {ref_type} WHERE id = :ref_id")
+        result = db.session.execute(data_query, {"ref_id": ref_id}).fetchone()
 
         #pitää loweraa case jotta column query toimii
         table_name = ref_type.lower()
@@ -194,6 +166,7 @@ def get_bib_reference():
     formatted_references = []
     refs = get_bib_reference_from_db()
     for reference in refs:
+        print(reference)
         formatted_references.append(reference_to_html_string(reference))
 
     return formatted_references
@@ -269,7 +242,6 @@ def create_reference(ref_dict: dict, table_name: str):
 
     """
     citation_key = ref_dict.get("citation_key")
-    reference_type = table_name
 
     #nyt selvittää onko sitaatin avain uniikko vai ei.
     #Pitää tehdä parempi error handling
@@ -279,20 +251,12 @@ def create_reference(ref_dict: dict, table_name: str):
     if existing_reference:
         raise ValueError(f"A reference with citation_key '{citation_key}' already exists.")
 
-
-    sql_reference = text("""INSERT INTO reference (citation_key, type)
-                            VALUES (:citation_key, :type)
-                            ON CONFLICT DO NOTHING
-                            RETURNING id
-                         """)
-    result = db.session.execute(sql_reference, {"citation_key": citation_key, "type": reference_type})
-    ref_id = result.fetchone()[0]
-
     columns = ", ".join(ref_dict.keys())
     placeholders = ", ".join([f":{key}" for key in ref_dict.keys()])
-    sql = text(f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders})")
+    sql = text(f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders}) RETURNING id")
 
-    db.session.execute(sql, ref_dict)
+    result = db.session.execute(sql, ref_dict)
+    ref_id = result.fetchone()[0]
     db.session.commit()
 
     return ref_id

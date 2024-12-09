@@ -15,8 +15,6 @@ CREATE TABLE reference (
 
 -- Create the article table
 CREATE TABLE article (
-    id SERIAL PRIMARY KEY,
-    citation_key TEXT NOT NULL,
     author TEXT NOT NULL,
     title TEXT NOT NULL,
     journal TEXT NOT NULL,
@@ -29,16 +27,11 @@ CREATE TABLE article (
     doi TEXT,
     issn TEXT,
     zblnumber TEXT,
-    eprint TEXT,
-    CONSTRAINT fk_reference
-        FOREIGN KEY (citation_key)
-        REFERENCES reference (citation_key)
-        ON DELETE CASCADE
-);
+    eprint TEXT
+) INHERITS (reference);
+
 -- Create the book table
 CREATE TABLE book (
-    id SERIAL PRIMARY KEY,
-    citation_key TEXT NOT NULL,
     author TEXT NOT NULL,
     editor TEXT,
     title TEXT NOT NULL,
@@ -51,17 +44,11 @@ CREATE TABLE book (
     note TEXT,
     doi TEXT,
     issn TEXT,
-    isbn TEXT,
-    CONSTRAINT fk_reference 
-        FOREIGN KEY (citation_key)
-        REFERENCES reference (citation_key)
-        ON DELETE CASCADE
-);
+    isbn TEXT
+) INHERITS (reference);
 
 -- Create the inproceedings table
 CREATE TABLE inproceedings (
-    id SERIAL PRIMARY KEY,
-    citation_key TEXT NOT NULL,
     author TEXT NOT NULL,
     title TEXT NOT NULL,
     booktitle TEXT NOT NULL,
@@ -74,12 +61,8 @@ CREATE TABLE inproceedings (
     address TEXT,
     month TEXT,
     organization TEXT,
-    publisher TEXT,
-    CONSTRAINT fk_reference
-        FOREIGN KEY (citation_key)
-        REFERENCES reference (citation_key)
-        ON DELETE CASCADE
-);
+    publisher TEXT
+) INHERITS (reference);
 
 -- Create the tags table
 CREATE TABLE tags (
@@ -89,6 +72,6 @@ CREATE TABLE tags (
 
 -- Create the ref_tags table, which links tags to references
 CREATE TABLE ref_tags (
-    ref_id INTEGER REFERENCES reference,
-    tag_id INTEGER REFERENCES tags
+    ref_id INTEGER REFERENCES reference(id) ON DELETE CASCADE,
+    tag_id INTEGER REFERENCES tags(id) ON DELETE CASCADE
 );
