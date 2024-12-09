@@ -8,19 +8,17 @@ Latex Reference App - References
 
 <h2>References</h2>
 
-<form action="/search/{{ references }}" method="POST">
+<form action="/search" method="POST">
     <input type="text" name="query"><input type="submit" class="button" value="Hae">
 </form>
 
 <div>
     {% for reference in references %}
-    {% if reference["visibility"]== True %}
         <div>
             <!-- hakee citation key ensimmäisestä indeksistä-->
-            {% set citation_key = reference["content"].split(',')[0] %}
+            {% set citation_key = reference.split(',')[0] %}
             <!-- poistaa citation key näkymästä poistamalla sen reference details muuttujaan. -->
-            {% set reference_details = reference["content"].split(',', 1)[1] %}
-            <p>Debug statement: {{ reference["visibility"]  }}</p>
+            {% set reference_details = reference.split(',', 1)[1] %}
             <h3>{{ reference_details | safe }}</h3>
             <form action="/edit/{{ citation_key }}" method="get">
                 <button type="submit" class="button" id="edit/{{ citation_key }}">Edit ref</button>
@@ -29,7 +27,6 @@ Latex Reference App - References
                 <button type="submit" class="button" id="{{ citation_key }}">Delete</button>
             </form>
         </div>
-    {% endif %}
         {% endfor %}
 </div>
 

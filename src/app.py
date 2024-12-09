@@ -140,9 +140,9 @@ def bib_ref_exporter():
 
     return send_file(bib_refs,mimetype='text',as_attachment=True,download_name="bibtex_strings.bib")
 
-@app.route("/search/<references>", methods=["POST"])
-def search(references):
+@app.route("/search", methods=["POST"])
+def search():
     query = request.form["query"]
-    search_results = get_search_results(references, query)
+    search_results = get_search_results(query)
 
     return render_template("references.html", references=search_results)

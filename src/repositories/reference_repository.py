@@ -39,7 +39,7 @@ def get_reference():
 
         formatted_string += tags_string
 
-        refs.append({"visibility":True,"content":formatted_string})
+        refs.append(formatted_string)
 
     return refs
 
@@ -357,12 +357,12 @@ def delete_all():
     refs = []
     return refs
 
-def get_search_results(to_search, query):
-    print(to_search)
-    print(query)
-    for reference in to_search:
-        for i in reference:
-            if i == query:
-                reference["visibility"] = True
+def get_search_results(query):
+    references = get_reference()
+    results = []
+    for reference in references:
+        if query.lower() in reference.lower():
+            results.append(reference)
 
-    return to_search
+    return results
+
