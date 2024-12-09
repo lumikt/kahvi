@@ -267,7 +267,6 @@ def create_tag(tag_name, ref_id=None):
     If there is a reference id, create an entry in the ref_tags table to link the
     tag to a reference.
     """
-    print("täällä")
     sql_tag = text("""INSERT INTO tags (name)
                       VALUES (:name)
                       RETURNING id

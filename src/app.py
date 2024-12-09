@@ -61,12 +61,11 @@ def create_reference_route():
     tags = ref_dict.pop("tags", None)
     tags = json.loads(tags)
 
-    tag_ids, tag_names = get_all_tags()
-
     ref_id = create_reference(ref_dict, reference_type)
 
+    tag_ids, tag_names = get_all_tags()
+
     for tag in tags:
-        print(tag)
         added_existing = False
         for i, tag_name in enumerate(tag_names):
             if tag == tag_name:

@@ -72,6 +72,6 @@ CREATE TABLE tags (
 
 -- Create the ref_tags table, which links tags to references
 CREATE TABLE ref_tags (
-    ref_id INTEGER REFERENCES reference(id) ON DELETE CASCADE,
-    tag_id INTEGER REFERENCES tags(id) ON DELETE CASCADE
+    ref_id INTEGER,
+    tag_id INTEGER
 );
