@@ -162,61 +162,47 @@ def get_bib_reference():
     formatted_references = []
     refs = get_bib_reference_from_db()
     for reference in refs:
-        formatted_references.append(reference_to_html_string(reference))
+        formatted_references.append(reference_to_string(reference))
 
     return formatted_references
 
-def reference_to_html_string(ref_dict: dict):
+def reference_to_string(ref_dict: dict, html = True):
     """
     Takes a reference dictionary and returns it in bibtex format using html formatting.
     Args:
         ref_dict (dict): dictionary containing reference info
+        HTML (True/False): boolean to check if it is to be converted to html or plaintext
     """
+    to_html = html
+    if to_html:
+        space,linebreak = "&nbsp;","<br>"
+    else:
+        space,linebreak = " ","\n"
     i = 0
     ref_dict.pop("id")
     citation_key = ref_dict.pop("citation_key")
     ref_type = ref_dict.pop("ref_type")
-    string_conversion = f'@{ref_type.upper()}' + "{" +  f'{citation_key}, <br>'
+
+    string_conversion = f'@{ref_type.upper()}' + "{" +  f'{citation_key},{linebreak}'
     for key,value in ref_dict.items():
         if i == len(ref_dict)-1:
-            string_conversion  +=  f'&nbsp;&nbsp;&nbsp;{key} = "{value}"<br>'
+            string_conversion  +=  f'{space}{space}{space}{key} = "{value}"{linebreak}'
             break
-        string_conversion  +=  f'&nbsp;&nbsp;&nbsp;{key} = "{value}",<br>'
+        string_conversion  +=  f'{space}{space}{space}{key} = "{value}",{linebreak}'
         i+= 1
 
-    string_conversion += "&nbsp;}"
-    return string_conversion
-
-def reference_to_text_string(ref_dict: dict):
-    """
-    Takes a reference dictionary and returns it in bibtex format text string.
-    Args:
-        ref_dict (dict): dictionary containing reference info
-    """
-    i = 0
-    ref_dict.pop("id")
-    citation_key = ref_dict.pop("citation_key")
-    ref_type = ref_dict.pop("ref_type")
-    string_conversion = f'@{ref_type.upper()}' + "{" +  f'{citation_key},\n'
-    for key,value in ref_dict.items():
-        if i == len(ref_dict)-1:
-            string_conversion  +=  f'   {key} = "{value}"\n'
-            break
-        string_conversion  +=  f'   {key} = "{value}",\n'
-        i+= 1
-
-    string_conversion += " }\n\n"
+    string_conversion += "}"+linebreak
     return string_conversion
 
 
 def get_bibtex_export_file():
-    #Käytetään tempfileä jotta ei tiedostoa ei tarvitse tallentaa erikseen minnekään
+    #Käytetään tempfileä jotta tiedostoa ei tarvitse tallentaa erikseen minnekään
     tmp = TemporaryFile()
     for reference in get_bib_reference_from_db():
-        formatted_reference = reference_to_text_string(reference)
+        formatted_reference = reference_to_string(reference,False)
 
         #Flask.send_file haluaa tiedoston byte muodossa ja kirjoittaa sen sitten oikeaan tiedostomuotoon itse.
-        #Ilman tätä tiedoston joutuisi kirjoittamaan johon kansioon ja lähettämään sieltä.
+        #Ilman tätä tiedoston joutuisi kirjoittamaan johonkin kansioon ja lähettämään sieltä.
         reference_as_bytes = str.encode(formatted_reference)
         tmp.write(reference_as_bytes)
 
