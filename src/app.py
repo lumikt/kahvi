@@ -20,6 +20,9 @@ from repositories.reference_repository import (
 
 @app.route("/", methods =["GET", "POST"])
 def load_index():
+    """
+    Loads the initial page of the app.
+    """
     return render_template("index.html")
 
 @app.route("/get_reference", methods =["GET"])
@@ -116,23 +119,36 @@ def reference_deleter(citation_key):
 
 @app.route("/tests/reset", methods=["POST"])
 def reset_tests():
+    """
+    Used to reset tests in the test environment.
+    """
     delete_all()
     return "Reset"
 
 @app.route("/bib_references", methods=["GET"])
 def bib_ref_fetcher():
+    """
+    Fetches stored references from the db and displays them on the .bib references page.
+    """
     bib_refs = get_bib_reference()
     return render_template("bib_ref.html", references=bib_refs)
 
 
 @app.route("/exportBibtex", methods=["GET"])
 def bib_ref_exporter():
+    """
+    Creates an export file to download all stored references in .bib format. 
+    """
     bib_refs = get_bibtex_export_file()
 
     return send_file(bib_refs,mimetype='text',as_attachment=True,download_name="bibtex_strings.bib")
 
 @app.route("/search", methods=["POST"])
 def search():
+    """
+    Searches the stored references, in string format, for the given query. Loads only search-related references
+    on the references page.
+    """
     query = request.form["query"]
     search_results = get_search_results(query)
 
