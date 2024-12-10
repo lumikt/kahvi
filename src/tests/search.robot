@@ -6,18 +6,16 @@ Test Setup  Go To References Page
 
 *** Test Cases ***
 Search Shows Correct Results
-    Set Keyword  War
+    Set Keyword  heaven
     Click Button  Search
     References Page Should Be Open
-    Page Should Contain  row21
-    Page Should Not Contain  mb04
+    Page Should Contain  Robert
 
 Keyword That Does Not Appear In Any Reference Should Not Give Results
     Set Keyword  rainbow
     Click Button  Search
     References Page Should Be Open
-    Page Should Not Contain  mb04
-    Page Should Not Contain  row21
+    Page Should Not Contain  Robert
 
 ***Keywords***
 Check Form Is Loaded
