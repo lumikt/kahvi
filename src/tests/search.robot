@@ -24,12 +24,14 @@ Search Shows Correct Results
     Go To References Page
     References Page Should Be Open
     Set Keyword  learn
+    Set Window Size    1920    1080
     Click Button  search
     References Page Should Be Open
     Page Should Contain  Nancy Jackson
 
 Keyword That Does Not Appear In Any Reference Should Not Give Results
     Set Keyword  rainbow
+    Set Window Size    1920    1080
     Click Button  search
     References Page Should Be Open
     Page Should Not Contain  Nancy Jackson
