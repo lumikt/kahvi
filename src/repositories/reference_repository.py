@@ -117,6 +117,10 @@ def get_reference_type_id(citation_key):
     return ref_type
 
 def get_bib_reference_from_db():
+    """
+    Retrieves all references from the database and returns a list of dictionaries to be used
+    by formatting functions.
+    """
     ref_query = text("SELECT citation_key, type FROM reference")
     ref_result = db.session.execute(ref_query).fetchall()
 
@@ -129,7 +133,7 @@ def get_bib_reference_from_db():
         data_query = text(f"SELECT * FROM {ref_type} WHERE citation_key = :citation_key")
         result = db.session.execute(data_query, {"citation_key": citation_key}).fetchone()
 
-        #pitää loweraa case jotta column query toimii
+        #lower case so the query works
         table_name = ref_type.lower()
         if result:
             column_query = text("""
@@ -153,12 +157,14 @@ def get_bib_reference_from_db():
 
         refs.append(sanis)
 
-    #nyt sanakirja antaa avaimelle arvon None jos vapaaehtoista kenttää ei ole täytetty
-    #sanakirjan käsittely html:ssä ei vielä onnistu kunnolla (tällä hetkellä html toistaa vain yhtä elementtiä)
 
     return refs
 
 def get_bib_reference():
+    """
+    Uses get_bib_reference_from_db to retrieve all references to be displayed on the webpage, converts them into a list 
+    of html strings using reference_to_string.
+    """
     formatted_references = []
     refs = get_bib_reference_from_db()
     for reference in refs:
@@ -196,17 +202,22 @@ def reference_to_string(ref_dict: dict, html = True):
 
 
 def get_bibtex_export_file():
-    #Käytetään tempfileä jotta tiedostoa ei tarvitse tallentaa erikseen minnekään
+    """
+    Creates a bibtex export file. Retrieves all references from the DB using get_bib_reference_from_db,
+    converts them into plaintext strings with reference_to_string. Uses tempfile to create a temporary file,
+    send it to flask export which decodes it to a .bib file.
+    """
+    #Use tempfile to avoid storing file
     tmp = TemporaryFile()
     for reference in get_bib_reference_from_db():
         formatted_reference = reference_to_string(reference,False)
 
-        #Flask.send_file haluaa tiedoston byte muodossa ja kirjoittaa sen sitten oikeaan tiedostomuotoon itse.
-        #Ilman tätä tiedoston joutuisi kirjoittamaan johonkin kansioon ja lähettämään sieltä.
+        #Flask.send_file needs the file in byte mode and rewrites it to a .bib
+        #This way we can avoid storing the file in a folder temporarily
         reference_as_bytes = str.encode(formatted_reference)
         tmp.write(reference_as_bytes)
 
-    #palauttaa kursorin tiedoston alkuun, ilman tätä tmp file näyttää tyhjältä downloadin jälkeen.
+    #Resets cursor to start of the file, without this the file would appear empty after download
     tmp.seek(0)
 
     return tmp
@@ -225,8 +236,8 @@ def create_reference(ref_dict: dict, table_name: str):
     citation_key = ref_dict.get("citation_key")
     reference_type = table_name
 
-    #nyt selvittää onko sitaatin avain uniikko vai ei.
-    #Pitää tehdä parempi error handling
+    #Check if the citation key is unique or not
+    #Needs better error handling
     existing_reference_query = text("SELECT 1 FROM reference WHERE citation_key = :citation_key")
     existing_reference = db.session.execute(existing_reference_query, {"citation_key": citation_key}).fetchone()
 
@@ -258,7 +269,7 @@ def edit_reference(old_citation_key, ref_dict, ref_type, ref_id, tags):
         vanha viitteen avain, formin sanakirja ja viitteen tyyppi"""
     new_citation_key = ref_dict["citation_key"]
 
-    #katsoo onko citation key päivittynyt. Jos on päivittää reference taulukkoon ja omaan taulukkoon sen
+    #checks if citation_key is updated. If it is, it is updated to both its own table and the reference table
     if new_citation_key != old_citation_key:
         insert_new_key_query = text("""
             INSERT INTO reference (citation_key, type)
@@ -287,7 +298,7 @@ def edit_reference(old_citation_key, ref_dict, ref_type, ref_id, tags):
             "old_citation_key": old_citation_key
         })
 
-    #hakee kolumnien nimet ref_dictista ja päivittää kentät
+    #retrieves column names from ref_dict and updates fields
     columns = ", ".join([f"{key} = :{key}" for key in ref_dict.keys() if key != "citation_key"])
     specific_table_field_update_query = text(f"""
         UPDATE {ref_type}
