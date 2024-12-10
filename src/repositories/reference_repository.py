@@ -246,7 +246,7 @@ def create_reference(ref_dict: dict, table_name: str):
 
     return ref_id
 
-def edit_reference(old_citation_key, ref_dict, ref_type, ref_id, tags):
+def edit_reference(ref_dict, ref_type, ref_id, tags):
     """Function for editing references
     
     Args:
