@@ -22,12 +22,17 @@ Latex Reference App - References
             <!-- poistaa citation key näkymästä poistamalla sen reference details muuttujaan. -->
             {% set reference_details = reference.split(',', 2)[2] %}
             <h3>{{ reference_details | safe }}</h3>
-            <form action="/edit/{{ ref_id }}" method="get">
-                <button type="submit" class="button" id="edit/{{ ref_id }}">Edit ref</button>
-            </form>
-            <form action="/delete/{{ ref_id }}" method="post">
-                <button type="submit" class="button" id="{{ citation_key }}">Delete</button>
-            </form>
+
+            <div class="button-container">
+                <form action="/edit/{{ ref_id }}" method="get">
+                    <button type="submit" class="button" id="edit/{{ ref_id }}">Edit reference</button>
+                </form>
+
+                <form action="/delete/{{ ref_id }}" method="post">
+                    <button type="submit" class="button" id="{{ citation_key }}">Delete</button>
+                </form>
+                
+            </div>
         </div>
     {% endfor %}
 </div>

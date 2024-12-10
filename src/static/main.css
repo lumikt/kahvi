@@ -51,6 +51,10 @@ background-color: rgb(252, 183, 152);
 color:  #497ae6;
 }
 
+.button-container {
+  display: flex;
+}
+
 #dynamic-form label {
   display: block;
   font-weight: bold;
