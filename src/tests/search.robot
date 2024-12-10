@@ -24,13 +24,13 @@ Search Shows Correct Results
     Go To References Page
     References Page Should Be Open
     Set Keyword  learn
-    Click Button  Search
+    Click Button  search
     References Page Should Be Open
     Page Should Contain  Nancy Jackson
 
 Keyword That Does Not Appear In Any Reference Should Not Give Results
     Set Keyword  rainbow
-    Click Button  Search
+    Click Button  search
     References Page Should Be Open
     Page Should Not Contain  Nancy Jackson
 
