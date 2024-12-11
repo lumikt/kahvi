@@ -6,7 +6,7 @@ Test Setup  Go To Add Reference Page
 
 *** Test Cases ***
 
-Set Correct Information For Inproceedings Reference
+Set Correct Information For Book Reference
     Select Dropdown By Value  book
     Check Form Is Loaded
     Set Reference Id  foh225
@@ -16,6 +16,22 @@ Set Correct Information For Inproceedings Reference
     Set Publisher  Tor Books
     Submit Information
     Adding Reference Should Succeed
+
+Edit Book Reference Correctly
+    Click Link  Added references
+    Click Button  edit/1
+    Check Form Is Loaded
+    Set Volume  2
+    Submit Changes
+    Editing Reference Should Succeed
+
+Edit Book Reference Incorrectly
+    Click Link  Added references
+    Click Button  edit/1
+    Check Form Is Loaded
+    Clear Element Text  name=title
+    Submit Changes
+    Editing Reference Should Fail
 
 *** Keywords ***
 Check Form Is Loaded

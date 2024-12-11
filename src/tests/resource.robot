@@ -70,6 +70,12 @@ Adding Reference Should Fail With Message
     [Arguments]  ${message}
     Page Should Contain  ${message}
 
+Editing Reference Should Succeed
+    References Page Should Be Open
+
+Editing Reference Should Fail
+    Edit Reference Page Should Be Open
+
 Submit Information
     Click Button  Add reference
 
