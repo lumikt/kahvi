@@ -59,10 +59,10 @@ def get_column_names(ref_type):
     return fields
 
 def delete_reference(ref_id):
-    """Poistaa referenssin
+    """Deletes reference
 
     Args:
-        ref_id: referenssin uniikki tunniste
+        ref_id: the reference id
     """
     ref_query = text("DELETE FROM reference WHERE id = :ref_id")
     db.session.execute(ref_query, {"ref_id": ref_id})
@@ -80,12 +80,12 @@ def get_reference_id(citation_key):
     if not ref_result:
         raise ValueError(f"No reference found for citation_key: {citation_key}")
 
-    ref_id, ref_type = ref_result
-    print(f"Fetched from reference table: ref_id={ref_id}, type={ref_type}")
+    ref_id, = ref_result
     return ref_id
 
 def get_reference_by_id(ref_id):
-    """get ref by 
+    """
+    Retrieves a reference by given id. 
 
     Args:
         ref_id: reference id
@@ -100,7 +100,8 @@ def get_reference_by_id(ref_id):
     return result
 
 def get_reference_type_id(ref_id):
-    """gets reference type by id
+    """
+    Retrieves a reference type by given id.
 
     Args:
         ref_id: reference id
@@ -123,9 +124,9 @@ def get_bib_reference_from_db():
     refs = []
 
     for ref in ref_result:
-        sanis = {}
+        reference_dict = {}
         citation_key, ref_type = ref.citation_key, ref.type
-        sanis["ref_type"] = ref.type
+        reference_dict["ref_type"] = ref.type
         data_query = text(f"SELECT * FROM {ref_type} WHERE citation_key = :citation_key")
         result = db.session.execute(data_query, {"citation_key": citation_key}).fetchone()
 
@@ -142,16 +143,11 @@ def get_bib_reference_from_db():
             fields = [row[0] for row in column_result.fetchall()]
 
             for field in fields:
-                sanis[field] = None
-
-            for field in fields:
                 value = getattr(result, field, None)
                 if value:
-                    sanis[field] = value
-                else:
-                    del sanis[field]
+                    reference_dict[field] = value
 
-        refs.append(sanis)
+        refs.append(reference_dict)
 
 
     return refs
@@ -200,8 +196,6 @@ def create_reference(ref_dict: dict, table_name: str):
     """
     citation_key = ref_dict.get("citation_key")
 
-    #nyt selvittää onko sitaatin avain uniikko vai ei.
-    #Pitää tehdä parempi error handling
     existing_reference_query = text("SELECT 1 FROM reference WHERE citation_key = :citation_key")
     existing_reference = db.session.execute(existing_reference_query, {"citation_key": citation_key}).fetchone()
 
@@ -222,7 +216,8 @@ def edit_reference(ref_dict, ref_type, ref_id, tags):
     """Function for editing references
     
     Args:
-        vanha viitteen avain, formin sanakirja ja viitteen tyyppi"""
+        reference dict, old reference id, type
+    """
     new_citation_key = ref_dict["citation_key"]
 
     update_ref_sql = text("""UPDATE reference
@@ -297,7 +292,7 @@ def create_tag(tag_name, ref_id=None):
 
 def get_tag_id_by_name(tag_name):
     """
-    apufuntkio tagin id hakemiselle sen nimen perusteella.
+    Helper function to retrieve a tag id based on its name.
     """
     sql = text("SELECT id FROM tags WHERE name = :name")
     result = db.session.execute(sql, {"name": tag_name})
@@ -333,7 +328,7 @@ def get_tags_ids_by_ref_id(ref_id):
 
 def get_all_tags():
     """
-    Return a list of all tag names in the database
+    Return a list of all tag names in the database.
     """
     sql = text("""SELECT DISTINCT id, name
                   FROM tags
@@ -358,13 +353,11 @@ def get_tags(ref_id):
     tags = [row[0] for row in result]
     return tags
 
-
-
-#def delete_all():
-#    refs = []
-#    return refs
-
 def get_search_results(query):
+    """
+    Retrieves all references from the DB using get_reference, converts them to strings
+    and searches the resulting list for the query word.
+    """
     references = get_reference()
     results = []
     for reference in references:

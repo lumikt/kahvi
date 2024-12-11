@@ -103,13 +103,13 @@ def reference_editer(ref_id):
 
 @app.route("/delete/<ref_id>", methods=["POST"])
 def reference_deleter(ref_id):
-    """Callaa repositorin 
+    """Calls the delete function for a reference 
 
     Args:
         ref_id: reference id
 
     Returns:
-        _type_: redirectaa refrence listan
+        _type_: redirects to get_reference page after delete
     """
     delete_reference(ref_id)
     return redirect('/get_reference')

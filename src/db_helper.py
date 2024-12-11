@@ -3,6 +3,9 @@ from sqlalchemy import text
 from config import db, app
 
 def table_exists(name):
+    """
+    Checks if a table with a given name exists.
+    """
     sql_table_existence = text(
     "SELECT EXISTS ("
     "  SELECT 1"
@@ -19,6 +22,9 @@ def table_exists(name):
 
 
 def setup_db(schema):
+    """
+    Creates the db using schema.sql.
+    """
     print("Creating tables")
     sql = text(schema)
     db.session.execute(sql)
@@ -26,6 +32,7 @@ def setup_db(schema):
 
 
 def load_schema(file_path):
+    """Returns the db schema as text"""
     with open(file_path, "r") as file:
         sql = file.read()
     return sql
