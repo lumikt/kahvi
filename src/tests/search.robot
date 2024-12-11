@@ -17,6 +17,7 @@ Set Correct Information For Article Reference
     Set Number  1
     Set Pages  97-101
     Set DOI  jackson:2014
+    Set Tag  psychology
     Submit Information
     Adding Reference Should Succeed
 
@@ -35,6 +36,15 @@ Keyword That Does Not Appear In Any Reference Should Not Give Results
     Click Button  search
     References Page Should Be Open
     Page Should Not Contain  Nancy Jackson
+
+Search By Tag Succeeds
+    Go To References Page
+    References Page Should Be Open
+    Set Keyword  psychology
+    Set Window Size    1920    1080
+    Click Button  search
+    References Page Should Be Open
+    Page Should Contain  Nancy Jackson
 
 ***Keywords***
 Check Form Is Loaded
