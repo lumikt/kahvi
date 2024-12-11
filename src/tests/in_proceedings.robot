@@ -40,6 +40,7 @@ Set Tags For Inproceedings Reference
     Set Tag  Kandi
     Submit Information
     Adding Reference Should Succeed
+    Page Should Contain    Kandi
 
 *** Keywords ***
 Check Form Is Loaded
