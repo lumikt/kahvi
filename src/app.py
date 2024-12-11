@@ -4,7 +4,6 @@ from config import app
 from repositories.reference_repository import (
                                                get_reference,
                                                create_reference,
-                                               delete_all,
                                                get_bib_reference,
                                                get_column_names,
                                                delete_reference,
@@ -114,14 +113,6 @@ def reference_deleter(ref_id):
     """
     delete_reference(ref_id)
     return redirect('/get_reference')
-
-@app.route("/tests/reset", methods=["POST"])
-def reset_tests():
-    """
-    Used to reset tests in the test environment.
-    """
-    delete_all()
-    return "Reset"
 
 @app.route("/bib_references", methods=["GET"])
 def bib_ref_fetcher():

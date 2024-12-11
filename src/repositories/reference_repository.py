@@ -360,9 +360,9 @@ def get_tags(ref_id):
 
 
 
-def delete_all():
-    refs = []
-    return refs
+#def delete_all():
+#    refs = []
+#    return refs
 
 def get_search_results(query):
     references = get_reference()
