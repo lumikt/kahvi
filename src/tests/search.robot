@@ -21,7 +21,7 @@ Set Correct Information For Article Reference
     Submit Information
     Adding Reference Should Succeed
 
-Search Shows Correct Results
+Search By Title Succeeds
     Go To References Page
     References Page Should Be Open
     Set Keyword  learn
@@ -41,6 +41,15 @@ Search By Tag Succeeds
     Go To References Page
     References Page Should Be Open
     Set Keyword  psychology
+    Set Window Size    1920    1080
+    Click Button  search
+    References Page Should Be Open
+    Page Should Contain  Nancy Jackson
+
+Search By Author Succeeds
+    Go To References Page
+    References Page Should Be Open
+    Set Keyword  Nancy
     Set Window Size    1920    1080
     Click Button  search
     References Page Should Be Open
