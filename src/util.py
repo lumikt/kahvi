@@ -17,10 +17,11 @@ def reference_to_string(ref_dict: dict, html = True):
 
     string_conversion = f'@{ref_type.upper()}' + "{" +  f'{citation_key},{linebreak}'
     for key,value in ref_dict.items():
+        string_conversion  +=  f'{space}{space}{space}{key} = "{value}",'
         if i == len(ref_dict)-1:
-            string_conversion  +=  f'{space}{space}{space}{key} = "{value}"{linebreak}'
-            break
-        string_conversion  +=  f'{space}{space}{space}{key} = "{value}",{linebreak}'
+            string_conversion = string_conversion[:-1]
+        
+        string_conversion += linebreak
         i+= 1
 
     string_conversion += "}"+linebreak
