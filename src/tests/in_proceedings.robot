@@ -6,7 +6,7 @@ Test Setup  Go To Add Reference Page
 
 *** Test Cases ***
 
-Set Correct Information For Inproceedings Reference
+Adding Inproceedings Reference With Correct Information Succeeds
     Select Dropdown By Value  inproceedings
     Check Form Is Loaded
     Set Reference Id  dk80085
@@ -18,16 +18,28 @@ Set Correct Information For Inproceedings Reference
     Submit Information
     Adding Reference Should Succeed
 
-Try Adding Inproceedings Reference With Missing Information
+Adding Inproceedings Reference With Missing Information Fails
+    Select Dropdown By Value  inproceedings
+    Check Form Is Loaded
+    Set Reference Id  dk80089
+    Set Author  Brandon Sanderson
+    Set Title  Words of Radiance
+    Set Booktitle  WORDS
+    Set Volume  2
+    Submit Information
+    Adding Reference Should Fail
+
+Adding Inproceedings Reference With Existing Citation Key Fails
     Select Dropdown By Value  inproceedings
     Check Form Is Loaded
     Set Reference Id  dk80085
     Set Author  Dalinar Kholin
     Set Title  Oathbringer
     Set Booktitle  OATHBRINGER
+    Set Year  2002
     Set Volume  2
     Submit Information
-    Adding Reference Should Fail
+    Page Should Contain    already exists
 
 Set Tags For Inproceedings Reference
     Select Dropdown By Value  inproceedings
