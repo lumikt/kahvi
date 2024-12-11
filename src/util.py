@@ -20,7 +20,6 @@ def reference_to_string(ref_dict: dict, html = True):
         string_conversion  +=  f'{space}{space}{space}{key} = "{value}",'
         if i == len(ref_dict)-1:
             string_conversion = string_conversion[:-1]
-        
         string_conversion += linebreak
         i+= 1
 
