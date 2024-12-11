@@ -20,6 +20,7 @@ Add Book Reference
 Delete Added Book Reference
     Go To References Page
     Click Button  foh225
+    Handle Alert  action=ACCEPT
     References Page Should Be Open
     Page Should Not Contain  Fires of Heaven
 
