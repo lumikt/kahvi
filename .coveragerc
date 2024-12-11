@@ -1,2 +1,10 @@
 [run]
 source = src
+omit =
+    app.py
+    AppLibrary.py
+    config.py
+    db_helper.py
+    index.py
+    */tests/*
+    */unittests/*
