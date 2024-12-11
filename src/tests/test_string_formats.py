@@ -1,6 +1,5 @@
 import unittest
-
-from repositories.reference_repository import reference_to_string
+from util import reference_to_string
 
 class StringTest(unittest.TestCase):
     def setUp(self):
