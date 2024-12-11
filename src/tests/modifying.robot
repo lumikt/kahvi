@@ -21,7 +21,7 @@ Edit Book Reference Correctly
     Click Link  Added references
     Click Button  edit/1
     Check Form Is Loaded
-    Set Volume  2
+    Set Volume  78
     Submit Changes
     Editing Reference Should Succeed
 
@@ -33,9 +33,36 @@ Edit Book Reference Incorrectly
     Submit Changes
     Editing Reference Should Fail
 
+Set Correct Information For Article Reference
+    Select Dropdown By Value  article
+    Check Form Is Loaded
+    Set Reference Id  jor14
+    Set Author  Katy Jordan
+    Set Title  Initial Trends in Enrolment and Completion of Massive Open Online Courses
+    Set Year  2014
+    Set Journal  International Review of Research in Open and Distance Learning
+    Submit Information
+    Adding Reference Should Succeed
+
+Edit Article Reference Correctly
+    Click Link  Added references
+    Click Button  edit/2
+    Check Form Is Loaded
+    Set Volume  15
+    Submit Changes
+    Editing Reference Should Succeed
+
+Edit Article Reference Incorrectly
+    Click Link  Added references
+    Click Button  edit/2
+    Check Form Is Loaded
+    Set Year  kaksi
+    Submit Changes
+    Editing Reference Should Fail
+
 *** Keywords ***
 Check Form Is Loaded
-    Wait Until Keyword Succeeds    30s    2s    Page Should Contain Element    publisher
+    Wait Until Keyword Succeeds    30s    2s    Page Should Contain Element    author
 
 Placeholder Should Contain
     [Arguments]    ${expected_text}
