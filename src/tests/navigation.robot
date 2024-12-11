@@ -18,9 +18,10 @@ Navigate To Added References In Bibtext Form
     Click Link  Added references in bibtext form
     Added References In Bibtext Form Page Should Succeed
 
-Navigate To New Reference
+Navigate To New Reference And Show Required Fields
     Click Link  Add new reference
     Add New Reference Page Should Succeed
+    Page Should Contain    *
 
 *** Keywords ***
 Check Form Is Loaded
