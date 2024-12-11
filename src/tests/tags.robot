@@ -41,6 +41,23 @@ View Added Tag
     Page Should Contain  cosmere
     Page Should Contain  Mistborn Era 1
 
+Remove Added Tag While Adding Reference
+    Select Dropdown By Value  book
+    Check Form Is Loaded
+    Set Reference Id  woa14
+    Set Author  Brandon Sanderson
+    Set Title  Alloy of Law
+    Set Editor  Peter
+    Set Year  2012
+    Set Publisher  Tor publishing
+    Set Tag  cosmere
+    Set Tag  Mistborn Era 2
+    Wait Until Element Is Visible    xpath=//span[text()='Mistborn Era 2']/button[text()='x']
+    Click Button    xpath=//span[text()='Mistborn Era 2']/button[text()='x']
+    Submit Information
+    Adding Reference Should Succeed
+    Page Should Not Contain    Mistborn Era 2
+
 *** Keywords ***
 Check Form Is Loaded
     Wait Until Keyword Succeeds    30s    2s    Page Should Contain Element    editor
