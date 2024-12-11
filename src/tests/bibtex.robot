@@ -49,6 +49,11 @@ References Should Be Displayed Correctly On Bibtex Page
     Page Should Contain    title = "Rhythm of War"
     Page Should Contain    year = "2022"
 
+Downloading Bib File Of References Works
+    Go To Bib References Page
+    Click Button    exportBibtex
+    Page Should Contain    bibtex
+
 *** Keywords ***
 Check Form Is Loaded
     Wait Until Keyword Succeeds    30s    2s    Page Should Contain Element    editor
