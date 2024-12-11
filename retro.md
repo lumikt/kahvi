@@ -50,6 +50,7 @@ More of
     - Branchien käyttö
     - Keskitytään olennaiseen; tavoitteena nyt saada toimiva sovellus loppudemoon
 
-Less of
+L
+ess of
     - Stressi
-    
+L![Retro_sprint3](https://github.com/user-attachments/assets/29411342-f388-4f4e-9ac3-27bb0d8cad7a)
