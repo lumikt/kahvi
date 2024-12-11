@@ -15,11 +15,8 @@ Latex Reference App - References
 <div>
     {% for reference in references %}
         <div>
-            <!-- hakee citation key ensimmäisestä indeksistä-->
             {% set ref_id = reference.split(',')[0] %}
             {% set citation_key = reference.split(', ')[1] %}
-            {{ citation_key }}
-            <!-- poistaa citation key näkymästä poistamalla sen reference details muuttujaan. -->
             {% set reference_details = reference.split(',', 2)[2] %}
             <h3>{{ reference_details | safe }}</h3>
 

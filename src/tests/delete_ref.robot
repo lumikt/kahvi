@@ -6,7 +6,7 @@ Test Setup  Go To Add Reference Page
 
 *** Test Cases ***
 
-Set Correct Information For Inproceedings Reference
+Add Book Reference
     Select Dropdown By Value  book
     Check Form Is Loaded
     Set Reference Id  foh225
@@ -17,7 +17,7 @@ Set Correct Information For Inproceedings Reference
     Submit Information
     Adding Reference Should Succeed
 
-Delete Reference Just Added
+Delete Added Book Reference
     Go To References Page
     Click Button  foh225
     References Page Should Be Open
