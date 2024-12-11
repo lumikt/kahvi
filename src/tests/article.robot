@@ -5,7 +5,7 @@ Suite Teardown  Close Browser
 Test Setup  Go To Add Reference Page
 
 *** Test Cases ***
-Set Correct Information For Article Reference
+Adding Reference With Correct Information Succeeds
     Select Dropdown By Value    article
     Check Form Is Loaded
     Set Reference Id  1
@@ -19,13 +19,24 @@ Set Correct Information For Article Reference
     Submit Information
     Adding Reference Should Succeed
 
-Try Adding Reference With Missing Information
+Adding Reference With Missing Information Fails
     Select Dropdown By Value    article
     Check Form Is Loaded
     Set Reference Id  2
     Set Title  Booktitle
     Set Journal  Science journal
     Set Year  1999
+    Set Tag  Kandi
+    Submit Information
+    Adding Reference Should Fail
+
+Adding Reference With Incorrect Information Type Fails
+    Select Dropdown By Value    article
+    Check Form Is Loaded
+    Set Reference Id  2
+    Set Title  Booktitle
+    Set Journal  Science journal
+    Set Year  nineteen ninety nine
     Set Tag  Kandi
     Submit Information
     Adding Reference Should Fail
