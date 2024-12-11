@@ -20,8 +20,8 @@ def table_exists(name):
 
 def setup_db(schema):
     print("Creating tables")
-    sql = text(schema)
-    db.session.execute(sql)
+    sql_text = text(schema)
+    db.session.execute(sql_text)
     db.session.commit()
 
 
