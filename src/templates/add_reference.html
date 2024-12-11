@@ -14,6 +14,8 @@ Latex Reference App - Add reference
 
 <p>Here you can add a new reference to the reference list. All mandatory fields are marked with an asterisk (<span class="highlight">*</span>).</p> 
 
+<p>If you want to add tags, you need to press Enter after writing a tag. Otherwise, the tag won't be saved.</p>
+
 <div>
     {% if message %}
     {{ message }}
@@ -32,10 +34,11 @@ Latex Reference App - Add reference
         <div id="form-fields" style="margin-bottom: 15px;" ></div>
 
         <div id="tag-container" style="margin-bottom: 15px;">
+            <p>You can add multiple tags. Remember to press Enter in between!</p>
             <label for="tag-input">Tags:</label>
             <!-- hidden input for tags for fetching from server -->
             <input type="hidden" id="tags-hidden" name="tags" value="[]">
-            <input type="text" id="tag-input" name="tags" placeholder="Add a tag press enter to add more">
+            <input type="text" id="tag-input" name="tags" placeholder="Add a tag, press enter to add more">
             <div id="tags-wrapper"></div>
         </div>
 

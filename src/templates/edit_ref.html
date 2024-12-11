@@ -39,6 +39,7 @@ Latex Reference App - References
             <label for="tag-input">Tags:</label>
             <input type="hidden" id="tags-hidden" name="tags" value="{{ tags }}">
             <input type="text" id="tag-input" placeholder="Add a tag and press enter">
+            <p>You can add multiple tags. Remember to press Enter in between!</p>
             <div id="tags-wrapper">
                 {% for tag in tags %}
                     <span style="margin-right: 5px; display: inline-block;">
