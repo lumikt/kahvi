@@ -6,7 +6,7 @@ Test Setup  Go To Add Reference Page
 
 *** Test Cases ***
 
-Set Correct Information For Book Reference
+Adding Book Reference With Correct Information Succeeds
     Select Dropdown By Value  book
     Check Form Is Loaded
     Set Reference Id  dd313
@@ -19,7 +19,7 @@ Set Correct Information For Book Reference
     Submit Information
     Adding Reference Should Succeed
 
-Try Adding Book Reference With Missing Information
+Adding Book Reference With Missing Information Fails
     Select Dropdown By Value  book
     Check Form Is Loaded
     Set Reference Id  dd313
@@ -27,6 +27,19 @@ Try Adding Book Reference With Missing Information
     Set Editor  Scrooge McDuck
     Set Year  1984
     Set Publisher  Duckburg publishing
+    Submit Information
+    Adding Reference Should Fail
+
+Adding Book Reference With Wrong Information Type Fails
+    Select Dropdown By Value  book
+    Check Form Is Loaded
+    Set Reference Id  ck303
+    Set Author    Tupu ja Hupu
+    Set Title  Hello World
+    Set Editor  Scrooge McDuck
+    Set Year  1984
+    Set Publisher  Duckburg publishing
+    Set Volume    three
     Submit Information
     Adding Reference Should Fail
 
