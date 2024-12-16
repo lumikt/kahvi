@@ -5,7 +5,7 @@ Ohjelmistotuotannon miniprojekti 2024 ryhmälle Kahvittelijat.
 [![codecov](https://codecov.io/gh/lumikt/kahvi/graph/badge.svg?token=19B6U61LPF)](https://codecov.io/gh/lumikt/kahvi)
 
 [Backlog](https://docs.google.com/spreadsheets/d/1QnEryqcotTWenMVUscbnGRMMuB6Qqb7guWqPP29eEs0/edit?gid=0#gid=0)
-
+[Loppuraportti](https://github.com/lumikt/kahvi/blob/main/Ohtu_Miniprojekti_Loppuraportti.pdf)
 # sovelluksen käynnistysohjeet
 
 Kloonaa tämä repositorio omalle koneellesi ja siirry sen juurikansioon.
