@@ -22,6 +22,7 @@ Delete Added Book Reference
     Click Button  foh225
     Handle Alert  action=ACCEPT
     References Page Should Be Open
+    Wait Until Page Does Not Contain    Fires of Heaven
     Page Should Not Contain  Fires of Heaven
 
 *** Keywords ***
