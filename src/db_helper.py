@@ -26,8 +26,8 @@ def setup_db(schema):
     Creates the db using schema.sql.
     """
     print("Creating tables")
-    sql = text(schema)
-    db.session.execute(sql)
+    sql_text = text(schema)
+    db.session.execute(sql_text)
     db.session.commit()
 
 
